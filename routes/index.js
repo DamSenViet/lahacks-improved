@@ -24,7 +24,7 @@ router.get('/login', function(req, res, next) {
 //          return
 //      set response to username
 //      set code 200
-//      set cookie pixstersess = token
+//      set cookie session = token
 //      add token: username to session.json
 router.post('/login', function(req, res, next) {
 
@@ -32,29 +32,31 @@ router.post('/login', function(req, res, next) {
 
 
 /* GET profile page */
-// check if user has pixstersess cookie
+// check if user has session cookie
 // if not then send them to login page (this means that they're not logged in)
 //
 //
-router.get('/profile', function(req, res, next) {
+router.get('/profile/', function(req, res, next) {
 
 });
 
 /* GET general category page */
 // this page lists all categories
+// build json of all photo links
 router.get('/category/', function(req, res, next) {
-    console.log("this")
+    res.render('category', null);
 });
 
 /* GET specific category page */
-// this page lists category and all its photos
-router.get('/category/.*', function(req, res, next) {
-    console.log("test");
-    res.render('index', null)
+// this page lists specific category and all its photos
+// if category doesn't exist, return an error
+router.get('/category/*/', function(req, res, next) {
+    console.log(req);
+    res.render('login', null);
 });
 
 /* GET photo from category */
-router.get('/category/photo', function(req, res, next) {
+router.get('/category/*/photo/*/', function(req, res, next) {
 
 });
 
