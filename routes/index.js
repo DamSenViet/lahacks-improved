@@ -164,6 +164,8 @@ router.get('/category/*/photo/*/', function(req, res, next) {
 });
 
 
-
+router.get('/something', function(req, res, next) {
+	res.render('anything', {thing: 'this'});
+})
 
 module.exports = router;
