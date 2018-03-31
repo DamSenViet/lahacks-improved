@@ -5,8 +5,7 @@
 		<meta charset="utf-8" />
 		<title>test</title>
 
-
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<!-- <script src="https://ajax.googleapis.com/ajax/libs/hammerjs/2.0.8/hammer.min.js"></script> -->
 	</head>
 
 	<body>
@@ -30,20 +29,21 @@
 				console.log(loginPassword.value);
 
 
-				loginUrl = "/login/" + loginUsername.value + "/"
+				loginUrl = "/signup/" + loginUsername.value + "/"
 				 + loginPassword.value + '/';
 
-				// form.action = loginUrl;
+				form.action = loginUrl;
 				console.log(loginUrl);
 
-				// // make the url for the login
+				// make the url for the login
 				// loginUrl = window.location.host +  "/login/" + loginUsername.value + "/"
 				//  + loginPassword.value + '/';
 				//  console.log("request to " + loginUrl);
 
+				
 				$.post(loginUrl, {username: loginUsername.value, password: loginPassword.value});
 
-				evt.preventDefault();
+
 			}
 		</script>
 	</body>
