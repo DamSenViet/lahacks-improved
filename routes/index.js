@@ -130,7 +130,7 @@ router.post('/createcategory/*/', function(req, res, next) {
 //
 //
 router.get('/profile/*', function(req, res, next) {
-
+    res('profile', null);
 });
 
 /* GET general category page */
