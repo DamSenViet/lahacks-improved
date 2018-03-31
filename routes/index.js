@@ -146,9 +146,16 @@ router.get('/category/', function(req, res, next) {
 // if category doesn't exist, return an error
 router.get('/category/*/', function(req, res, next) {
     let url = req.url.split("/");
-    console.log(url[2]);
+});
 
-    // res.render('login', null);
+/* upload page for the category */
+router.get('/upload/*/', function(req, res, next) {
+    // need to give it category name, upload should only be available on category
+    res.render('upload', null);
+});
+
+router.post('/upload/*/', function(req, res, next) {
+    console.log(req.body.photo);
 });
 
 /* GET photo from category */
@@ -157,13 +164,6 @@ router.get('/category/*/photo/*/', function(req, res, next) {
 });
 
 
-/* upload page for the category */
-router.get('/category/*/upload', function(req, res, next) {
-    res.render('upload', null);
-});
 
-router.post('', function(req, res, next) {
-
-});
 
 module.exports = router;
