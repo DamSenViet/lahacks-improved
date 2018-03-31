@@ -10,7 +10,6 @@
 	</head>
 
 	<body>
-		<%# upload/category_name %>
 		<form>
 
 			<input id="fileSelect" type="file" name="photo" accept="image/x-png,image/gif,image/jpeg"/>
@@ -26,7 +25,7 @@
 
 			function upload() {
 			    file = fileSelect.files[0];
-
+					console.log(file['name']);
 			    console.log("got the file");
 
 			    var fileReader = new FileReader();
@@ -43,7 +42,7 @@
 			        // AJAX REQUEST GOES HERE
 			        $.ajax({
 			            url: '/upload/test',
-			            data: JSON.stringify({img: temp}),
+			            data: JSON.stringify({img: temp, filename: file['name']}),
 			            type: "POST",
 			            contentType: "application/json; charset=utf-8",
 			            dataType: "json",
@@ -70,16 +69,8 @@
 			                console.log(typeof response);
 			                console.log(response);
 
-
-
-
 			                // dump file
 			                $('#form').trigger("reset");
-
-			                // console.log(document.querySelector('.icon-google').href);
-			                // console.log($('.icon-google').length);
-			                // $('.icon-google').attr('id', 'test');
-			                // $('#test').click();
 			            }
 
 			        });

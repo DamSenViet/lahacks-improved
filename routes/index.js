@@ -154,8 +154,18 @@ router.get('/upload/*/', function(req, res, next) {
     res.render('upload', null);
 });
 
+
+
 router.post('/upload/*/', function(req, res, next) {
-    console.log(req.body.img);
+    // console.log(req.body.img);
+    // console.log(req.body.filename);
+    // save the image
+
+    baseUrl = process.cwd();
+
+    fs.writeFile(req.body.filename, req.body.img, 'base64', function(err) {
+        console.log(err);
+    });
 });
 
 /* GET photo from category */
