@@ -4,8 +4,9 @@ var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    console.log(req.body + "this was it");
-  res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express' });
+
+    console.log(req.cookies["sessionid"]);
 });
 
 
@@ -25,8 +26,7 @@ router.post('/signup/*/*/', function(req, res, next) {
     baseUrl = process.cwd();
     console.log(baseUrl);
 
-    // ASYNCHRONOUS
-    // DOESN'T CATCH ERRORS IN TIME
+    // ASYNCHRONOUS, DON'T USE THIS SINCE
     // fs.readFile(baseUrl + '/public/userdata.json', function(err, data) {
     //     if (err) throw err;
     //     // console.log("")
@@ -51,13 +51,12 @@ router.post('/signup/*/*/', function(req, res, next) {
         let json = JSON.parse(data);
 
         // if username already exists
-        if (json.hasOwnProperty(username)) {
-            throw "username already exists";
-        }
+        if (json.hasOwnProperty(username)) throw "username already exists";
 
         json[username] = {"password": password};
 
         fs.writeFile(baseUrl + '/public/userdata.json', JSON.stringify(json));
+
     } catch (err) {
         console.log("login attempt failed");
         res.status(401);
@@ -65,8 +64,9 @@ router.post('/signup/*/*/', function(req, res, next) {
         return;
     }
 
-    res.cookie();
-    res.redirect('/');
+    console.log("success");
+    res.cookie('sessionid', username, {});
+    res.send({"success": true});
 });
 
 /* GET login page */
@@ -92,11 +92,35 @@ router.post('/login/*/*/', function(req, res, next) {
     console.log("made it to login");
     console.log(req.body.username);
     console.log(req.body.password);
-    // successs
+
+    username = req.body.username;
+    password = req.body.password;
+
+    baseUrl = process.cwd();
+    console.log(baseUrl);
+
+    try {
+        let data = fs.readFileSync(baseUrl + "/public/userdata.json");
+        let json = JSON.parse(data);
+
+        // if username does not exist
+        if (!json.hasOwnProperty(username)) throw "username does not exist";
+        if (json[username]["password"] != password) throw "wrong password";
+
+    } catch (err) {
+        console.log("login attempt failed");
+        res.status(401);
+        res.send({});
+        return;
+    }
+
+    console.log("success");
+    res.cookie('sessionid', username, {});
+    res.send({"success": true});
 });
 
 
-router.post('/createcategory/', function(req, res, next) {
+router.post('/createcategory/*/', function(req, res, next) {
 
 });
 
@@ -105,7 +129,7 @@ router.post('/createcategory/', function(req, res, next) {
 // if not then send them to login page (this means that they're not logged in)
 //
 //
-router.get('/profile/', function(req, res, next) {
+router.get('/profile/*', function(req, res, next) {
 
 });
 
@@ -132,5 +156,14 @@ router.get('/category/*/photo/*/', function(req, res, next) {
 
 });
 
+
+/* upload page for the category */
+router.get('/category/*/upload', function(req, res, next) {
+    res.render('upload', null);
+});
+
+router.post('', function(req, res, next) {
+
+});
 
 module.exports = router;

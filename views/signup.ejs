@@ -44,10 +44,10 @@
 					}),
 					type: "POST",
 					contentType: "application/json; charset=utf-8",
-					dataType: 'html',
+					dataType: "json",
 					success: function(res) {
-						console.log(res.redirect);
-
+						console.log(res);
+						window.location.href = '/';
 
 						// create success animations
 					},
