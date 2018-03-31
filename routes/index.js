@@ -4,9 +4,10 @@ var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
 
-    console.log(req.cookies["sessionid"]);
+    res.render('index', );
+
+    console.log("cookie: " + req.cookies["sessionid"]);
 });
 
 
@@ -157,15 +158,27 @@ router.get('/upload/*/', function(req, res, next) {
 
 
 router.post('/upload/*/', function(req, res, next) {
-    // console.log(req.body.img);
-    // console.log(req.body.filename);
-    // save the image
+    var category = req.url.split('/')[2];
+    console.log(category);
+
+    // console.log(req.cookies["sessionid"]);
+    if (!req.cookies.hasOwnProperty('sessionid')) {
+        res.redirect('/login');
+    }
+
+
+    console.log(req.body.filename);
 
     baseUrl = process.cwd();
+    saveUrl = baseUrl + '/public/pictures/cats' + req.body.filename;
 
-    fs.writeFile(req.body.filename, req.body.img, 'base64', function(err) {
+    fs.writeFile(saveUrl, req.body.img, 'base64', function(err) {
         console.log(err);
     });
+
+
+    let data = fs.readFileSync(baseUrl + "/public/userdata.json");
+
 });
 
 /* GET photo from category */
