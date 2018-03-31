@@ -4,20 +4,24 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>upload</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 	</head>
 
 	<body>
 		<%# upload/category_name %>
-		<form action="/upload/*" method="post">
+		<form>
 
 			<input id="fileSelect" type="file" name="photo" accept="image/x-png,image/gif,image/jpeg"/>
-			<input type="submit" />
-
-
 		</form>
+		<button id="upload-button">Upload</button>
+
+
 
 		<script>
 			var fileSelect = document.getElementById('fileSelect');
+			var button = document.getElementById('upload-button');
 
 
 			function upload() {
@@ -38,88 +42,36 @@
 
 			        // AJAX REQUEST GOES HERE
 			        $.ajax({
-			            url: '/',
+			            url: '/upload/test',
 			            data: JSON.stringify({img: temp}),
 			            type: "POST",
 			            contentType: "application/json; charset=utf-8",
 			            dataType: "json",
 			            xhr: function(){
 			                // get the native XmlHttpRequest object
-			                var xhr = $.ajaxSettings.xhr() ;
-			                // set the onprogress event handler
-			                // xhr.upload.onprogress = function(evt){
+			                var xhr = $.ajaxSettings.xhr();
+			                xhr.upload.onprogress = function(evt){
 			                    // $('.progress-bar .loader').css('width', (evt.loaded/evt.total*100) + '%');
-			                    // console.log('progress', evt.loaded/evt.total*100, '\n');
-			                };
+			                    console.log('progress', evt.loaded/evt.total*100, '\n');
+			                }
 			                return xhr ;
 			            },
 
 			            success: function(response) {
 			                alert("Upload Successful!");
-			                $('.progress-bar .loader').css('width','0%');
+			                // $('.progress-bar .loader').css('width','0%');
 
-			                $('.progress-layer').css('opacity', '0');
-			                setTimeout(function(){
-			                    $('.progress-layer').css('display', 'none');
-			                }, 1000);
+			                // $('.progress-layer').css('opacity', '0');
+			                // setTimeout(function(){
+			                    // $('.progress-layer').css('display', 'none');
+			                // }, 1000);
 
 			                console.log("upload successful");
 			                console.log(typeof response);
 			                console.log(response);
-			                if (response.name != 'temp')
-			                {
-			                    var myCalendar = createCalendar({
-			                        options: {
-			                            class: '',
-
-			                    },
-			                        data: {
-			                            title:  response.name + " expiring soon!",
-			                            start: new Date(response.date),
-			                            duration: 60,
-			                        }
-			                    });
-			                }
-			                else {
-			                    var myCalendar = createCalendar({
-			                        options: {
-			                            class: '',
-
-			                        },
-			                        data: {
-			                            title:  "Item could not be identified",
-			                            start: new Date(Date.now()),
-			                            duration: 60,
-			                        }
-			                    });
-			                }
 
 
-			                document.querySelector('.new-cal').appendChild(myCalendar);
 
-
-			                var anchor = document.querySelector('.icon-google');
-			                // conditional open for
-			                var attempt = window.open(anchor.href, "_system");
-			                if (!attempt || attempt.closed || typeof attempt.closed == 'undefined') {
-			                    console.log("Popup blocked");
-			                    //open in current tab instead
-			                    window.location.href = anchor.href;
-			                }
-
-
-			                // DEVICE SPECIFIC
-			                // if (/Safari/.test(navigator.userAgent) && /Mobile/.test(navigator.userAgent)) {
-			                //     window.open(anchor.href, "_system");
-			                // } else if (/Android/.test(navigator.userAgent)) {
-			                //     var appWindow = window.open(anchor.href);
-			                //     setTimeout(function(){}, 1000);
-			                // } else {
-			                //     //default
-			                //     window.open(anchor.href, "_system");
-			                // }
-
-			                document.querySelector('.new-cal').removeChild(document.querySelector('.new-cal').firstChild);
 
 			                // dump file
 			                $('#form').trigger("reset");
@@ -136,11 +88,9 @@
 			    fileReader.readAsDataURL(file);
 			}
 
+			button.onclick = upload;
 
 
 		</script>
-
 	</body>
-
-
 </html>
