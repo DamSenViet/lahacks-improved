@@ -25,22 +25,49 @@ router.post('/signup/*/*/', function(req, res, next) {
     baseUrl = process.cwd();
     console.log(baseUrl);
 
-    fs.readFile(baseUrl + '/public/userdata.json', function(err, data) {
-        if (err) throw err;
-        // console.log("")
-        var json = JSON.parse(data);
+    // ASYNCHRONOUS
+    // DOESN'T CATCH ERRORS IN TIME
+    // fs.readFile(baseUrl + '/public/userdata.json', function(err, data) {
+    //     if (err) throw err;
+    //     // console.log("")
+    //     var json = JSON.parse(data);
+    //
+    //     // add new username
+    //     // TODO: throw error if username exists
+    //
+    //     if (json.hasOwnProperty(username)) {
+    //         failSignUp(req, res, next);
+    //         res.end();
+    //         return;
+    //     }
+    //
+    //     json[username] = {"password": password};
+    //
+    //     fs.writeFile(baseUrl + '/public/userdata.json', JSON.stringify(json));
+    // });
 
-        // add new username
-        // TODO: throw error if username exists
+    try {
+        let data = fs.readFileSync(baseUrl + "/public/userdata.json");
+        let json = JSON.parse(data);
+
+        // if username already exists
+        if (json.hasOwnProperty(username)) {
+            throw "username already exists";
+        }
+
         json[username] = {"password": password};
 
         fs.writeFile(baseUrl + '/public/userdata.json', JSON.stringify(json));
-    });
+    } catch (err) {
+        console.log("login attempt failed");
+        res.status(401);
+        res.send({});
+        return;
+    }
 
-    // TODO: give response back to user
-    
+    res.cookie();
+    res.redirect('/');
 });
-
 
 /* GET login page */
 router.get('/login/', function(req, res, next) {
