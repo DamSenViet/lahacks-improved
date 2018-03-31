@@ -130,7 +130,7 @@ router.post('/createcategory/*/', function(req, res, next) {
 //
 //
 router.get('/profile/*', function(req, res, next) {
-    res('profile', null);
+    res.render('profile', null);
 });
 
 /* GET general category page */
@@ -155,7 +155,7 @@ router.get('/upload/*/', function(req, res, next) {
 });
 
 router.post('/upload/*/', function(req, res, next) {
-    console.log(req.body.photo);
+    console.log(req.body.img);
 });
 
 /* GET photo from category */
