@@ -12,7 +12,6 @@
     left: 0;
     width: 100%; /* Full width */
     font-family: helvetica;
-    margin-bottom: 5%;
 }
 
 /* Links inside the navbar */
@@ -59,10 +58,6 @@ li:active {
 /*Rest of webpage that's not the tabs*/
 
 
-*, *:before, *:after {
-  box-sizing: border-box;
-}
-
 html {
     overflow-y: scroll; 
 }
@@ -77,9 +72,6 @@ a {
   text-decoration:none;
   color: #1ab188;
   transition:.5s ease;
-  &:hover {
-    color: darken(#1ab188,5%);
-  }
 }
 
 .form {
@@ -91,40 +83,12 @@ a {
   box-shadow:0 4px 10px 4px rgba(#13232f,.3);
 }
 
-.tab-group {
-  list-style:none;
-  padding:0;
-  margin:0 0 40px 0;
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  li a {
-    display:block;
-    text-decoration:none;
-    padding:15px;
-    background:rgba(#a0b3b0,.25);
-    color:#a0b3b0;
-    font-size:20px;
-    float:left;
-    width:50%;
-    text-align:center;
-    cursor:pointer;
-    transition:.5s ease;
-    &:hover {
-      background: darken(#1ab188,5%);
-      color:#FFFFFF;
-    }
-  }
-}
-
 
 h1 {
   text-align:center;
   color:#000000;
   font-weight:300;
-  margin: 5% 0 40px;
+  margin: 15% 0 40px;
 }
 
 label {
@@ -135,11 +99,6 @@ label {
   -webkit-backface-visibility: hidden;
   pointer-events: none;
   font-size:22px;
-}
-
-#req::placeholder:after {
-   content:"*";
-   color:#1ab188;
 }
 
 
@@ -154,10 +113,6 @@ input, textarea {
   border:1px solid #a0b3b0;
   border-radius:0;
   transition:border-color .25s ease, box-shadow .25s ease;
-  &:focus {
-        outline:0;
-        border-color:#1ab188;
-  }
 }
 
 textarea {
@@ -170,23 +125,6 @@ textarea {
   width:35%;
   margin:auto;
   margin-bottom: 40px;
-}
-
-.top-row {
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-
-  > div {
-    float:left;
-    width:48%;
-    margin-right:4%;
-    &:last-child { 
-      margin:0;
-    }
-  }
 }
 
 .button {
@@ -203,9 +141,6 @@ textarea {
   color:#FFFFFF;
   transition:all.5s ease;
   -webkit-appearance: none;
-  &:hover, &:focus {
-    background: darken(#1ab188,5%);
-  }
 }
 
 .button-block {
