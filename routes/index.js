@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET login page */
-router.get('/login', function(req, res, next) {
+router.get('/login/', function(req, res, next) {
     res.render('login', null);
     console.log(req.body);
 });
@@ -26,10 +26,18 @@ router.get('/login', function(req, res, next) {
 //      set code 200
 //      set cookie session = token
 //      add token: username to session.json
-router.post('/login', function(req, res, next) {
+router.post('/login/*/*/', function(req, res, next) {
+    console.log("made it to login");
+    console.log(req.body.username);
+    console.log(req.body.password);
+
 
 });
 
+
+router.post('/createcategory/', function(req, res, next) {
+
+});
 
 /* GET profile page */
 // check if user has session cookie
@@ -51,8 +59,10 @@ router.get('/category/', function(req, res, next) {
 // this page lists specific category and all its photos
 // if category doesn't exist, return an error
 router.get('/category/*/', function(req, res, next) {
-    console.log(req);
-    res.render('login', null);
+    let url = req.url.split("/");
+    console.log(url[2]);
+
+    // res.render('login', null);
 });
 
 /* GET photo from category */

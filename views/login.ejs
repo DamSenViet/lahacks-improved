@@ -4,10 +4,46 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>test</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/hammerjs/2.0.8/hammer.min.js"></script>
 	</head>
 
 	<body>
-		<p>wow</p>
+		<form class="loginForm" method="post">
+			<input type="text" name="username" class="username"/>
+			<input type="password" name="password" class="password"/>
+			<input type="submit" />
 
+
+		</form>
+
+
+		<script>
+			let form = document.querySelector(".loginForm");
+			let loginUsername = document.querySelector(".username");
+			let loginPassword = document.querySelector(".password");
+
+			form.onsubmit = function(evt) {
+				// disable regular form
+
+				console.log(loginUsername.value);
+				console.log(loginPassword.value);
+
+
+				loginUrl = "/login/" + loginUsername.value + "/"
+				 + loginPassword.value + '/';
+
+				form.action = loginUrl;
+				console.log(loginUrl);
+
+				// // make the url for the login
+				// loginUrl = window.location.host +  "/login/" + loginUsername.value + "/"
+				//  + loginPassword.value + '/';
+				//  console.log("request to " + loginUrl);
+				//
+				// $(this).post(loginUrl, {username: loginUsername.value, password: loginPassword.value});
+				//
+			}
+		</script>
 	</body>
 </html>
