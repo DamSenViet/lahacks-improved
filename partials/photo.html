@@ -1,0 +1,164 @@
+<!doctype html>
+<head>	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title> some title </title>
+<style type="text/css">
+
+body {margin :0;}
+
+/* CSS FOR NAV BAR*/
+.left{
+    float: left;
+}
+.right{
+    float:right;
+}
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    font-family: helvetica;
+    z-index:1;
+}
+
+/* Links inside the navbar */
+.navbar a {
+  
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 18px 30px;
+    text-decoration: none;
+}
+
+/* Change background on mouse-over */
+.navbar a:hover {
+    background: #ddd;
+    color: black;
+}
+
+.anotherone{
+ width:90%;
+ margin-top:0;
+ margin-right:auto;
+ margin-bottom:0;
+ margin-left:auto;
+}
+
+/* Main content */
+.main {
+    margin-top: 75px; 
+    text-align:center;
+    width:100%;  
+}
+
+/* CSS FOR PHOTO GRID */
+
+#boxshadow{
+    position:relative;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.wrapper{
+    text-align:left;
+    z-index:-1;
+    display: inline-block;
+    width:20vw;
+    background-color:grey;
+    border-radius:8px;
+    margin:20px;
+    font-family: helvetica;
+    
+}
+.crop{
+    position: relative;
+    overflow: hidden;
+    height:20vw;
+    }
+img{
+   width:20vw;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+
+
+
+</style>
+
+</head>
+<body>
+    <div class="navbar">
+         <a class = "left" href="#first">first</a>
+         <a class = "right" href="#second">second</a>
+         <a class = "right" href="#third">third</a>
+    </div>
+ 
+<div class ="anotherone">
+    <!-- ******FIRST ROW********-->
+    <div class ="main">
+        <div class="wrapper" id="boxshadow">
+            <p>ooo some more space here </p>
+            <div class = "crop">
+                    <img src="puppy.jpg" alt="puppy" >
+            </div>
+            <p> ooo space here </p>
+        </div>
+        <div class="wrapper" id="boxshadow">
+            <p>oo some space</p>
+            <div class = "crop">
+                    <img src="puppy.jpg" alt="puppy" >
+            </div>
+            <p> space</p>
+        </div>
+        <div class="wrapper" id="boxshadow">
+            <p>ooo some more space here </p>
+            <div class = "crop">
+                    <img src="puppy.jpg" alt="puppy" >
+            </div>
+            <p> ooo space here </p>
+        </div>
+        <div class="wrapper" id="boxshadow">
+            <p>oo some space</p>
+            <div class = "crop">
+                    <img src="puppy.jpg" alt="puppy" >
+            </div>
+            <p> space</p>
+        </div>
+
+<!-- ******SECOND ROW********-->
+
+        <div class="wrapper" id="boxshadow">
+            <p>ooo some more space here </p>
+            <div class = "crop">
+                        <img src="puppy.jpg" alt="puppy" >
+            </div>
+            <p> ooo space here </p>
+        </div>
+        <div class="wrapper" id="boxshadow">
+            <p>oo some space</p>
+            <div class = "crop">
+                    <img src="omg puppies.jpg" alt="puppy" >
+            </div>
+            <p> space</p>
+        </div>
+        <div class="wrapper" id="boxshadow">
+            <p>ooo some more space here </p>
+            <div class = "crop">
+                    <img src="puppy.jpg" alt="puppy" >
+            </div>
+            <p> ooo space here </p>
+        </div>
+        <div class="wrapper" id="boxshadow">
+            <p>oo some space</p>
+            <div class = "crop">
+                    <img src="aww.jpeg" alt="puppy" >
+            </div>
+            <p> space</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
