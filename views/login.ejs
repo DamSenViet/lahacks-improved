@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>test</title>
+
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<form class="loginForm" method="post">
+			<input type="text" name="username" class="username"/>
+			<input type="password" name="password" class="password"/>
+			<input type="submit" />
+
+
+		</form>
+
+
+		<script>
+			let form = document.querySelector(".loginForm");
+			let loginUsername = document.querySelector(".username");
+			let loginPassword = document.querySelector(".password");
+
+			form.onsubmit = function(evt) {
+
+				console.log(loginUsername.value);
+				console.log(loginPassword.value);
+
+
+				loginUrl = "/login/" + loginUsername.value + "/"
+				 + loginPassword.value + '/';
+
+				// form.action = loginUrl;
+				console.log(loginUrl);
+
+				// // make the url for the login
+				// loginUrl = window.location.host +  "/login/" + loginUsername.value + "/"
+				//  + loginPassword.value + '/';
+				//  console.log("request to " + loginUrl);
+
+				$.post(loginUrl, {username: loginUsername.value, password: loginPassword.value});
+
+				evt.preventDefault();
+			}
+		</script>
+	</body>
+</html>
