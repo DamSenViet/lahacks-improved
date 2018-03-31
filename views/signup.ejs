@@ -3,9 +3,9 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>test</title>
+		<title>signup</title>
 
-		<!-- <script src="https://ajax.googleapis.com/ajax/libs/hammerjs/2.0.8/hammer.min.js"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
 
 	<body>
@@ -24,6 +24,7 @@
 			let loginPassword = document.querySelector(".password");
 
 			form.onsubmit = function(evt) {
+				evt.preventDefault();
 
 				console.log(loginUsername.value);
 				console.log(loginPassword.value);
@@ -32,18 +33,30 @@
 				loginUrl = "/signup/" + loginUsername.value + "/"
 				 + loginPassword.value + '/';
 
-				form.action = loginUrl;
 				console.log(loginUrl);
 
-				// make the url for the login
-				// loginUrl = window.location.host +  "/login/" + loginUsername.value + "/"
-				//  + loginPassword.value + '/';
-				//  console.log("request to " + loginUrl);
+				$.ajax({
+					url: loginUrl,
+					data: JSON.stringify({
+						username: loginUsername.value,
+						password: loginPassword.value
+					}),
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					success: function(res) {
+						console.log(res);
+						window.location.href = '/';
 
-				
-				$.post(loginUrl, {username: loginUsername.value, password: loginPassword.value});
+						// create success animations
+					},
 
+					error: function(res, err) {
+						console.log("failed with " + res.status);
 
+						// create failure animations
+					}
+				});
 			}
 		</script>
 	</body>

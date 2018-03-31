@@ -4,8 +4,9 @@ var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    console.log(req.body + "this was it");
-  res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express' });
+
+    console.log(req.cookies["sessionid"]);
 });
 
 
@@ -25,22 +26,48 @@ router.post('/signup/*/*/', function(req, res, next) {
     baseUrl = process.cwd();
     console.log(baseUrl);
 
-    fs.readFile(baseUrl + '/public/userdata.json', function(err, data) {
-        if (err) throw err;
-        // console.log("")
-        var json = JSON.parse(data);
+    // ASYNCHRONOUS, DON'T USE THIS SINCE
+    // fs.readFile(baseUrl + '/public/userdata.json', function(err, data) {
+    //     if (err) throw err;
+    //     // console.log("")
+    //     var json = JSON.parse(data);
+    //
+    //     // add new username
+    //     // TODO: throw error if username exists
+    //
+    //     if (json.hasOwnProperty(username)) {
+    //         failSignUp(req, res, next);
+    //         res.end();
+    //         return;
+    //     }
+    //
+    //     json[username] = {"password": password};
+    //
+    //     fs.writeFile(baseUrl + '/public/userdata.json', JSON.stringify(json));
+    // });
 
-        // add new username
-        // TODO: throw error if username exists
+    try {
+        let data = fs.readFileSync(baseUrl + "/public/userdata.json");
+        let json = JSON.parse(data);
+
+        // if username already exists
+        if (json.hasOwnProperty(username)) throw "username already exists";
+
         json[username] = {"password": password};
 
         fs.writeFile(baseUrl + '/public/userdata.json', JSON.stringify(json));
-    });
 
-    // TODO: give response back to user
-    
+    } catch (err) {
+        console.log("login attempt failed");
+        res.status(401);
+        res.send({});
+        return;
+    }
+
+    console.log("success");
+    res.cookie('sessionid', username, {});
+    res.send({"success": true});
 });
-
 
 /* GET login page */
 router.get('/login/', function(req, res, next) {
@@ -65,11 +92,35 @@ router.post('/login/*/*/', function(req, res, next) {
     console.log("made it to login");
     console.log(req.body.username);
     console.log(req.body.password);
-    // successs
+
+    username = req.body.username;
+    password = req.body.password;
+
+    baseUrl = process.cwd();
+    console.log(baseUrl);
+
+    try {
+        let data = fs.readFileSync(baseUrl + "/public/userdata.json");
+        let json = JSON.parse(data);
+
+        // if username does not exist
+        if (!json.hasOwnProperty(username)) throw "username does not exist";
+        if (json[username]["password"] != password) throw "wrong password";
+
+    } catch (err) {
+        console.log("login attempt failed");
+        res.status(401);
+        res.send({});
+        return;
+    }
+
+    console.log("success");
+    res.cookie('sessionid', username, {});
+    res.send({"success": true});
 });
 
 
-router.post('/createcategory/', function(req, res, next) {
+router.post('/createcategory/*/', function(req, res, next) {
 
 });
 
@@ -78,8 +129,8 @@ router.post('/createcategory/', function(req, res, next) {
 // if not then send them to login page (this means that they're not logged in)
 //
 //
-router.get('/profile/', function(req, res, next) {
-
+router.get('/profile/*', function(req, res, next) {
+    res('profile', null);
 });
 
 /* GET general category page */
@@ -95,9 +146,16 @@ router.get('/category/', function(req, res, next) {
 // if category doesn't exist, return an error
 router.get('/category/*/', function(req, res, next) {
     let url = req.url.split("/");
-    console.log(url[2]);
+});
 
-    // res.render('login', null);
+/* upload page for the category */
+router.get('/upload/*/', function(req, res, next) {
+    // need to give it category name, upload should only be available on category
+    res.render('upload', null);
+});
+
+router.post('/upload/*/', function(req, res, next) {
+    console.log(req.body.photo);
 });
 
 /* GET photo from category */
