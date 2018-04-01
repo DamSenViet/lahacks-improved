@@ -15,11 +15,12 @@
 			text-align: center;
 			font-family: Poppins;
 
+			margin-top: 300px;
 
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
+			/* position: fixed; */
+			/* top: 50%; */
+			/* left: 50%; */
+			/* transform: translate(-50%, -50%); */
 		}
 
 		.title {
@@ -66,16 +67,35 @@
 	</div>
 
 
+
+
 	<div class="anotherone">
 		<div class="main">
 			<h2 style="text-align:center">User Profile</h2>
-			<div class="card">
-				<h1><%= sessionid %></h1>
-				<p>uploads</p>
-			</div>
+			<h1><%= sessionid %></h1>
+			<p>uploads</p>
+
+
+
+					<% for (var i in uploads) { %>
+
+
+						<img class="profile-uploads" src="<%= uploads[i] %>"/>
+
+
+					<% } %>
+
+					<style>
+
+						.profile-uploads {
+							height: 300px;
+							width: auto;
+						}
+					</style>
 
 		</div>
 	</div>
+
 
 
 
