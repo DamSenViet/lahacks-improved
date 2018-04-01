@@ -177,7 +177,11 @@ router.get('/logout', function(req, res, next) {
 
 
 router.get('/createcategory/', function(req, res, next) {
-    
+    if (getSessionId(req) == null) {
+        res.redirect('/login');
+    }
+
+    res.render('create_category', null);
 });
 
 
@@ -189,6 +193,8 @@ router.post('/createcategory/*/', function(req, res, next) {
     var url = req.url.split("/");
     var category_name = url[2];
 
+    console.log(category_name);
+
     baseUrl = process.cwd();
 
     if (!fs.existsSync(baseUrl + "/public/pictures/" + category_name)) {
@@ -196,20 +202,36 @@ router.post('/createcategory/*/', function(req, res, next) {
         fs.writeFile(baseUrl + "/public/pictures/" + category_name + "/data.json", JSON.stringify({}));
 
         // set success
-
+        res.send({});
     } else {
 
         // set 401 category already exists
-
+        res.status(401);
+        res.send({});
     }
 });
 
 /* GET profile page */
 // check if user has session cookie
 // if not then send them to login page (this means that they're not logged in)
-//
-router.get('/profile/*', function(req, res, next) {
-    res.render('profile', {allCat: getAllCategories(), sessionid: getSessionId(req)});
+router.get('/profile/', function(req, res, next) {
+    if (!req.cookies.hasOwnProperty('sessionid')) {
+        res.redirect('/login');
+    }
+
+    baseUrl = process.cwd();
+    var data = fs.readFileSync(baseUrl + "/public/userdata.json");
+    var json = JSON.parse(data);
+    var tempid = getSessionId(req);
+
+
+    res.render('profile',
+    {
+        allCat: getAllCategories(),
+        sessionid: tempid,
+        uploads: json[tempid]["uploads"],
+        upvotes: json[tempid]["upvotes"]
+    });
 });
 
 /* GET general category page */
@@ -273,7 +295,6 @@ router.get('/upload/*/', function(req, res, next) {
 
 router.post('/upload/*/', function(req, res, next) {
 
-
     var category = req.url.split('/')[2];
     console.log(category);
 
@@ -286,9 +307,10 @@ router.post('/upload/*/', function(req, res, next) {
     saveUrl = baseUrl + '/public/pictures/' + category + "/" + req.body.filename;
 
     fs.writeFile(saveUrl, req.body.img, 'base64', function(err) {
-        // console.log(err);
+        console.log(err);
     });
 
+    console.log('finished saving file to folder');
 
     // add voting data to category
     let data = fs.readFileSync(baseUrl + "/public/pictures/" + category
@@ -298,16 +320,27 @@ router.post('/upload/*/', function(req, res, next) {
      fs.writeFile(baseUrl + "/public/pictures/" + category
       + "/data.json", JSON.stringify(json));
 
+      var sessionid = getSessionId(req);
 
       // add uploaded information to user
       let userdata = fs.readFileSync(baseUrl + "/public/userdata.json");
       let userjson = JSON.parse(userdata);
 
-      if (!userjson[req.cookies["sessionid"]]["uploads"].contains("/pictures/" + category + "/" + req.body.filename)) {
-          userjson[req.cookies["sessionid"]]["uploads"].push("/pictures/" + category + "/" + req.body.filename);
+      console.log("TEST: " + sessionid);
+      console.log("made it here");
+
+      console.log(userjson[sessionid]);
+
+      if (!userjson[sessionid]["uploads"].includes("/pictures/" + category + "/" + req.body.filename)) {
+          userjson[sessionid]["uploads"].push("/pictures/" + category + "/" + req.body.filename);
       }
+
       fs.writeFile(baseUrl + "/public/userdata.json", JSON.stringify(userjson));
+
+      res.send({message: "success"});
 });
+
+
 
 
 // upvote api

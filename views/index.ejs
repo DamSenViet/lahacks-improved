@@ -29,21 +29,24 @@
 			<a class = "right" href="/profile">Hello, <%= sessionid %></a>
 			<a class = "right" href="/logout">logout</a>
 		<% } %>
-		<a class="right" href="/createcateogry">create category</a>
+		<a class="right" href="/createcategory">create category</a>
 	</div>
 
 	<div class="anotherone">
 		<div class="main">
 
 			<% for (var key in best) { %>
-				<div class="wrapper boxshadow">
-						<p><span class="tab"><%= key %></span></p>
-						<div class = "crop">
-							<a href="/category/<%= key %>/">
-								<img class="fix" src="/pictures/<%= key %>/<%= best[key] %>" alt="<%= best[key] %>" >
-							</a>
-						</div>
-				</div>
+
+				<% if (best[key] != null) { %>
+					<div class="wrapper boxshadow">
+							<p><span class="tab"><%= key %></span></p>
+							<div class = "crop">
+								<a href="/category/<%= key %>/">
+									<img class="fix" src="/pictures/<%= key %>/<%= best[key] %>" alt="<%= best[key] %>" >
+								</a>
+							</div>
+					</div>
+				<% } %>
 			<% } %>
 
 		</div>

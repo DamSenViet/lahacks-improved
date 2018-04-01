@@ -5,16 +5,34 @@
 		<meta charset="utf-8" />
 		<title>Upload</title>
 		<link rel="stylesheet" type="text/css" href="/stylesheets/login_signup_style.css">
+		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/index.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	</head>
 
 	<body>
-		<div class="navbar">
-			<div style="margin-left: 1%;">
-				<img src="../images/spectdone.png" width=66px height=46px class="left" alt="spect"/>
-			</div>
-		  <a class = "right" href="#">Log Off</a>
+		<div class="topnav">
+			<% for (var cat in allCat) { %>
+				<a class="left" href="/category/<%= allCat[cat] %>"><%= allCat[cat] %></a>
+			<% } %>
+		</div>
+
+		<div class="lownav">
+	    <a class="left logo-container" href="/">
+				<img class="logo" width="66px" height="46px" src="/images/spectdone.png"/>
+			</a>
+
+			<% if (sessionid == null) { %>
+				<a class = "right" href="/signup">sign up</a>
+				<a class = "right" href="/login">sign in</a>
+			<% } %>
+
+			<% if (sessionid != null) { %>
+				<a class = "right" href="/profile">Hello, <%= sessionid %></a>
+				<a class = "right" href="/logout">logout</a>
+			<% } %>
+			<a class="right" href="/createcateogry">create category</a>
 		</div>
 
 		<h1>Share with the community!</h1>
@@ -24,14 +42,13 @@
 				<input id="fileSelect" type="file" name="photo" accept="image/x-png,image/gif,image/jpeg"/>
 			</div>
 		</form>
-		<button id="category-button" class="button button-block">Choose Category</button>
-		<button id="upload-button"></button>
+		<button id="category-button" class="button button-block">Upload</button>
 
 
 
 		<script>
 			var fileSelect = document.getElementById('fileSelect');
-			var button = document.getElementById('upload-button');
+			var button = document.getElementById('category-button');
 
 
 			function upload() {
