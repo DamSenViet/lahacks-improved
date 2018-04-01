@@ -170,7 +170,7 @@ router.post('/login/*/*/', function(req, res, next) {
 });
 
 
-router.post('/logout', function(req, res, next) {
+router.get('/logout', function(req, res, next) {
     res.clearCookie('sessionid');
     res.redirect('/');
 });
@@ -206,16 +206,30 @@ router.get('/category/*/', function(req, res, next) {
     let data = fs.readFileSync(baseUrl + '/public/pictures/' + category_name + '/data.json');
     var temp = JSON.parse(data);
 
-    console.log("This: " + temp);
 
-    res.render('category_specific',
-    {
-        allCat: getAllCategories(),
-        sessionid: getSessionId(req),
-        // remove data.json
-        allPhotos: temp,
-         category: category_name
-    });
+    let userdata = fs.readFileSync(baseUrl + '/public/userdata.json');
+    var userjson = JSON.parse(userdata);
+
+
+    var tempid = getSessionId(req);
+    if (tempid == null) {
+        res.render('category_specific', {
+            allCat: getAllCategories(),
+            sessionid: tempid,
+            allPhotos: temp,
+            category: category_name,
+            upvotes: null
+        })
+    } else {
+        res.render('category_specific',
+        {
+            allCat: getAllCategories(),
+            sessionid: getSessionId(req),
+            allPhotos: temp,
+            category: category_name,
+            upvotes: userjson[tempid]["upvotes"]
+        });
+    }
 });
 
 
@@ -272,17 +286,88 @@ router.post('/upload/*/', function(req, res, next) {
 
 
 // upvote api
-router.post('/upvote/category/*/photo/*', function(req, res, next) {
+router.post('/upvote/', function(req, res, next) {
+    var category = req.body.category;
+    var photo = req.body.photo;
+    console.log(category + "    " + photo);
 
+    var baseUrl = process.cwd().replace(/\\/g, "/");
+    sessionid = getSessionId(req);
+
+
+    console.log("made it this far");
+    console.log(baseUrl + "/public/userdata.json");
+
+    var userdata = fs.readFileSync(baseUrl + "/public/userdata.json");
+    var userjson = JSON.parse(userdata);
+
+    if (userjson[sessionid]["upvotes"].hasOwnProperty(category + "/" + photo)) {
+        // user already upvoted
+    } else {
+        userjson[sessionid]["upvotes"][category + "/" + photo] = null;
+        fs.writeFile(baseUrl + "/public/userdata.json", JSON.stringify(userjson));
+
+        console.log("wrote to userdata");
+
+        var data = fs.readFileSync(baseUrl + "/public/pictures/" + category + "/data.json");
+        var json = JSON.parse(data);
+        json[photo]["votes"] += 1;
+        fs.writeFile(baseUrl + "/public/pictures/" + category + "/data.json", JSON.stringify(json));
+    }
+
+
+    res.send({message: "success"});
+});
+
+router.post('/removevote/', function(req, res, next) {
+    var category = req.body.category;
+    var photo = req.body.photo;
+    console.log(category + "    " + photo);
+
+    var baseUrl = process.cwd().replace(/\\/g, "/");
+    sessionid = getSessionId(req);
+
+
+    console.log("made it this far");
+    console.log(baseUrl + "/public/userdata.json");
+
+    var userdata = fs.readFileSync(baseUrl + "/public/userdata.json");
+    var userjson = JSON.parse(userdata);
+
+    if (userjson[sessionid]["upvotes"].hasOwnProperty(category + "/" + photo)) {
+        // user already upvoted, remove vote
+        delete userjson[sessionid]["upvotes"][category + "/" + photo];
+
+        fs.writeFile(baseUrl + "/public/userdata.json", JSON.stringify(userjson));
+
+        console.log("wrote to userdata");
+
+        var data = fs.readFileSync(baseUrl + "/public/pictures/" + category + "/data.json");
+        var json = JSON.parse(data);
+        --json[photo]["votes"];
+        console.log(json);
+        fs.writeFile(baseUrl + "/public/pictures/" + category + "/data.json", JSON.stringify(json));
+    } else {
+    }
+
+    res.send({message: "success"});
 });
 
 /* GET specific photos from category */
-router.get('/category/*/photo/*/', function(req, res, next) {
+router.get('/single/category/*/photo/*/', function(req, res, next) {
     var url = req.url.split("/");
-    var category_name = url[2];
-    var category_
+    var category_name = url[3];
+    var img_path = url[5];
 
-    // res.render(, null);
+    console.log("THIS ONE HERE");
+    console.log(category_name + " " + img_path);
+
+    res.render('photo', {
+        allCat: getAllCategories(),
+        sessionid: getSessionId(req),
+        category: category_name,
+        photo: img_path
+    });
 });
 
 module.exports = router;

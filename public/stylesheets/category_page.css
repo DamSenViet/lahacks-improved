@@ -166,3 +166,19 @@ img{
 	/* height: ; */
 	padding: 10px 30px 0 30px;
 }
+
+button.upvote {
+  position: relative;
+  z-index: 110;
+  cursor: pointer;
+}
+
+.wrapper p, .wrapper {
+  position: relative;
+  z-index: 110;
+}
+
+.upvoted {
+  background-color: #2fe7ad;
+  border-color: #2fe7ad;
+}
