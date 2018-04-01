@@ -1,3 +1,4 @@
+
 .left{
     float: left;
 }
@@ -99,7 +100,7 @@ html {
 body {
   background: #FFFFFF;
   background-repeat: no-repeat;
-  font-family: 'Titillium Web', sans-serif;
+  font-family: helvetica;
 }
 
 a {
@@ -193,7 +194,28 @@ input {
   float:center;
 }
 
+.upload-wrap {
+  position:relative;
+  width:20%;
+  margin:auto;
+  margin-bottom: 40px;
+}
+
+#upload-button {
+  display:block;
+  background:url("../images/up-arrow.png") no-repeat;
+  cursor:pointer;
+  border:none;
+  width:64px;
+  height:64px;
+  margin:auto;
+  margin-top:3%;
+}
+
+
+
 .forgot {
   margin-top:10px;
   text-align:center;
 }
+
