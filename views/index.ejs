@@ -27,10 +27,7 @@
 
 		<% if (sessionid != null) { %>
 			<a class = "right" href="/profile">Hello, <%= sessionid %></a>
-			<!--<form action="/logout" method="post">
-				<button type="submit" class="logout">Logout</button>
-			</form>-->
-
+			<a class = "right" href="/logout">logout</a>
 		<% } %>
 		<a class="right" href="/createcateogry">create category</a>
 	</div>
@@ -43,7 +40,7 @@
 						<p><span class="tab"><%= key %></span></p>
 						<div class = "crop">
 							<a href="/category/<%= key %>/">
-								<img src="/pictures/<%= key %>/<%= best[key] %>" alt="<%= best[key] %>" >
+								<img class="fix" src="/pictures/<%= key %>/<%= best[key] %>" alt="<%= best[key] %>" >
 							</a>
 						</div>
 				</div>
@@ -54,6 +51,16 @@
 	<div class="footer">
 		<a href="#github">GitHub</a>
 	</div>
+
+	<script>
+	$(document).ready(function() {
+		var imgs = $('.fix');
+		if (imgs.width() > imgs.height()) {
+			imgs.css('height', '100%');
+			imgs.css('width', 'auto');
+		}
+	});
+	</script>
 </body>
 
 </html>

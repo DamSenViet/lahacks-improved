@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title> some title </title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 	<style type="text/css">
 		body {
@@ -212,10 +213,7 @@
 
     <% if (sessionid != null) { %>
       <a class = "right" href="/profile">Hello, <%= sessionid %></a>
-      <!--<form action="/logout" method="post">
-        <button type="submit" class="logout">Logout</button>
-      </form>-->
-
+			<a class = "right" href="/logout">logout</a>
     <% } %>
     <a class="right" href="/createcateogry">create category</a>
 	</div>
@@ -239,6 +237,16 @@
 
 	</div>
 
+
+	<script>
+	$(document).ready(function() {
+		var imgs = $('.fix');
+		if (imgs.width() > imgs.height()) {
+			imgs.css('height', '100%');
+			imgs.css('width', 'auto');
+		}
+	});
+	</script>
 </body>
 
 </html>

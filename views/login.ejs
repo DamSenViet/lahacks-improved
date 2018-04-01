@@ -10,25 +10,29 @@
 	</head>
 
 	<body>
-		<div class="navbar">
-		  <a class = "left" href="/about">About</a>
-		  <a class = "right" href="/signup">Sign Up</a>
-		  <a class = "right" href="/login">Login</a>
+		<div class="content">
+			<div class="navbar">
+				<div style="margin-left: 1%;">
+					<img src="images/spectdone.png" width=66px height=46px class="left" alt="spect"/>
+				</div>
+			  <a class = "right" href="/signup">Sign Up</a>
+			  <a class = "right" href="/login">Login</a>
+			</div>
+
+			<h1>Welcome Back!</h1>
+
+			<form class="loginForm" method="post">
+				<div class="field-wrap">
+					<input type="text" name="username" class="username text-area" placeholder="&nbsp;Username"/>
+				</div>
+				<div class="field-wrap">
+					<input type="password" name="password" class="password text-area" placeholder="&nbsp;Password"/>
+				</div>
+				<input type="submit" class="submission" value="Log In"/>
+				<p class="forgot">Forgot Password?</a></p>
+
+			</form>
 		</div>
-
-		<h1>Welcome Back!</h1>
-
-		<form class="loginForm" method="post">
-			<div class="field-wrap">
-				<input type="text" name="username" class="username" placeholder="Username"/>
-			</div>
-			<div class="field-wrap">
-				<input type="password" name="password" class="password" placeholder="Password"/>
-			</div>
-			<input type="submit" class="submission" value="Log In"/>
-
-		</form>
-
 
 		<script>
 			let form = document.querySelector(".loginForm");

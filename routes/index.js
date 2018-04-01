@@ -175,8 +175,33 @@ router.get('/logout', function(req, res, next) {
     res.redirect('/');
 });
 
-router.post('/createcategory/*/', function(req, res, next) {
 
+router.get('/createcategory/', function(req, res, next) {
+    
+});
+
+
+router.post('/createcategory/*/', function(req, res, next) {
+    if (getSessionId(req) == null) {
+        res.redirect('/login');
+    }
+
+    var url = req.url.split("/");
+    var category_name = url[2];
+
+    baseUrl = process.cwd();
+
+    if (!fs.existsSync(baseUrl + "/public/pictures/" + category_name)) {
+        fs.mkdirSync(baseUrl + "/public/pictures/" + category_name);
+        fs.writeFile(baseUrl + "/public/pictures/" + category_name + "/data.json", JSON.stringify({}));
+
+        // set success
+
+    } else {
+
+        // set 401 category already exists
+
+    }
 });
 
 /* GET profile page */

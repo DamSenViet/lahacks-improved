@@ -29,9 +29,7 @@
 
 		<% if (sessionid != null) { %>
 			<a class="right" href="/profile">Hello, <%= sessionid %></a>
-			<!-- <form action="/logout" method="post">
-				<button type="submit" class="logout">Logout</button>
-			</form> -->
+			<a class = "right" href="/logout">logout</a>
 		<% } %>
 
 		<a class="right" href="/createcateogry">create category</a>
@@ -144,6 +142,16 @@
 	<% } %>
 
 
+	</script>
+
+	<script>
+	$(document).ready(function() {
+		var imgs = $('.fix');
+		if (imgs.width() > imgs.height()) {
+			imgs.css('height', '100%');
+			imgs.css('width', 'auto');
+		}
+	});
 	</script>
 </body>
 
