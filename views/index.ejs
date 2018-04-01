@@ -1,0 +1,64 @@
+<!doctype html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+			<title> some title </title>
+			<link rel="stylesheet" href="/stylesheets/homepage.css" />
+
+	</head>
+
+	<body>
+	    <div class="topnav">
+					<% for (var cat in allCat) { %>
+						<a class="left" href="/category/<%= allCat[cat] %>"><%= allCat[cat] %></a>
+					<% } %>
+	    </div>
+	    <div class="lownav">
+	         <a class = "right" href="/createcategory">create category</a>
+	         <a class = "right" href="/upload">make post</a>
+
+
+					 <% if (sessionid == null) { %>
+						 <a class = "left" href="/signup">sign up</a>
+						 <a class = "left" href="/login">sign in</a>
+					 <% } %>
+
+					 <% if (sessionid != null) { %>
+						 <a class = "left" href="/profile">Hello, <%= sessionid %></a>
+						 <form action="/logout" method="post">
+							 <button type="submit" class="logout">Logout</button>
+						 </form>
+
+						 <style>
+						 </style>
+					 <% } %>
+	    </div>
+
+			<div class ="anotherone">
+		    <div class ="main">
+
+					<% for (var key in best) { %>
+						<div class="wrapper boxshadow">
+								<p><span class="tab"><a href="/category/<%= key %>/">/category/<%= key %></a></span>/</p>
+								<div class = "crop">
+												<img src="/pictures/<%= key %>/<%= best[key] %>" alt="<%= best[key] %>" >
+								</div>
+								<p><span class="tab"></span>ooo space here </p>
+						</div>
+					<% } %>
+
+		    </div>
+		</div>
+		<div class = "footer">
+
+	         <a  href="#github">GitHub</a>
+
+
+	    </div>
+
+
+			<script>
+				if (document.cookie)
+
+			</script>
+	</body>
+</html>

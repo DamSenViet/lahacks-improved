@@ -2,6 +2,22 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 
+
+
+function getAllCategories() {
+    temp = [];
+
+    baseUrl = process.cwd();
+    allCat = fs.readdirSync(baseUrl + '/public/pictures/');
+
+    for (let i = 0; i < allCat.length; ++i) {
+        temp.push(allCat[i]);
+    }
+
+    return temp;
+}
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
@@ -32,10 +48,17 @@ router.get('/', function(req, res, next) {
     }
     console.log(allTop);
 
-    res.render('index', {best: allTop});
-    // console.log("cookie: " + req.cookies["sessionid"]);
-});
 
+
+
+    console.log("cookie: " + req.cookies["sessionid"]);
+    tempid = null;
+    if (req.cookies.hasOwnProperty('sessionid')) {
+        tempid = req.cookies["sessionid"];
+    }
+
+    res.render('index', {best: allTop, allCat: getAllCategories(), sessionid: tempid});
+});
 
 router.get('/signup/', function(req, res, next) {
     res.render('signup', null);
@@ -99,7 +122,7 @@ router.post('/signup/*/*/', function(req, res, next) {
 
 /* GET login page */
 router.get('/login/', function(req, res, next) {
-    res.render('login', null);
+    res.render('login', {allCat: getAllCategories()});
     console.log(req.body);
 });
 
@@ -148,6 +171,11 @@ router.post('/login/*/*/', function(req, res, next) {
 });
 
 
+router.post('/logout', function(req, res, next) {
+    res.clearCookie('sessionid');
+    res.redirect('/');
+});
+
 router.post('/createcategory/*/', function(req, res, next) {
 
 });
@@ -156,16 +184,15 @@ router.post('/createcategory/*/', function(req, res, next) {
 // check if user has session cookie
 // if not then send them to login page (this means that they're not logged in)
 //
-//
 router.get('/profile/*', function(req, res, next) {
-    res.render('profile', null);
+    res.render('profile', {allCat: getAllCategories()});
 });
 
 /* GET general category page */
 // this page lists all categories
 // build json of all photo links
 router.get('/category/', function(req, res, next) {
-    res.render('category', null);
+    res.render('category', {allCat: getAllCategories()});
 });
 
 
@@ -174,18 +201,19 @@ router.get('/category/', function(req, res, next) {
 // if category doesn't exist, return an error
 router.get('/category/*/', function(req, res, next) {
     let url = req.url.split("/");
+    res.render('category_specific', {allCat: getAllCategories()});
 });
 
 /* upload page for the category */
 router.get('/upload/*/', function(req, res, next) {
     // need to give it category name, upload should only be available on category
-    res.render('upload', null);
+    res.render('upload', {allCat: getAllCategories()});
 });
 
 
 
 router.post('/upload/*/', function(req, res, next) {
-    // redirect if user isn't logged
+    // redirect if user isn't logged in
     if (!req.cookies.hasOwnProperty('sessionid')) {
         res.redirect('/login');
     }
@@ -226,8 +254,11 @@ router.post('/upload/*/', function(req, res, next) {
       fs.writeFile(baseUrl + "/public/userdata.json", JSON.stringify(userjson));
 });
 
+router.post('/upvote/category/*/photo/*', function(req, res, next) {
 
-/* GET all photos from category */
+});
+
+/* GET specific photos from category */
 router.get('/category/*/photo/*/', function(req, res, next) {
 
 });

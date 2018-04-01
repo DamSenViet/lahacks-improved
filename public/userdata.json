@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"me":{"password":"pass","uploads":["/pictures/cats/cute-cat-picture_1122-449.jpg"]}}
-=======
-{"newuser":{"password":"newpass"},"newuser1":{"password":"newpass"},"newuser3":{"password":""},"newuser10":{"password":"thispassword"},"newuser4":{"password":"thispass"},"thisuser":{"password":"temp"},"newuser12":{"password":"password"},"newuser 11":{"password":"thispassword"},"newuser134":{"password":"newpassword"},"newuser5":{"password":"wasd"},"asfas":{"password":"asfas"}}
->>>>>>> 218842e980850f58debe6a12aa9f61480f19d5d4
+{"me":{"password":"thing","uploads":[],"upvotes":{}}}
