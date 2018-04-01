@@ -198,17 +198,19 @@ router.get('/category/', function(req, res, next) {
 // this page lists specific category and all its photos
 // if category doesn't exist, return an error
 router.get('/category/*/', function(req, res, next) {
-    let category = req.url.split("/")[2];
-    console.log(category);
+    let category_name = req.url.split("/")[2];
+    console.log(category_name);
 
 
     res.render('category_specific',
     {
         allCat: getAllCategories(),
         sessionid: getSessionId(req),
-        allPhotos: fs.readdirSync(baseUrl + 'public/pictures/' + category, "category": category);
+        allPhotos: fs.readdirSync(baseUrl + 'public/pictures/' + category_name),
+         category: category_name
     });
 });
+
 
 /* upload page for the category */
 router.get('/upload/*/', function(req, res, next) {
@@ -263,7 +265,7 @@ router.post('/upload/*/', function(req, res, next) {
 
 // upvote api
 router.post('/upvote/category/*/photo/*', function(req, res, next) {
-    
+
 });
 
 /* GET specific photos from category */
