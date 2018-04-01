@@ -10,23 +10,30 @@
 	</head>
 
 	<body>
+		<div class="content">
 			<div class="navbar">
-			  <a class = "left" href="/about">About</a>
-			  <a class = "right" href="/signup">Sign Up</a>
-			  <a class = "right" href="/login">Login</a>
+				<div style="margin-left: 1%;">
+					<img src="images/spectdone.png" width=66px height=46px class="left" alt="spect"/>
+				</div>
+				<a class = "right" href="/signup">Sign Up</a>
+				<a class = "right" href="/login">Login</a>
 			</div>
 
-		<h1>Sign Up for Free</h1>
+			<div class="focus-container">
+	        	<img class="focus" src="images/spectdone.png" width=300px alt="spect"/> 
+	    	</div>
 
-		<form class="loginForm" method="post">
-			<div class="field-wrap">
-				<input type="text" name="username" class="username" placeholder="Choose A Username"/>
-			</div>
-			<div class="field-wrap">
-				<input type="password" name="password" class="password" placeholder="Choose A Password"/>
-			</div>
-			<input type="submit" class="submission" value="Create Account"/>
-		</form>
+			<h2 align=center style="color:white;">Sign Up for Free!</h2>
+
+			<form class="loginForm" method="post">
+				<div class="field-wrap">
+					<input type="text" name="username" class="username text-area" placeholder="&nbsp;Choose A Username"/>
+				</div>
+				<div class="field-wrap">
+					<input type="password" name="password" class="password text-area" placeholder="&nbsp;Choose A Password"/>
+				</div>
+				<input type="submit" class="submission" value="Create Account"/>
+			</form>
 
 
 		<script>
@@ -70,5 +77,6 @@
 				});
 			}
 		</script>
+				</div>
 	</body>
 </html>
