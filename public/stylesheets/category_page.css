@@ -1,9 +1,21 @@
 
-body {margin :0;}
+body {
+    margin :0;
+    font-family: Poppins;
+    }
+    p{
+        margin:5px;
+        color:white;
+    }
 
 .tab{
-     Padding-left:20px;
-}
+     padding-left:20px;
+ }
+ #upvote_button{
+    float:right;
+    margin-top:3px;
+    margin-right:5px;
+ }
 
 /* CSS FOR NAV BAR*/
 
@@ -19,9 +31,9 @@ body {margin :0;}
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
-    font-family: helvetica;
+
     z-index:1;
-    margin-top:18px;
+    margin-top:20px;
 }
 
 /* Links inside the navbar */
@@ -30,7 +42,7 @@ body {margin :0;}
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 20px 30px;
+    padding: 14px 30px;
     text-decoration: none;
 }
 
@@ -46,7 +58,7 @@ body {margin :0;}
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
-    font-family: helvetica;
+
     font-size: 14px;
     z-index:1;
 }
@@ -85,7 +97,7 @@ body {margin :0;}
 
 /* CSS FOR PHOTO GRID */
 
-.boxshadow{
+#boxshadow{
     position:relative;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
@@ -95,10 +107,10 @@ body {margin :0;}
     z-index:-1;
     display: inline-block;
     width:20vw;
-    background-color: #f0f0f0;
+    background-color: #333;
     border-radius:8px;
     margin:20px;
-    font-family: helvetica;
+
 
 }
 .crop{
@@ -122,7 +134,7 @@ img{
     left:0;
     bottom: 0; /* Position the navbar at the bottom of the page */
     width: 100%; /* Full width */
-    font-family: helvetica;
+
     z-index:1;
 }
 /* Links inside the navbar */
@@ -141,6 +153,16 @@ img{
     color: white;
 }
 
-a {
-  text-decoration: none;
+.logo {
+	width: 66px;
+	height: auto;
+	position: static;
+	transform: unset;
+	padding: 0 0;
+}
+
+.lownav .logo-container {
+	box-sizing: border-box;
+	/* height: ; */
+	padding: 10px 30px 0 30px;
 }

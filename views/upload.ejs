@@ -3,18 +3,26 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>upload</title>
-
+		<title>Upload</title>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/login_signup_style.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	</head>
 
 	<body>
-		<form>
+		<div class="navbar">
+		  <a class = "left" href="about.html">About</a>
+		  <a class = "right" href="#">Log Off</a>
+		</div> 
 
-			<input id="fileSelect" type="file" name="photo" accept="image/x-png,image/gif,image/jpeg"/>
+		<h1>Share with the community!</h1>
+
+		<form>
+		    <div class="field-wrap">
+				<input id="fileSelect" type="file" name="photo" accept="image/x-png,image/gif,image/jpeg"/>
+			</div>
 		</form>
-		<button id="upload-button">Upload</button>
+		<button id="upload-button" class="button button-block">Upload</button>
 
 
 
