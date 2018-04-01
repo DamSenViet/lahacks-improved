@@ -69,7 +69,7 @@
 
 			        // AJAX REQUEST GOES HERE
 			        $.ajax({
-			            url: '/upload/cats',
+			            url: '/upload/<%= category %>',
 			            data: JSON.stringify({img: temp, filename: file['name']}),
 			            type: "POST",
 			            contentType: "application/json; charset=utf-8",
