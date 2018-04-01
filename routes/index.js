@@ -17,6 +17,14 @@ function getAllCategories() {
     return temp;
 }
 
+function getSessionId(req) {
+    console.log("cookie: " + req.cookies["sessionid"]);
+    tempid = null;
+    if (req.cookies.hasOwnProperty('sessionid')) {
+        tempid = req.cookies["sessionid"];
+    }
+    return tempid;
+}
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -44,20 +52,11 @@ router.get('/', function(req, res, next) {
         }
 
         allTop[allCat[i]] = bestPhotoPath;
-        // console.log(allCat[i]);
     }
     console.log(allTop);
 
 
-
-
-    console.log("cookie: " + req.cookies["sessionid"]);
-    tempid = null;
-    if (req.cookies.hasOwnProperty('sessionid')) {
-        tempid = req.cookies["sessionid"];
-    }
-
-    res.render('index', {best: allTop, allCat: getAllCategories(), sessionid: tempid});
+    res.render('index', {best: allTop, allCat: getAllCategories(), sessionid: getSessionId(req)});
 });
 
 router.get('/signup/', function(req, res, next) {
@@ -122,7 +121,7 @@ router.post('/signup/*/*/', function(req, res, next) {
 
 /* GET login page */
 router.get('/login/', function(req, res, next) {
-    res.render('login', {allCat: getAllCategories()});
+    res.render('login', {allCat: getAllCategories(), sessionid: getSessionId(req)});
     console.log(req.body);
 });
 
@@ -185,14 +184,13 @@ router.post('/createcategory/*/', function(req, res, next) {
 // if not then send them to login page (this means that they're not logged in)
 //
 router.get('/profile/*', function(req, res, next) {
-    res.render('profile', {allCat: getAllCategories()});
+    res.render('profile', {allCat: getAllCategories(), sessionid: getSessionId(req)});
 });
 
 /* GET general category page */
 // this page lists all categories
-// build json of all photo links
 router.get('/category/', function(req, res, next) {
-    res.render('category', {allCat: getAllCategories()});
+    res.render('category', {allCat: getAllCategories(), sessionid: getSessionId(req)});
 });
 
 
@@ -200,14 +198,22 @@ router.get('/category/', function(req, res, next) {
 // this page lists specific category and all its photos
 // if category doesn't exist, return an error
 router.get('/category/*/', function(req, res, next) {
-    let url = req.url.split("/");
-    res.render('category_specific', {allCat: getAllCategories()});
+    let category = req.url.split("/")[2];
+    console.log(category);
+
+
+    res.render('category_specific',
+    {
+        allCat: getAllCategories(),
+        sessionid: getSessionId(req),
+        allPhotos: fs.readdirSync(baseUrl + 'public/pictures/' + category, "category": category);
+    });
 });
 
 /* upload page for the category */
 router.get('/upload/*/', function(req, res, next) {
     // need to give it category name, upload should only be available on category
-    res.render('upload', {allCat: getAllCategories()});
+    res.render('upload', {allCat: getAllCategories(), sessionid: getSessionId(req)});
 });
 
 
@@ -254,8 +260,10 @@ router.post('/upload/*/', function(req, res, next) {
       fs.writeFile(baseUrl + "/public/userdata.json", JSON.stringify(userjson));
 });
 
-router.post('/upvote/category/*/photo/*', function(req, res, next) {
 
+// upvote api
+router.post('/upvote/category/*/photo/*', function(req, res, next) {
+    
 });
 
 /* GET specific photos from category */
