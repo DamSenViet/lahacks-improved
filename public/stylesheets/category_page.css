@@ -184,3 +184,7 @@ button.upvote {
   background-color: #2fe7ad;
   border-color: #2fe7ad;
 }
+
+.topnav, .lownav, .footer {
+	z-index: 1000 !important;
+}

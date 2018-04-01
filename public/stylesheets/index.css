@@ -173,3 +173,8 @@ p {
 	/* height: ; */
 	padding: 10px 30px 0 30px;
 }
+
+
+.topnav, .lownav, .footer {
+	z-index: 1000 !important;
+}
