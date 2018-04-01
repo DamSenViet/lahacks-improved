@@ -8,7 +8,7 @@
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
-
+|
 	<body>
 
 		<div class="navbar">
@@ -36,6 +36,8 @@
 				console.log(loginUsername.value);
 				console.log(loginPassword.value);
 
+				// if no account info was specific, abort
+				if (loginUsername.value == "" || loginPassword == "") return;
 
 				loginUrl = "/login/" + loginUsername.value + "/"
 				 + loginPassword.value + '/';
