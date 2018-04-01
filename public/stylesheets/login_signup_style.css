@@ -203,7 +203,8 @@ input {
 
 #upload-button {
   display:block;
-  background:url("../images/up-arrow.png") no-repeat;
+  background:url("../images/up-arrow.png");
+  background-color: none;
   cursor:pointer;
   border:none;
   width:64px;
