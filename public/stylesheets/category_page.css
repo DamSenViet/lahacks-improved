@@ -135,6 +135,8 @@ img{
     bottom: 0; /* Position the navbar at the bottom of the page */
     width: 100%; /* Full width */
 
+    position: fixed;
+
     z-index:1;
 }
 /* Links inside the navbar */

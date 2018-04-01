@@ -238,13 +238,18 @@
 	</div>
 
 
+
 	<script>
 	$(document).ready(function() {
 		var imgs = $('.fix');
 		if (imgs.width() > imgs.height()) {
 			imgs.css('height', '100%');
 			imgs.css('width', 'auto');
+		} else if (imgs.height() > imgs.width()) {
+			imgs.css('width', '100%');
+			imgs.css('height', 'auto');
 		}
+
 	});
 	</script>
 </body>

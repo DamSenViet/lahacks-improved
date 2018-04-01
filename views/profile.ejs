@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/stylesheets/index.css" />
 	<style>
 		.card {
-			box-shadow: 0 5px 9px 0 rgba(0, 0, 0, 0.2);
+			/* box-shadow: 0 5px 9px 0 rgba(0, 0, 0, 0.2); */
 			max-width: 500px;
 			width: 500px;
 			height: 500px;
@@ -68,8 +68,8 @@
 
 	<h2 style="text-align:center">User Profile Card</h2>
 	<div class="card">
-		<h1>username</h1>
-		<p class="title">Bio</p>
+		<h1><%= sessionid %></h1>
+		<p>uploads</p>
 	</div>
 
 
@@ -83,7 +83,11 @@
 		if (imgs.width() > imgs.height()) {
 			imgs.css('height', '100%');
 			imgs.css('width', 'auto');
+		} else if (imgs.height() > imgs.width()) {
+			imgs.css('width', '100%');
+			imgs.css('height', 'auto');
 		}
+
 	});
 	</script>
 
