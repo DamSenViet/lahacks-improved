@@ -5,9 +5,35 @@ var fs = require('fs');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-    res.render('index', );
+    baseUrl = process.cwd();
+    picUrl = baseUrl + '/public/pictures/';
 
-    console.log("cookie: " + req.cookies["sessionid"]);
+    allTop = {};
+    allCat = fs.readdirSync(picUrl);
+
+    // for each category
+    for (let i = 0; i < allCat.length; ++i) {
+        var bestPhotoPath = null;
+        var bestPhotoVotes = 0;
+
+        let data = fs.readFileSync(picUrl + "/" + allCat[i] + "/data.json");
+        json = JSON.parse(data);
+
+        photoData = Object.keys(json);
+        for (let j = 0; j < photoData.length; ++j) {
+            if (json[photoData[j]]["votes"] >= bestPhotoVotes) {
+                    bestPhotoPath = photoData[j];
+                    bestPhotoVotes = json[photoData[j]]["votes"];
+            }
+        }
+
+        allTop[allCat[i]] = bestPhotoPath;
+        // console.log(allCat[i]);
+    }
+    console.log(allTop);
+
+    res.render('index', {best: allTop});
+    // console.log("cookie: " + req.cookies["sessionid"]);
 });
 
 
@@ -28,6 +54,7 @@ router.post('/signup/*/*/', function(req, res, next) {
     console.log(baseUrl);
 
     // ASYNCHRONOUS, DON'T USE THIS SINCE
+    // ERRORS WILL NOT BE CAUGHT
     // fs.readFile(baseUrl + '/public/userdata.json', function(err, data) {
     //     if (err) throw err;
     //     // console.log("")
@@ -54,7 +81,7 @@ router.post('/signup/*/*/', function(req, res, next) {
         // if username already exists
         if (json.hasOwnProperty(username)) throw "username already exists";
 
-        json[username] = {"password": password};
+        json[username] = {"password": password, "uploads" : [], "upvotes" : {}};
 
         fs.writeFile(baseUrl + '/public/userdata.json', JSON.stringify(json));
 
@@ -158,37 +185,53 @@ router.get('/upload/*/', function(req, res, next) {
 
 
 router.post('/upload/*/', function(req, res, next) {
-    var category = req.url.split('/')[2];
-    console.log(category);
-
-    // console.log(req.cookies["sessionid"]);
+    // redirect if user isn't logged
     if (!req.cookies.hasOwnProperty('sessionid')) {
         res.redirect('/login');
     }
 
 
+    var category = req.url.split('/')[2];
+    console.log(category);
+
+
+
+
     console.log(req.body.filename);
 
-    baseUrl = process.cwd();
-    saveUrl = baseUrl + '/public/pictures/cats' + req.body.filename;
+    baseUrl = process.cwd().replace(/\\/g, "/");
+    console.log("base " + baseUrl);
+
+    saveUrl = baseUrl + '/public/pictures/' + category + "/" + req.body.filename;
 
     fs.writeFile(saveUrl, req.body.img, 'base64', function(err) {
-        console.log(err);
+        // console.log(err);
     });
 
 
-    let data = fs.readFileSync(baseUrl + "/public/userdata.json");
+    // add voting data to category
+    let data = fs.readFileSync(baseUrl + "/public/pictures/" + category
+     + "/data.json");
+     let json = JSON.parse(data);
+     json[req.body.filename] = {"votes": 0};
+     fs.writeFile(baseUrl + "/public/pictures/" + category
+      + "/data.json", JSON.stringify(json));
 
+
+      // add uploaded information to user
+      let userdata = fs.readFileSync(baseUrl + "/public/userdata.json");
+      let userjson = JSON.parse(userdata);
+
+      if (!userjson[req.cookies["sessionid"]]["uploads"].contains("/pictures/" + category + "/" + req.body.filename)) {
+          userjson[req.cookies["sessionid"]]["uploads"].push("/pictures/" + category + "/" + req.body.filename);
+      }
+      fs.writeFile(baseUrl + "/public/userdata.json", JSON.stringify(userjson));
 });
 
-/* GET photo from category */
+
+/* GET all photos from category */
 router.get('/category/*/photo/*/', function(req, res, next) {
 
 });
-
-
-router.get('/something', function(req, res, next) {
-	res.render('anything', {thing: 'this'});
-})
 
 module.exports = router;
