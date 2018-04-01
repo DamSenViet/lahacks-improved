@@ -63,7 +63,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/signup/', function(req, res, next) {
-    res.render('signup', null);
+    res.render('signup', {allCat: getAllCategories(), sessionid: getSessionId(req)});
 });
 
 
@@ -221,6 +221,9 @@ router.get('/profile/', function(req, res, next) {
     // if (!req.cookies.hasOwnProperty('sessionid')) {
     //     res.redirect('/login');
     // }
+    if (getSessionId(req) == null) {
+        res.redirect('/login');
+    }
 
     baseUrl = process.cwd();
     var data = fs.readFileSync(baseUrl + "/public/userdata.json");
@@ -291,6 +294,11 @@ router.get('/upload/*/', function(req, res, next) {
     // if (!req.cookies.hasOwnProperty('sessionid')) {
     //     res.redirect('/login');
     // }
+    // alternative
+    if (getSessionId(req) == null) {
+        res.redirect('/login');
+    }
+
     res.render('upload', {allCat: getAllCategories(), sessionid: getSessionId(req)});
 });
 

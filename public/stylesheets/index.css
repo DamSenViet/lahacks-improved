@@ -120,7 +120,7 @@ p {
 	height: 20vw;
 }
 
-img {
+.wrapper img {
 	width: 20vw;
 	position: absolute;
 	top: 50%;

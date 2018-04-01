@@ -5,19 +5,34 @@
 		<meta charset="utf-8" />
 		<title>Login</title>
 		<link rel="stylesheet" type="text/css" href="/stylesheets/login_signup_style.css">
-
+		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/index.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
 
 	<body>
-		<div class="content">
-			<div class="navbar">
-				<div style="margin-left: 1%;">
-					<img src="/images/spectdone.png" width=66px height=46px class="left" alt="spect"/>
-				</div>
-			  <a class = "right" href="/signup">Sign Up</a>
-			  <a class = "right" href="/login">Login</a>
-			</div>
+		<div class="topnav">
+			<% for (var cat in allCat) { %>
+				<a class="left" href="/category/<%= allCat[cat] %>"><%= allCat[cat] %></a>
+			<% } %>
+		</div>
+
+		<div class="lownav">
+	    <a class="left logo-container" href="/">
+				<img class="logo" width="66px" height="46px" src="/images/spectdone.png"/>
+			</a>
+
+			<% if (sessionid == null) { %>
+				<a class = "right" href="/signup">sign up</a>
+				<a class = "right" href="/login">sign in</a>
+			<% } %>
+
+			<% if (sessionid != null) { %>
+				<a class = "right" href="/profile">Hello, <%= sessionid %></a>
+				<a class = "right" href="/logout">logout</a>
+			<% } %>
+			<a class="right" href="/createcategory">create category</a>
+		</div>
 
 			<h1>Welcome Back!</h1>
 
