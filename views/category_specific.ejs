@@ -1,0 +1,63 @@
+<!doctype html>
+<head>  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title> some title </title>
+<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+<link rel="stylesheet" href="/stylesheets/category_page.css" />
+</head>
+
+<body>
+	<div class="topnav">
+		<% for (var cat in allCat) { %>
+			<a class="left" href="/category/<%= allCat[cat] %>"><%= allCat[cat] %></a>
+		<% } %>
+	</div>
+
+	<div class="lownav">
+		<a class="left logo-container" href="/">
+			<img class="logo" width="66px" height="46px" src="/images/spectdone.png"/>
+		</a>
+
+		<% if (sessionid == null) { %>
+			<a class = "right" href="/signup">sign up</a>
+			<a class = "right" href="/login">sign in</a>
+		<% } %>
+
+		<% if (sessionid != null) { %>
+			<a class = "right" href="/profile">Hello, <%= sessionid %></a>
+			<!--<form action="/logout" method="post">
+				<button type="submit" class="logout">Logout</button>
+			</form>-->
+		<% } %>
+
+		<a class="right" href="/createcateogry">create category</a>
+		<a class="right" href="/upload/<%= category %>">make post</a>
+	</div>
+
+
+<div class ="anotherone">
+    <!-- ******FIRST ROW********-->
+    <div class ="main">
+        <h1> <%= category %> </h1>
+
+				<% for (var key in allPhotos) { %>
+					<div class="wrapper" id="boxshadow">
+							<div class = "crop">
+								<a href="/category/<%= category %>/photo/<%= key %>">
+									<img src="/pictures/<%= category %>/<%= key %>" alt="<%= key %>" >
+								</a>
+							</div>
+							<p><span class="tab"></span>title<button type="button" id="upvote_button">+<%= allPhotos[key]["votes"] %></button> </p>
+					</div>
+				<% } %>
+    </div>
+
+</div>
+<div class = "footer">
+
+         <a  href="#github">GitHub</a>
+
+
+    </div>
+
+</body>
+</html>

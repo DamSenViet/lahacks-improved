@@ -201,12 +201,19 @@ router.get('/category/*/', function(req, res, next) {
     let category_name = req.url.split("/")[2];
     console.log(category_name);
 
+    baseUrl = process.cwd();
+
+    let data = fs.readFileSync(baseUrl + '/public/pictures/' + category_name + '/data.json');
+    var temp = JSON.parse(data);
+
+    console.log("This: " + temp);
 
     res.render('category_specific',
     {
         allCat: getAllCategories(),
         sessionid: getSessionId(req),
-        allPhotos: fs.readdirSync(baseUrl + 'public/pictures/' + category_name),
+        // remove data.json
+        allPhotos: temp,
          category: category_name
     });
 });
@@ -215,16 +222,17 @@ router.get('/category/*/', function(req, res, next) {
 /* upload page for the category */
 router.get('/upload/*/', function(req, res, next) {
     // need to give it category name, upload should only be available on category
+
+    // redirect if user isn't logged in
+    if (!req.cookies.hasOwnProperty('sessionid')) {
+        res.redirect('/login');
+    }
     res.render('upload', {allCat: getAllCategories(), sessionid: getSessionId(req)});
 });
 
 
 
 router.post('/upload/*/', function(req, res, next) {
-    // redirect if user isn't logged in
-    if (!req.cookies.hasOwnProperty('sessionid')) {
-        res.redirect('/login');
-    }
 
 
     var category = req.url.split('/')[2];
@@ -270,7 +278,11 @@ router.post('/upvote/category/*/photo/*', function(req, res, next) {
 
 /* GET specific photos from category */
 router.get('/category/*/photo/*/', function(req, res, next) {
+    var url = req.url.split("/");
+    var category_name = url[2];
+    var category_
 
+    // res.render(, null);
 });
 
 module.exports = router;
