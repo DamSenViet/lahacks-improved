@@ -20,7 +20,10 @@ function getAllCategories() {
 function getSessionId(req) {
     console.log("cookie: " + req.cookies["sessionid"]);
     tempid = null;
-    if (req.cookies.hasOwnProperty('sessionid')) {
+    // if (req.cookies.hasOwnProperty('sessionid')) {
+        // tempid = req.cookies["sessionid"];
+    // }
+    if (typeof req.cookies['sessionid'] != "undefined") {
         tempid = req.cookies["sessionid"];
     }
     return tempid;
@@ -215,9 +218,9 @@ router.post('/createcategory/*/', function(req, res, next) {
 // check if user has session cookie
 // if not then send them to login page (this means that they're not logged in)
 router.get('/profile/', function(req, res, next) {
-    if (!req.cookies.hasOwnProperty('sessionid')) {
-        res.redirect('/login');
-    }
+    // if (!req.cookies.hasOwnProperty('sessionid')) {
+    //     res.redirect('/login');
+    // }
 
     baseUrl = process.cwd();
     var data = fs.readFileSync(baseUrl + "/public/userdata.json");
@@ -285,9 +288,9 @@ router.get('/upload/*/', function(req, res, next) {
     // need to give it category name, upload should only be available on category
 
     // redirect if user isn't logged in
-    if (!req.cookies.hasOwnProperty('sessionid')) {
-        res.redirect('/login');
-    }
+    // if (!req.cookies.hasOwnProperty('sessionid')) {
+    //     res.redirect('/login');
+    // }
     res.render('upload', {allCat: getAllCategories(), sessionid: getSessionId(req)});
 });
 
