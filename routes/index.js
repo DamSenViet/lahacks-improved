@@ -195,8 +195,6 @@ router.post('/upload/*/', function(req, res, next) {
     console.log(category);
 
 
-
-
     console.log(req.body.filename);
 
     baseUrl = process.cwd().replace(/\\/g, "/");
