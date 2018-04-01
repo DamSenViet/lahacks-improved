@@ -299,7 +299,9 @@ router.get('/upload/*/', function(req, res, next) {
         res.redirect('/login');
     }
 
-    res.render('upload', {allCat: getAllCategories(), sessionid: getSessionId(req)});
+    var category_name = req.url.split('/')[2];
+
+    res.render('upload', {allCat: getAllCategories(), sessionid: getSessionId(req), category: category_name});
 });
 
 
