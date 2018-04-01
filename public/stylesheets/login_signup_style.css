@@ -102,7 +102,7 @@ label {
 }
 
 
-input, textarea {
+input {
   font-size:22px;
   display:block;
   width:100%;
@@ -115,9 +115,13 @@ input, textarea {
   transition:border-color .25s ease, box-shadow .25s ease;
 }
 
-textarea {
-  border:2px solid #a0b3b0;
-  resize: vertical;
+.submission {
+  border:none;
+  background:#1ab188;
+  width:40%;
+  color:#FFFFFF;
+  margin: auto;
+  font-size:2rem;
 }
 
 .field-wrap {

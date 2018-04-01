@@ -10,20 +10,27 @@
 	</head>
 
 	<body>
+		<div position=relative>
+			<div class="navbar">
+			  <a class = "left" href="/about">About</a>
+			  <a class = "right" href="/signup">Sign Up</a>
+			  <a class = "right" href="/login">Login</a>
+			</div>
 
-		<div class="navbar">
-		  <a class = "left" href="/about">About</a>
-		  <a class = "right" href="/signup">Sign Up</a>
-		  <a class = "right" href="/login">Login</a>
+			<h1>Welcome Back!</h1>
+
+			<form class="loginForm" method="post">
+				<div class="field-wrap">
+					<input type="text" name="username" class="username" placeholder="Username"/>
+				</div>
+				<div class="field-wrap">
+					<input type="password" name="password" class="password" placeholder="Password"/>
+				</div>
+				<input type="submit" class="submission" value="Log In"/>
+
+
+			</form>
 		</div>
-
-		<form class="loginForm" method="post">
-			<input type="text" name="username" class="username"/>
-			<input type="password" name="password" class="password"/>
-			<input type="submit" />
-
-
-		</form>
 
 
 		<script>
