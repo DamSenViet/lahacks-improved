@@ -102,7 +102,7 @@ label {
 }
 
 
-input {
+input, textarea {
   font-size:22px;
   display:block;
   width:100%;
@@ -115,13 +115,9 @@ input {
   transition:border-color .25s ease, box-shadow .25s ease;
 }
 
-.submission {
-  border:none;
-  background:#1ab188;
-  width:400px;
-  color:#FFFFFF;
-  margin: auto;
-  font-size:2rem;
+textarea {
+  border:2px solid #a0b3b0;
+  resize: vertical;
 }
 
 .field-wrap {
