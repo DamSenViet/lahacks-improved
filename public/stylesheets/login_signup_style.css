@@ -1,3 +1,4 @@
+
 .left{
     float: left;
 }
@@ -61,7 +62,7 @@
 .focus-container {
   position:relative;
   margin-top:100px; 
-  margin-left:40%;
+  margin-left:41%;
 }
 /*
 ul {
@@ -217,3 +218,4 @@ input {
   margin-top:10px;
   text-align:center;
 }
+

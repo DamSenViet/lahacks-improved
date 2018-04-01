@@ -30,7 +30,7 @@ p {
 	/* Position the navbar at the top of the page */
 	width: 100%;
 	/* Full width */
-	margin-top: 18px;
+	margin-top: 20px;
 }
 
 /* Links inside the navbar */
@@ -39,7 +39,7 @@ p {
 	display: block;
 	color: #f2f2f2;
 	text-align: center;
-	padding: 20px 30px;
+	padding: 14px 30px;
 	text-decoration: none;
 }
 
