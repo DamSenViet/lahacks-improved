@@ -77,7 +77,7 @@ This is what would be published on an API provider's website. They will only tel
 
 There both public and private APIs
 
-public APIs are those functions that you can see into. For example, all libraries have documentations of their functions which are also APIs. You can see the code going into it.
+Public APIs are those functions that you can see into. For example, all libraries have documentations of their functions which are also APIs. You can see the code going into it by examining the library files.
 
 Private APIs (like Google's) are not viewable AT ALL. You can only view the input/output and nothing else.
 
@@ -224,7 +224,7 @@ somewebsite/public/routes/index.js
 and we can see that the 'public' folder does not even have the routes folder for that matter.
 
 because '/' refers to project in this case, no one can touch the 'index.js' through links
-(there are still security vulnerabilities, we just stopped one sing vulnerability by making the '/' actually access 'public')
+(there are still security vulnerabilities, we just stopped one single vulnerability by making the '/' actually access 'public')
 
 
 -------------------------------------
@@ -233,17 +233,17 @@ WHAT IS EJS? HOW IS IT DIFFERENT FROM HTML?
 
 So if you've ever made an html webpage before you'd know that the webpage is static. You cannot make it change information dynamically according to a given context. For example if we had account data that we needed to give it, it would not know how to change itself to make it hold the account information.
 
-If everybody wanted to view their profile page, we would have to add every single possible profile page to our server as an html file and edit the html file whenever someone makes a change. That would incredibly time consuming, difficult, and would waste a ton of storage page.
+If everybody wanted to view their profile page, we would have to add every single possible profile page to our server as an html file and edit the html file whenever someone makes a change. That would incredibly time consuming, difficult, and would waste a ton of storage space.
 
 
 
 
 Using EJS we can plug in values into an HTML file instead.
 
-When someone requests a link that needs specific information in it, the server will "render" the page essentially plugging in values and then turning it into an HTML file. We "plug" in these values in index.js in the render function and in the ejs file we specify where the values go and how
+When someone requests a link that needs specific information in it, the server will "render" the page essentially plugging in values and then turning it into an HTML file. We "plug" in these values in index.js in the render function and in the ejs file we specify where the values go and how.
 
 
-You might be wondering why we chose SPECIFICALLY EJS. There are other html templating file types such as pug. Well, pug requires learning new syntax (basically a new language). EJS allows us to REUSE the html file we made and just write javascript to plug in the values. Using pug you would have to rewrite the html file in a PUG equivalent. Let's also not mention that it's a preprocessor and some developers are not used to using preprocessors. This way we also don't have to learn a bunch of new languages and waste time. We can expand what we can do just by learning frontend languages (HTML, CSS, JavaScript).
+You might be wondering why we chose SPECIFICALLY EJS. There are other html templating file types such as pug. Well, pug requires learning new syntax (basically a new language). EJS allows us to REUSE the html file we made and just write javascript to plug in the values. Using pug you would have to rewrite the html file in a PUG equivalent. Let's also not mention that it's a preprocessor and some developers are not used to using preprocessors. This way we also don't have to learn a bunch of new but unnecessary languages and tools and waste time. We can expand what we can do just by learning frontend languages (HTML, CSS, JavaScript).
 
 -------------------------------------
 
