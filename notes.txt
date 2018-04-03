@@ -9,6 +9,8 @@ Types of HTTP requests:
 	GET (get a resource)
 	POST (give server data, server processes data, and optionally gives us something back)
 
+	(there are more, but we only need to care about GET AND POST)
+
 ------------------------------------
 REQUESTS AND PLATFORMS
 
