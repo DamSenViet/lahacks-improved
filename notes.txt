@@ -240,7 +240,10 @@ If everybody wanted to view their profile page, we would have to add every singl
 
 Using EJS we can plug in values into an HTML file instead.
 
-When someone requests a link that needs specific information in it, the server will "render" the page essentially plugging in values and then turning it into an HTML file. We "plug" in these values in index.js in the render function and in the ejs file we specify where the values go and how.
+When someone requests a link that needs specific information in it, the server will "render" the page essentially plugging in values and then turning it into an HTML file. We "plug" in these values in index.js in the render function and in the ejs file we specify where the values go and how
+
+
+You might be wondering why we chose SPECIFICALLY EJS. There are other html templating file types such as pug. Well, pug requires learning new syntax (basically a new language). EJS allows us to REUSE the html file we made and just write javascript to plug in the values. Using pug you would have to rewrite the html file in a PUG equivalent. Let's also not mention that it's a preprocessor and some developers are not used to using preprocessors. This way we also don't have to learn a bunch of new languages and waste time. We can expand what we can do just by learning frontend languages (HTML, CSS, JavaScript).
 
 -------------------------------------
 
