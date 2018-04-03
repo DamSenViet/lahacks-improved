@@ -1,7 +1,7 @@
 # LAHacks
 Pixster Challenge Submission - May the Best Photo Win
 
-[Link to Live Website](lahacks-199811.appspot.com)
+[Link to Live Website](https://la-hacks-2018.devpost.com/)
 
 Instagram + Reddit Web Application
 
