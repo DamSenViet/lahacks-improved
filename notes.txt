@@ -1,7 +1,7 @@
 ------------------------------------
 DECISION MAKING: WHY DO WE NEED A SERVER?
 
-To keep track of votes and images in live-time we needed a backend to hold the data. Specifically, we needed a webserver where we could get images from. Most servers are build as web servers, even those for iOS and Android Apps.
+To keep track of votes and images in live-time we needed a backend to hold the data. Specifically, we needed a webserver where we could get images from. Most servers are built as web servers, even those for iOS and Android Apps.
 
 To get data from webservers you need issue HTTP (Hypertext Transport Protocol) requests to retrieve data.
 
@@ -12,13 +12,13 @@ Types of HTTP requests:
 ------------------------------------
 REQUESTS AND PLATFORMS
 
-Your browser runs JavaScript and the implementer of the browser (e.g. Google & Google Chrome) always includes methods to issue HTTP requests. In your browser the specific name of the HTTP request object is called xmlHTTPrequest (also referred to as 'xhr' by developers):
+Your browser runs JavaScript and the implementer of the browser (e.g. Google & Google Chrome) always includes methods to issue HTTP requests. In your browser the specific name of the HTTP request object is called XMLHTTPrequest (also referred to as 'xhr' by developers):
 
 https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
 
 Your browser automatically comes with methods to issue these requests. Other platforms don't.
 
-Please keep note that JavaScript itself does not come with methods to these requests.
+Please keep note that JavaScript itself does not come with methods nor objects to these requests.
 The browser adds additional JavaScript classes and objects so that you can access the requests objects on the web at any time.
 If you were to create a JavaScript app that did not run in your browser, you would not have access to requests without an external library.
 
@@ -79,7 +79,7 @@ There both public and private APIs
 
 public APIs are those functions that you can see into. For example, all libraries have documentations of their functions which are also APIs. You can see the code going into it.
 
-private APIs (like Google's) are not viewable AT ALL.
+Private APIs (like Google's) are not viewable AT ALL. You can only view the input/output and nothing else.
 
 ------------------------------------
 
@@ -129,7 +129,7 @@ So you would issue a POST request with:
 
 WHAT HAPPENS IN REALITY:
 
-You can give a server anything you want in POST. However, when building your own API on the server you never know what data type from what language it will be from. How would you parse a JSON (JavaScript Object Notation) from JavaScript if your server is running Python? There are ways to do this but we want to keep things simple. That's why we chose to use the same language (JavaScript) on both the back and front end. Whatever we send from the front-end will be exactly the same as it is on the backend.
+You can give a server anything you want in POST. However, when building your own API on the server you never know what data type from what language it will be from. How would you parse a JSON (JavaScript Object Notation) from JavaScript if your server is running Python? There are ways to do this but we want to keep things simple. That's why we chose to use the same language (JavaScript) on both the back and front end. Whatever we send from the front-end will be exactly the same as it is on the backend. There's no need to do extra parsing.
 
 Usually if your server-side language is not using JavaScript you can choose to add JSON support since the most requests are originally just strings. There are libraries that can parse strings of JSON.
 
@@ -143,16 +143,16 @@ BUILDING API WITH EXPRESS
 when building an API there are three parts that are given to us:
 	request (or req)
 	response (or res)
-	next
+	next (idk what this even does)
 
 the request is the HTTP request, you can view fields inside it
 the response is the response object that will be sent out
-before it is sent you can modify it any way you want.
+	before it is sent you can modify it any way you want.
 
-to send it out you need to make a call to either
-	res.send
-	or
-	res.render (give back an html page; I talk about this more later in EJS vs HTML)
+	to send it out you need to make a call to either
+		res.send
+		or
+		res.render (give back an html page that will be displayed; I talk about this more later in EJS vs HTML)
 
 ------------------------------------
 
@@ -169,7 +169,7 @@ You could technically build the XMLHttpRequest object yourself but it's too time
 This AJAX request is part of a VERY popular library for JavaScript called jQuery (which adds in WAY more than just request wrapper)
 All jQuery functions begin with '$'
 That's why in 'upload.ejs' I made a call to $.ajax function
-You give this ajax function a JSON object which is just a big dictionary/mapping of key-value pairs and it will build the HTTP request for you AND send it off.
+You have to give the ajax function a JSON object which is just a big dictionary/mapping of key-value pairs and it will build the HTTP request for you AND send it off.
 
 
 -------------------------------------
@@ -251,5 +251,5 @@ OUR APPLICATION AND HOW IT WORKS:
 
  bin/www and app.js starts the server
  any call to a link will have it handled in index.js
- if it's a page that needs to be generated it will render the page
- if it's information that needs to be given we will send information
+ if it's a page that needs to be generated it will render the page from the 'views' folder
+ if it's information that needs to be given we will send information back as a JSON file
