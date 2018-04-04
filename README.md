@@ -1,11 +1,8 @@
-# LAHacks
-Pixster Challenge Submission - May the Best Photo Win
-
-[Link to Live Website](https://la-hacks-2018.devpost.com/)
+# POST LAHacks
 
 Instagram + Reddit Web Application
 
-Features
+### Features
 * Upload Photos
 * Vote on Photos
 * Account System + Session Tracking (cookies)
@@ -14,6 +11,6 @@ Features
 * Create your Own Categories
 
 
-Stack
+### Stack
 * Node.js
 * Google Cloud: App Engine
