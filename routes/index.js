@@ -59,7 +59,12 @@ router.get('/', function(req, res, next) {
     console.log(allTop);
 
 
-    res.render('index', {best: allTop, allCat: getAllCategories(), sessionid: getSessionId(req)});
+    res.render('index',
+    {
+        best: allTop,
+        allCat: getAllCategories(),
+        sessionid: getSessionId(req)
+    });
 });
 
 router.get('/signup/', function(req, res, next) {
@@ -194,7 +199,7 @@ router.post('/createcategory/*/', function(req, res, next) {
     }
 
     var url = req.url.split("/");
-    var category_name = url[2];
+    var category_name = url[2].toLowerCase();
 
     console.log(category_name);
 

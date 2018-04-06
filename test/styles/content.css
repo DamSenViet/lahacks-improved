@@ -1,0 +1,126 @@
+h2.title {
+	font-size: 1.2rem;
+	font-weight: bold;
+	text-align: center;
+}
+
+
+h2 {
+	font-weight: normal;
+}
+
+
+main.index {
+	padding-top: 1rem;
+	text-align: center;
+}
+
+.card {
+	display: inline-block;
+	width: 90%;
+	margin-bottom: 50px;
+
+	position: relative;
+	top: 0;
+	left: 0;
+}
+
+.card img {
+	border-radius: 10px;
+}
+
+.card-info {
+	text-align: left;
+	line-height: 1.5;
+	background-color: rgba(0, 0, 0, 0.46);
+	color: white;
+	border-radius: 10px;
+	padding: 10px 15px;
+
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}
+
+.loginForm {
+	width: 80%;
+	position: relative;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+.loginForm input {
+	display: block;
+	outline: none;
+	border: none;
+	border-bottom: 1px solid #8f8f8f;
+
+	padding: 10px 0px;
+	border-radius: 3px 3px 0 0;
+
+	transition: border-color 0.5s, color 0.5s;
+	width: 100%;
+
+	color: #8f8f8f;
+}
+
+.loginForm input:focus {
+	/* background-color: #EDF0F7; */
+	border-color: black;
+	color: black;
+}
+
+input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+.loginForm label {
+	display: block;
+
+	margin-bottom: 10px;
+	margin-top: 50px;
+	user-select: none;
+}
+
+.loginForm .submit-container {
+	text-align: right;
+}
+
+.loginForm button {
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	cursor: pointer;
+	background-color: #1CBBB4;
+	color: white;
+	transition: all 0.35s ease;
+
+
+	margin-top: 30px;
+	display: inline-block;
+
+	border: none;
+	border-radius: 3px;
+	padding: 10px 20px;
+
+	box-shadow: 0 0 15px 0px #1CBBB4;
+}
+
+.loginForm button:hover {
+	/* background-color: #21948f; */
+	box-shadow: 0 0 0px 0px #1CBBB4;
+}
+
+@media only screen and (orientation: landscape) {
+	.card {
+		width: 28%;
+		margin-left: 2%;
+		margin-right: 2%;
+	}
+
+	.card-info {
+		right: 50%;
+		width: 80%;
+		transform: translate(50%, 0px);
+	}
+}

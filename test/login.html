@@ -1,0 +1,99 @@
+<!doctype html>
+
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+		<title>Flash - Login</title>
+
+		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
+		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<script src="/scripts/lib.js"></script>
+	</head>
+
+	<body>
+		<header>
+			<nav>
+				<input class="trigger" type="checkbox" id="hamburger"/>
+
+				<a class="github" href="https://github.com/DamSenViet/LAHacks-Improved"><img src="/icons/github.svg"/></a>
+
+				<a class="logo" href="/">Login</a>
+
+
+				<label class="right hamburger center-parent" for="hamburger">
+					<div class="center">
+						<div class="top bar"></div>
+						<div class="middle bar"></div>
+						<div class="bottom bar"></div>
+					</div>
+				</label>
+
+				<div class="menu-items">
+					<div class="search">
+						<input type="text" list="suggestions" placeholder="Search..."/>
+
+						<datalist id="suggestions">
+							<option value="wow"></option>
+						</datalist>
+					</div>
+
+					<a class="main" href="/login.html">Login</a>
+					<a class="main" href="/signup.html">Sign Up</a>
+
+					<div class="dropdown">
+						<a class="main desktop">Categories</a>
+						<ul class="desktop">
+							<a><li>cats</li></a>
+							<a><li>dogs</li></a>
+							<a><li>thing</li></a>
+							<a><li>wow</li></a>
+						</ul>
+
+
+						<a class="select-wrapper"><select class="mobile">
+							<option disabled selected hidden>Categories</option>
+							<option value="">cats</option>
+							<option value="">dogs</option>
+							<option value="">humans</option>
+							<option value="">robots</option>
+						</select></a>
+					</div>
+				</div>
+			</nav>
+		</header>
+
+		<main class="login">
+			<form class="loginForm">
+				<label for="username">Email</label>
+				<input id="username" class="username" type="email" name="username" placeholder="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"required />
+
+				<label for="password">Password</label>
+				<input id="password" class="password" type="password" name="password" placeholder="" required pattern=".{4,}" title="wow"/>
+				<div class="submit-container">
+					<button type="submit">Login</button>
+				</div>
+			</form>
+		</main>
+
+
+		<script>
+			$('input').focus(function(evt) {
+				if (isMobile.any() && isLandscape()) {
+					$('nav').addClass('hidden');
+				}
+			});
+
+			$('input').focusout(function(evt) {
+				$('nav').removeClass('hidden');
+			});
+		</script>
+
+		<script src="/scripts/main.js"></script>
+	</body>
+</html>
