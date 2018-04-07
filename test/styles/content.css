@@ -1,6 +1,6 @@
 main.index {
 	/* remove white space between blocks */
-	font-size: 0;
+	/* font-size: 0; */
 	padding-top: 30px;
 	text-align: center;
 }
@@ -49,6 +49,7 @@ main.index {
 .description {
 	text-transform: capitalize;
 	text-align: left;
+	user-select: none;
 
 	padding: 30px 10%;
 
@@ -206,4 +207,47 @@ form button:hover, form button:hover {
 		display: none;
 	}
 
+}
+
+
+.floating-add {
+	background-color: white;
+	cursor: pointer;
+	/* box-shadow: 0px 10px 20px -7px #323232; */
+	box-shadow: 0px 10px 20px -5px #9FAFCA;
+
+
+	user-select: none;
+	position: fixed;
+	bottom: 20px;
+	right: 8%;
+
+
+	border-radius: 100%;
+	width: 75px;
+	line-height: 75px;
+	height: 75px;
+
+	border: 1px solid black;
+
+
+	transition: all 0.1s linear;
+	text-align: center;
+}
+
+
+.floating-add:active {
+	border: 1px solid black;
+	box-shadow: 0px 0px 0px 0px #9FAFCA;
+	transform: translateY(10px);
+}
+
+
+.floating-add .icon {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.floating-add img.icon {
+	height: 60%;
 }
