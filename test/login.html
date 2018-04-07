@@ -11,6 +11,7 @@
 
 		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
 		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 		<script src="/scripts/lib.js"></script>
@@ -74,9 +75,13 @@
 				<input id="username" class="username" type="email" name="username" placeholder="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"required />
 
 				<label for="password">Password</label>
-				<input id="password" class="password" type="password" name="password" placeholder="" required pattern=".{4,}" title="wow"/>
+				<input id="password" class="password" type="password" name="password" placeholder="" required pattern="" title="wow"/>
+
 				<div class="submit-container">
+					<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
+					<div class="conditional clearfix"></div>
 					<button type="submit">Login</button>
+					<div class="conditional clearfix"></div>
 				</div>
 			</form>
 		</main>

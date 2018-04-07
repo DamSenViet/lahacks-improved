@@ -3,14 +3,16 @@
 Instagram + Reddit Web Application
 
 ### Features
-* Upload Photos
-* Vote on Photos
-* Account System + Session Tracking (cookies)
-* View All Your Uploaded Photos
-* View Category of Photos by Other Users
-* Create your Own Categories
-
+* (IMPROVEMENT IN PROGRESS) Upload Photos
+* (IMPROVEMENT IN PROGRESS) Vote on Photos
+* (IMPROVEMENT IN PROGRESS) account system + session tracking (secure cookies)
+* view all your uploaded photos
+* view category of photos by other users
+* create your own categories
+* (IMPROVEMENT IN PROGRESS) signup/login input validation
+* (IMPROVEMENT IN PROGRESS) reCaptcha validation (server and client)
 
 ### Stack
 * Node.js
 * Google Cloud: App Engine
+* reCaptcha 2.0 (bothends)

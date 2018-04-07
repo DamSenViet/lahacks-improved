@@ -40,6 +40,7 @@ html {
 body {
 	overflow-y: scroll;
 	font-family: "Open-Sans";
+	min-height: 320px;
 }
 
 .left {float: left;}
@@ -155,7 +156,7 @@ nav > .hamburger .bar {
 	height: 2px;
 	width: 100%;
 	margin: 3px 0px;
-	transition: all 0.3s linear;
+	transition: all 0.2s linear;
 }
 
 nav > .hamburger > .center {
@@ -193,23 +194,6 @@ nav .search input {
 	transition: all 0.25s linear;
 }
 
-nav  .search input:focus {
-	outline: none;
-}
-
-nav > .search datalist {
-	max-height: 0px;
-	overflow: hidden;
-	opacity: 0;
-}
-
-nav > .search:hover ul a {
-	box-sizing: border-box;
-	display: block;
-	width: 100%;
-	padding: 5px 15px;
-}
-
 nav > .menu-items {
 	background-color: white;
 
@@ -229,7 +213,7 @@ nav > .menu-items {
 	height: 0;
 	padding-top: 0;
 
-	overflow-y: hidden;
+	overflow: hidden;
 
 	text-align: center;
 }
@@ -252,16 +236,16 @@ nav > .menu-items option {
 	text-align: center;
 }
 
-.menu-items a, .menu-items select {
+.menu-items a, .menu-items .select-wrapper {
 	transition: all 0.3s 0.25s ease;
 	transform: scale(0);
 }
 
-.trigger:checked ~ .menu-items a, .trigger:checked ~ .menu-items select {
+.trigger:checked ~ .menu-items a, .trigger:checked ~ .menu-items .select-wrapper {
 	transform: scale(1);
 }
 
-nav > .menu-items a:hover {
+nav > .menu-items a:hover, nav > .menu-items .select-wrapper:hover {
 	background-color: #EDF0F7;
 }
 
@@ -278,6 +262,7 @@ nav .menu-items select {
 	border: none;
 	font-size: inherit;
 	width: 150px;
+	vertical-align: middle;
 	/* direction: rtl; */
 }
 
@@ -298,8 +283,22 @@ main.fit {
 }
 
 
+
+
 @media only screen and (orientation: landscape) {
+	.menu-items {
+		column-count: 3;
+	}
+
+	nav .search {
+		column-span: all;
+	}
+
 	nav.hidden {
 		display: none;
+	}
+
+	.select-wrapper {
+		column-span: all;
 	}
 }

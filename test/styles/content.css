@@ -5,12 +5,13 @@ main.index {
 	text-align: center;
 }
 
+
+
 .link-wrapper {
 	width: 100%;
 	display: block;
 	position: relative;
 }
-
 .card {
 	position: relative;
 	display: inline-block;
@@ -49,7 +50,7 @@ main.index {
 	text-transform: capitalize;
 	text-align: left;
 
-	padding: 30px 50px;
+	padding: 30px 10%;
 
 	width: 100%;
 	color: #6E8795;
@@ -62,9 +63,6 @@ main.index {
 
 a.link-wrapper {
 	text-decoration: none;
-}
-
-.link-wrapper:visited {
 }
 
 
@@ -86,15 +84,16 @@ a.link-wrapper {
 	padding: 10px 0px;
 	border-radius: 3px 3px 0 0;
 
-	transition: border-color 0.5s, color 0.5s;
+	transition: all 0.5s;
 	width: 100%;
 
 	color: #8f8f8f;
 }
 
-.loginForm input:focus, .signupForm input:focus {
+form input[type="text"]:focus, form input[type="email"]:focus,
+	form input[type="password"]:focus {
 	/* background-color: #EDF0F7; */
-	border-color: black;
+	border-bottom-color: black;
 	color: black;
 }
 
@@ -102,7 +101,7 @@ input:-webkit-autofill {
 	-webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
-.loginForm label, .signupForm label {
+form label {
 	display: block;
 
 	margin-bottom: 10px;
@@ -110,11 +109,31 @@ input:-webkit-autofill {
 	user-select: none;
 }
 
-.loginForm .submit-container, .signupForm .submit-container {
+form .submit-container {
+	margin-top: 30px;
+	padding-bottom: 80px;
 	text-align: right;
 }
 
-.loginForm button, .signupForm button {
+.g-recaptcha {
+	float: right;
+}
+
+.submit-container button {
+	float: right;
+}
+
+.login button, .signup button {
+	margin-top: 30px;
+}
+
+.clearfix {
+	height: 0;
+	clear: both;
+}
+
+
+form button {
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	cursor: pointer;
@@ -122,31 +141,69 @@ input:-webkit-autofill {
 	color: white;
 	transition: all 0.35s ease;
 
-
-	margin-top: 30px;
 	display: inline-block;
 
 	border: none;
 	border-radius: 4px;
 	padding: 13px 20px;
 
-	box-shadow: 0 10px 20px -8px #1CBBB4;
+	box-shadow: 0 10px 20px -10px #1CBBB4;
 }
 
-.loginForm button:hover, .signupForm button:hover {
+form input[type="text"]:valid, form input[type="email"]:valid,
+	form input[type="password"]:valid, .loginForm .password {
+	color: black;
+	border: 1px solid #1CBBB4 !important;
+	box-shadow: 0 0 0 2px rgba(46,204,64,.5);
+	border-radius: 4px;
+
+	padding-left: 10px;
+}
+
+form button:hover, form button:hover {
 	/* background-color: #21948f; */
 	box-shadow: 0 0 0px 0px #1CBBB4;
 }
 
+.g-recaptcha {
+	display: inline-block;
+}
+
+
+@media only screen and (max-width: 360px) {
+	.g-recaptcha {
+		transform: scale(0.8);
+		transform-origin: 0 0;
+	}
+
+}
+
 @media only screen and (orientation: landscape) {
+	main.index {
+		padding-left: 8%;
+		padding-right: 8%;
+		text-align: left;
+	}
+
+	.g-recaptcha {
+		float: left;
+	}
+
 	.card {
-		width: 30%;
-		margin-left: 10px;
-		margin-right: 10px;
+		/* see 3 cards, but given room for cards to fit :) */
+		width: 29.3%;
+		margin-left: 2%;
+		margin-right: 2%;
+		margin-bottom: 20px;
 	}
 
 	.description {
+		text-align: center;
 		padding: 15px 25px;
+	}
+
+	.clearfix {
+		display: none;
 	}
 
 }
