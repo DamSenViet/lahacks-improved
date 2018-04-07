@@ -63,6 +63,8 @@ header {
 
 nav {
 	background-color: white;
+	/* background-image: linear-gradient(to top, rgb(207, 207, 207) 16%, rgb(252, 252, 252) 50%); */
+
 	position: fixed;
 	height: 3.9rem;
 	width: 100%;
@@ -210,7 +212,9 @@ nav > .search:hover ul a {
 
 nav > .menu-items {
 	background-color: white;
-	transition: all 0.3s ease-in-out;
+
+
+	transition: all 0.25s cubic-bezier(0.71, 0.06999, 0.6, 0.08999);
 	/* box-shadow: 0 5px 5px 0px rgba(74, 74, 74, 0.42); */
 	position: absolute;
 
@@ -285,10 +289,13 @@ nav .menu-items select:focus {
 main {
 	position: relative;
 	z-index: 0;
-	padding: 0 16px;
 	min-height: calc(100% - 3.9rem);
 }
 
+main.fit {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
 
 
 @media only screen and (orientation: landscape) {

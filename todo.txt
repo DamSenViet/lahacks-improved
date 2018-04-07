@@ -1,0 +1,5 @@
+http only cookies
+SSL cookie (b/c Google App Engine is HTTPS)
+
+
+downvote/dislike system
