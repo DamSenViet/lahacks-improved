@@ -3,6 +3,7 @@
 Instagram + Reddit Web Application
 
 ### Features
+* Mobile Responsive (ღゝ◡╹)ノ♡)
 * (IMPROVEMENT IN PROGRESS) Upload Photos
 * (IMPROVEMENT IN PROGRESS) Vote on Photos
 * (IMPROVEMENT IN PROGRESS) account system + session tracking (secure cookies)
