@@ -1,7 +1,5 @@
 @import url("normalize.css");
 
-
-
 @font-face {
 	font-family: "Open-Sans";
 	src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
@@ -91,6 +89,7 @@ nav:before {
 	width: 100%;
 	height: 100%;
 	box-shadow: 0 0 5px 0px rgba(74, 74, 74, 0.42);
+	/* before element sits on top of nav, need to be able to click through */
 	pointer-events: none;
 }
 
@@ -131,10 +130,6 @@ nav > .logo {
 	/* padding-left: 1.3rem; */
 	/* padding-right: 1.3rem; */
 	text-decoration: none;
-}
-
-nav > .dropdown ul {
-	display: none;
 }
 
 nav > .hamburger {
@@ -236,12 +231,12 @@ nav > .menu-items option {
 	text-align: center;
 }
 
-.menu-items a, .menu-items .select-wrapper {
-	transition: all 0.3s 0.25s ease;
+.menu-items > a, .menu-items .select-wrapper {
+	transition: transform 0.5s 0.25s ease;
 	transform: scale(0);
 }
 
-.trigger:checked ~ .menu-items a, .trigger:checked ~ .menu-items .select-wrapper {
+.trigger:checked ~ .menu-items > a, .trigger:checked ~ .menu-items .select-wrapper {
 	transform: scale(1);
 }
 
@@ -283,8 +278,6 @@ main.fit {
 }
 
 
-
-
 @media only screen and (orientation: landscape) {
 	.menu-items {
 		column-count: 3;
@@ -301,4 +294,163 @@ main.fit {
 	.select-wrapper {
 		column-span: all;
 	}
+}
+
+/* Desktop View */
+@media only screen and (min-width: 700px) and (min-height: 700px) {
+	.desktop {
+		display: unset !important;
+	}
+
+	.mobile {
+		display: none !important;
+	}
+
+	nav .github {
+		position: static;
+		display: inline-block;
+		float: left;
+	}
+
+	nav .logo {
+		position: static;
+		margin-left: 30px;
+		float: left;
+	}
+
+
+	nav > .menu-items {
+		position: static;
+		transform: none;
+		height: 3.9rem;
+		width: calc(100% - 193px);
+
+		float: right;
+		/* overflow: visible; */
+
+		/* override landscape */
+		column-count: unset;
+		text-align: right;
+		padding-right: 20px;
+		transition: none;
+	}
+
+	.trigger:checked ~ .menu-items {
+		height: auto;
+		transform: none;
+		padding-top: 0;
+	}
+
+	nav .search {
+		display: inline-block;
+		width: 150px;
+		float: left;
+		margin-left: 30px;
+	}
+
+	nav .search:before {
+		font-family: FontAwesome;
+		content: '\f002';
+		display: block;
+		position: absolute;
+		color: gray;
+		margin-left: 8px;
+	}
+
+	nav .search input {
+		padding-bottom: 5px;
+		padding-left: 25px;
+		outline: none;
+		border: 1px solid black;
+		border-radius: 4px;
+		width: 100%;
+	}
+
+	nav .search input:focus {
+		color: black;
+	}
+
+	nav > .menu-items > a {
+		background-color: none;
+		font-weight: 600;
+
+		display: inline-block;
+		transform: none;
+		vertical-align: middle;
+	}
+
+	nav > .menu-items a {
+		font-size: 0.8rem;
+	}
+
+	nav > .menu-items {
+		font-size: 0.9rem;
+	}
+
+	nav > .menu-items a:hover {
+		background-color: transparent;
+	}
+
+	/* using this class to style */
+	.menu-items .centered-text, .dropdown a.main {
+		display: inline;
+		vertical-align: middle;
+		height: auto;
+		padding: 7px 15px;
+		border-radius: 3px;
+	}
+
+	.menu-items .centered-text:hover, .dropdown a.main:hover {
+		background-color: #EDF0F7;
+		cursor: pointer;
+	}
+
+	.dropdown {
+		float: left;
+		text-align: left;
+		margin-left: 30px;
+		font-weight: 600;
+	}
+
+	.dropdown a.main {
+		display: inline-block;
+	}
+
+	.dropdown ul {
+		transition: all 0.25s linear;
+		background-color: white;
+		border-radius: 4px;
+		list-style: none;
+		line-height: 3;
+		font-weight: normal;
+		box-shadow: 0 0 5px 0px rgba(74, 74, 74, 0.42);
+
+		position: absolute;
+		top: 100%;
+
+		display: block;
+		margin: 0;
+
+		max-height: 0px;
+		overflow-y: scroll;
+		padding: 0;
+	}
+
+	.dropdown li {
+		display: block;
+	}
+
+	.dropdown ul a {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+	.dropdown li a:hover {
+		background-color: #EDF0F7;
+	}
+
+	.dropdown:hover ul {
+		max-height: 50vh;
+	}
+
 }

@@ -71,17 +71,24 @@
 
 		<main class="signup">
 			<form class="signupForm">
-				<label for="username">Email</label>
-				<input id="username" class="username" type="email" name="username" placeholder="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required />
+				<label for="username">Username</label>
+				<input id="username" class="username" type="text" name="username" placeholder="" pattern=".{4,}" required />
 
 				<label for="password">Password</label>
 				<input id="password" class="password" type="password" name="password" placeholder="" required pattern=".{4,}" title="wow"/>
 
+				<label for="first-name">First Name</label>
+				<input id="first-name" class="first-name" type="text" name="first-name" placeholder="optional..." />
+
+				<label for="last-name">Last Name</label>
+				<input id="last-name" class="last-name" type="text" name="last-name" placeholder="optional..." />
+
 
 				<div class="submit-container">
 					<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
-
+					<div class="conditional clearfix"></div>
 					<button type="submit">Sign Up</button>
+					<div class="conditional clearfix"></div>
 				</div>
 			</form>
 		</main>
@@ -101,16 +108,20 @@
 				}
 			});
 
-
-			var password = document.querySelector('.password')
+			// validate username and password before sending it off
+			var username = document.querySelector('.username');
+			var password = document.querySelector('.password');
 			//set invalid message
-			password.oninvalid = function(evt) {
+			username.oninvalid = password.oninvalid = function(evt) {
 				evt.target.setCustomValidity('At Least 4 Characters');
 			}
-			//clear message, otherwise it won't allow submit
-			password.oninput = function(evt) {
+			// clear message when typing, otherwise it won't allow submit
+			username.oninput = password.oninput = function(evt) {
 				evt.target.setCustomValidity('');
 			}
+
+			
+
 		</script>
 
 		<script src="/scripts/main.js"></script>

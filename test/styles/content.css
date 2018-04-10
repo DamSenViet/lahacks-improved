@@ -1,11 +1,9 @@
 main.index {
 	/* remove white space between blocks */
-	/* font-size: 0; */
+	font-size: 0;
 	padding-top: 30px;
 	text-align: center;
 }
-
-
 
 .link-wrapper {
 	width: 100%;
@@ -17,6 +15,7 @@ main.index {
 	display: inline-block;
 	width: 85%;
 	margin-bottom: 50px;
+	font-size: 1rem;
 }
 
 .image-container {
@@ -47,23 +46,72 @@ main.index {
 }
 
 .description {
+	color: black;
 	text-transform: capitalize;
 	text-align: left;
 	user-select: none;
 
 	padding: 30px 10%;
-
 	width: 100%;
-	color: #6E8795;
-
 
 	font-size: 1rem;
 
-	/* color: black; */
 }
 
 a.link-wrapper {
 	text-decoration: none;
+}
+
+
+
+.floating-add {
+	background-color: white;
+	cursor: pointer;
+	/* box-shadow: 0px 10px 20px -7px #323232; */
+	box-shadow: 0px 10px 20px -5px #6b86b3;
+
+
+	user-select: none;
+	position: fixed;
+	bottom: 20px;
+	right: 8%;
+
+
+	border-radius: 100%;
+	width: 75px;
+	line-height: 75px;
+	height: 75px;
+
+	border: 1px solid black;
+
+
+	transition: all 0.1s linear;
+	text-align: center;
+}
+
+
+.floating-add:hover {
+	background-color: #e3e9f2;
+}
+
+.floating-add:active {
+	border: 1px solid black;
+	box-shadow: 0px 0px 0px 0px #9FAFCA;
+	transform: translateY(10px);
+}
+
+.floating-add:active img.icon {
+	transform: scale(0.8);
+}
+
+.floating-add .icon {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.floating-add img.icon {
+	height: 60%;
+	transition: all 0.1s ease;
 }
 
 
@@ -111,7 +159,7 @@ form label {
 }
 
 form .submit-container {
-	margin-top: 30px;
+	margin-top: 50px;
 	padding-bottom: 80px;
 	text-align: right;
 }
@@ -151,8 +199,8 @@ form button {
 	box-shadow: 0 10px 20px -10px #1CBBB4;
 }
 
-form input[type="text"]:valid, form input[type="email"]:valid,
-	form input[type="password"]:valid, .loginForm .password {
+form.signupForm input[type="text"]:valid, form.signupForm input[type="email"]:valid,
+	form.signupForm input[type="password"]:valid {
 	color: black;
 	border: 1px solid #1CBBB4 !important;
 	box-shadow: 0 0 0 2px rgba(46,204,64,.5);
@@ -161,9 +209,10 @@ form input[type="text"]:valid, form input[type="email"]:valid,
 	padding-left: 10px;
 }
 
-form button:hover, form button:hover {
-	/* background-color: #21948f; */
+
+form button:active, form button:hover  {
 	box-shadow: 0 0 0px 0px #1CBBB4;
+	transform: translateY(5px);
 }
 
 .g-recaptcha {
@@ -210,44 +259,37 @@ form button:hover, form button:hover {
 }
 
 
-.floating-add {
-	background-color: white;
-	cursor: pointer;
-	/* box-shadow: 0px 10px 20px -7px #323232; */
-	box-shadow: 0px 10px 20px -5px #9FAFCA;
+@media only screen and (min-width: 700px) and (min-height: 700px) {
+	main.index {
+		padding-left: 2%;
+		padding-right: 2%;
+	}
+
+	.card {
+		width: 23%;
+		margin-left: 1%;
+		margin-right: 1%;
+		margin-bottom: 30px;
+	}
+
+	.description {
+		text-align: center;
+		padding: 13px 20px;
+	}
+
+	.floating-add {
+		right: 50px;
+		bottom: 40px;
+	}
+
+	@media only screen and (min-width: 1000px) {
+		.card {
+			width: 19%;
+			margin-left: 0.5%;
+			margin-right: 0.5%;
+		}
 
 
-	user-select: none;
-	position: fixed;
-	bottom: 20px;
-	right: 8%;
+	}
 
-
-	border-radius: 100%;
-	width: 75px;
-	line-height: 75px;
-	height: 75px;
-
-	border: 1px solid black;
-
-
-	transition: all 0.1s linear;
-	text-align: center;
-}
-
-
-.floating-add:active {
-	border: 1px solid black;
-	box-shadow: 0px 0px 0px 0px #9FAFCA;
-	transform: translateY(10px);
-}
-
-
-.floating-add .icon {
-	display: inline-block;
-	vertical-align: middle;
-}
-
-.floating-add img.icon {
-	height: 60%;
 }

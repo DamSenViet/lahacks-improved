@@ -71,11 +71,11 @@
 
 		<main class="login">
 			<form class="loginForm">
-				<label for="username">Email</label>
-				<input id="username" class="username" type="email" name="username" placeholder="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"required />
+				<label for="username">Username</label>
+				<input id="username" class="username" type="text" name="username" placeholder="" required />
 
 				<label for="password">Password</label>
-				<input id="password" class="password" type="password" name="password" placeholder="" required pattern="" title="wow"/>
+				<input id="password" class="password" type="password" name="password" placeholder="" required title="wow"/>
 
 				<div class="submit-container">
 					<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
@@ -97,6 +97,8 @@
 			$('input').focusout(function(evt) {
 				$('nav').removeClass('hidden');
 			});
+
+
 		</script>
 
 		<script src="/scripts/main.js"></script>
