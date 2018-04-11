@@ -7,8 +7,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-		<title>Flash - Signup</title>
+		<title>Sign Up</title>
 
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
 		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -27,7 +28,7 @@
 				<a class="logo" href="/">Sign Up</a>
 
 
-				<label class="right hamburger center-parent" for="hamburger">
+				<label class="right hamburger center-parent mobile" for="hamburger">
 					<div class="center">
 						<div class="top bar"></div>
 						<div class="middle bar"></div>
@@ -44,69 +45,76 @@
 						</datalist>
 					</div>
 
-					<a class="main" href="/login.html">Login</a>
-					<a class="main" href="/signup.html">Sign Up</a>
+					<a class="main" href="/login.html"><span class="centered-text">Login</span></a>
+					<a class="main" href="/signup.html"><span class="centered-text">Sign Up</span></a>
 
-					<div class="dropdown">
+					<!-- <div class="dropdown settings">
+						<a class="main">DamSenViet</a>
+						<ul>
+							<li><a class="user-icon">Profile</a></li>
+							<li><a class="gear-icon">Settings</a></li>
+						</ul>
+					</div> -->
+
+
+					<div class="dropdown categories">
 						<a class="main desktop">Categories</a>
 						<ul class="desktop">
-							<a><li>cats</li></a>
-							<a><li>dogs</li></a>
-							<a><li>thing</li></a>
-							<a><li>wow</li></a>
+							<li><a href="test">cats</a></li>
+							<li><a>dogs</a></li>
+							<li><a>thing</a></li>
+							<li><a>wow</a></li>
 						</ul>
 
-
-						<a class="select-wrapper"><select class="mobile">
+						<div class="select-wrapper mobile">
+							<select>
 							<option disabled selected hidden>Categories</option>
-							<option value="">cats</option>
-							<option value="">dogs</option>
-							<option value="">humans</option>
-							<option value="">robots</option>
-						</select></a>
+								<option value="1">cats</option>
+								<option value="2">dogs</option>
+								<option value="3">humans</option>
+								<option value="4">robots</option>
+							</select>
+						</div>
 					</div>
+
 				</div>
 			</nav>
 		</header>
 
+
 		<main class="signup">
-			<form class="signupForm">
-				<label for="username">Username</label>
-				<input id="username" class="username" type="text" name="username" placeholder="" pattern=".{4,}" required />
 
-				<label for="password">Password</label>
-				<input id="password" class="password" type="password" name="password" placeholder="" required pattern=".{4,}" title="wow"/>
+			<div class="background desktop">
+				<img src="/media/signup.svg"/>
+			</div>
 
-				<label for="first-name">First Name</label>
-				<input id="first-name" class="first-name" type="text" name="first-name" placeholder="optional..." />
+			<div class="form">
+				<form class="signupForm">
+					<label for="username">Username</label>
+					<input id="username" class="username" type="text" name="username" placeholder="" pattern=".{4,}" autocorrect="off" required />
 
-				<label for="last-name">Last Name</label>
-				<input id="last-name" class="last-name" type="text" name="last-name" placeholder="optional..." />
+					<label for="password">Password</label>
+					<input id="password" class="password" type="password" name="password" placeholder="" required pattern=".{4,}" title="wow"/>
+
+					<label for="first-name">First Name</label>
+					<input id="first-name" class="first-name" type="text" name="first-name" placeholder="optional..." />
+
+					<label for="last-name">Last Name</label>
+					<input id="last-name" class="last-name" type="text" name="last-name" placeholder="optional..." />
 
 
-				<div class="submit-container">
-					<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
-					<div class="conditional clearfix"></div>
-					<button type="submit">Sign Up</button>
-					<div class="conditional clearfix"></div>
-				</div>
-			</form>
+					<div class="submit-container">
+						<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
+						<div class="conditional clearfix"></div>
+						<button type="submit">Sign Up</button>
+						<div class="conditional clearfix"></div>
+					</div>
+				</form>
+			</div>
 		</main>
 
 
 		<script>
-			$('input').focus(function(evt) {
-				if (isMobile.any() && isLandscape()) {
-					$('nav').addClass('hidden');
-				}
-			});
-
-
-			$('input').focusout(function(evt) {
-				if (isMobile.any() && isLandscape()) {
-					$('nav').removeClass('hidden');
-				}
-			});
 
 			// validate username and password before sending it off
 			var username = document.querySelector('.username');
@@ -120,7 +128,7 @@
 				evt.target.setCustomValidity('');
 			}
 
-			
+
 
 		</script>
 

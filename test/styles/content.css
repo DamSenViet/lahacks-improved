@@ -10,6 +10,7 @@ main.index {
 	display: block;
 	position: relative;
 }
+
 .card {
 	position: relative;
 	display: inline-block;
@@ -45,7 +46,8 @@ main.index {
 	padding-bottom: 100%;
 }
 
-.description {
+.card .description {
+	word-wrap: break-word;
 	color: black;
 	text-transform: capitalize;
 	text-align: left;
@@ -55,18 +57,16 @@ main.index {
 	width: 100%;
 
 	font-size: 1rem;
-
 }
 
 a.link-wrapper {
 	text-decoration: none;
 }
 
-
-
 .floating-add {
 	background-color: white;
 	cursor: pointer;
+
 	/* box-shadow: 0px 10px 20px -7px #323232; */
 	box-shadow: 0px 10px 20px -5px #6b86b3;
 
@@ -107,15 +107,17 @@ a.link-wrapper {
 .floating-add .icon {
 	display: inline-block;
 	vertical-align: middle;
+	pointer-events: none;
 }
 
 .floating-add img.icon {
 	height: 60%;
-	transition: all 0.1s ease;
+	transition: all 0.05s ease;
 }
 
+/* generic styles for forms */
 
-.loginForm, .signupForm {
+form {
 	width: 80%;
 	position: relative;
 	top: 0;
@@ -124,7 +126,7 @@ a.link-wrapper {
 	padding-bottom: 3rem;
 }
 
-.loginForm input, .signupForm input {
+form input {
 	display: block;
 	outline: none;
 	border: none;
@@ -146,10 +148,6 @@ form input[type="text"]:focus, form input[type="email"]:focus,
 	color: black;
 }
 
-input:-webkit-autofill {
-	-webkit-box-shadow: 0 0 0px 1000px white inset;
-}
-
 form label {
 	display: block;
 
@@ -164,25 +162,11 @@ form .submit-container {
 	text-align: right;
 }
 
-.g-recaptcha {
-	float: right;
-}
-
 .submit-container button {
-	float: right;
-}
+	position: relative;
+	top: 0;
+	left: 0;
 
-.login button, .signup button {
-	margin-top: 30px;
-}
-
-.clearfix {
-	height: 0;
-	clear: both;
-}
-
-
-form button {
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	cursor: pointer;
@@ -199,6 +183,106 @@ form button {
 	box-shadow: 0 10px 20px -10px #1CBBB4;
 }
 
+.submit-container button:hover  {
+	box-shadow: 0 0 0px 0px #1CBBB4;
+	transform: translateY(5px);
+}
+
+.submit-container button:active {
+	transform: translateY(15px);
+}
+
+/* specific styles for upload */
+.upload .submit-container button {
+	background-color: #6c63ff;
+	box-shadow: 0 10px 20px -10px #6c63ff;
+}
+
+.upload .submit-container button:after {
+	box-sizing: content-box;
+	font-family: FontAwesome;
+	content: '\f093';
+	text-align: center;
+	margin-left: 15px;
+	vertical-align: middle;
+	display: inline-block;
+	float: right;
+}
+
+.upload .submit-container button.JSonprogress:after {
+	content: '';
+	border: 2px solid white;
+	border-left: 2px solid transparent;
+	border-right: 2px solid transparent;
+	border-bottom: 2px solid transparent;
+
+  width: 0.8rem;
+	height: 0.8rem;
+  border-radius: 100%;
+  animation: spin 0.75s infinite linear;
+}
+
+.upload .submit-container button.JSsuccess {
+	background-color: #1CBBB4;
+}
+
+.upload .submit-container button .upload-progress {
+	background-color: rgba(0, 0, 0, 0.09);
+
+	/* allow click-through */
+	pointer-events: none;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	/* let width be set by progress */
+	/* width: 50%; */
+
+	height: 100%;
+}
+
+.upload .submit-container button.JSsuccess:after {
+	content: '\f00c';
+	border: none;
+	width: auto;
+	height: auto;
+	border-radius: none;
+	animation: none;
+}
+
+.upload .submit-container {
+	margin-top: 0px;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(180deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.uploadForm .description {
+	border: 1px solid #8f8f8f;
+	padding: 10px;
+	width: 100%;
+	height: 5rem;
+	border-radius: 4px
+}
+
+.upload .filepond--panel-root {
+	background-color: #EDF0F7;
+}
+
+.filepond {
+	width: 100%;
+}
+
+/* input validation for signup form */
 form.signupForm input[type="text"]:valid, form.signupForm input[type="email"]:valid,
 	form.signupForm input[type="password"]:valid {
 	color: black;
@@ -209,13 +293,50 @@ form.signupForm input[type="text"]:valid, form.signupForm input[type="email"]:va
 	padding-left: 10px;
 }
 
+/* form.signupForm input[type="text"]:invalid, form.signupForm input[type="email"]:invalid,
+	form.signupForm input[type="password"]:invalid {
+		box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.4);
+		border: 1px solid #F25D59 !important;
+		border-radius: 4px !important;
+		padding-left: 10px !important;
+} */
 
-form button:active, form button:hover  {
-	box-shadow: 0 0 0px 0px #1CBBB4;
-	transform: translateY(5px);
+/* for error response from server */
+input.JSinvalid {
+	box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.4);
+	border: 1px solid #F25D59 !important;
+	border-radius: 4px !important;
+	padding-left: 10px !important;
+
+	animation: shake 0.82s cubic-bezier(.35, .07, .19, .97) 1 both;
+}
+
+@keyframes shake {
+	10%, 90% {transform: translate(-4px, 0);}
+	20%, 80% {transform: translate(4px, 0);}
+	30%, 50%, 70% {transform: translate(-6px, 0);}
+	40%, 60% {transform: translate(6px, 0);}
+}
+
+/* repositioning to make layout responsive */
+.submit-container button {
+	float: right;
+}
+
+.login .submit-container button,
+	.signup .submit-container button,
+	.upload .submit-container button {
+	margin-top: 30px;
+}
+
+.clearfix {
+	height: 0;
+	display: block;
+	clear: both;
 }
 
 .g-recaptcha {
+	float: right;
 	display: inline-block;
 }
 
@@ -223,7 +344,7 @@ form button:active, form button:hover  {
 @media only screen and (max-width: 360px) {
 	.g-recaptcha {
 		transform: scale(0.8);
-		transform-origin: 0 0;
+		transform-origin: 100% 0;
 	}
 
 }
@@ -247,7 +368,7 @@ form button:active, form button:hover  {
 		margin-bottom: 20px;
 	}
 
-	.description {
+	.card .description {
 		text-align: center;
 		padding: 15px 25px;
 	}
@@ -255,14 +376,16 @@ form button:active, form button:hover  {
 	.clearfix {
 		display: none;
 	}
-
 }
-
 
 @media only screen and (min-width: 700px) and (min-height: 700px) {
 	main.index {
 		padding-left: 2%;
 		padding-right: 2%;
+	}
+
+	.clearfix {
+		display: block;
 	}
 
 	.card {
@@ -272,24 +395,65 @@ form button:active, form button:hover  {
 		margin-bottom: 30px;
 	}
 
-	.description {
+	.card .description {
 		text-align: center;
 		padding: 13px 20px;
 	}
 
 	.floating-add {
+		transition: all 0.1s linear;
 		right: 50px;
 		bottom: 40px;
 	}
 
-	@media only screen and (min-width: 1000px) {
+	main.login .background, main.signup .background, main.upload .background {
+		position: relative;
+		float: left;
+		height: 100%;
+		width: 50%;
+		overflow: hidden;
+	}
+
+	main.login .form, main.signup .form, main.upload .form {
+		float: right;
+		width: 50%;
+		height: 100%;
+		padding: 10px;
+		overflow-y: auto;
+	}
+
+	.login .background img, .signup .background img, .upload .background img {
+		position: absolute;
+		top: 50%;
+		width: 90%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.g-recaptcha {
+		float: right;
+		transform: scale(0.8);
+		transform-origin: 100% 0;
+		transition: all 0.75s;
+	}
+
+	form .submit-container {
+		padding-bottom: 100px;
+	}
+
+	@media only screen and (min-width: 1090px) {
 		.card {
 			width: 19%;
 			margin-left: 0.5%;
 			margin-right: 0.5%;
 		}
 
+		.g-recaptcha {
+			float: left;
+			transform: none;
+		}
 
-	}
-
+		.clearfix {
+			display: none;
+		}
 }

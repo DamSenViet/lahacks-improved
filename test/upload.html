@@ -7,13 +7,21 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-		<title>Login</title>
+		<title>Upload - Category</title>
+
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="/scripts/filepond.js"></script>
+		<link rel="stylesheet" type="text/css" href="/styles/filepond.css"/>
+		<script src="/scripts/filepond-plugin-image-preview.js"></script>
+		<link rel="stylesheet" type="text/css" href="/styles/filepond-plugin-image-preview.css" />
+		<script src="/scripts/filepond-plugin-file-encode.js"></script>
+		<script src="/scripts/filepond-plugin-file-validate-type.js"></script>
 
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
 		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 		<script src="/scripts/lib.js"></script>
 	</head>
@@ -25,7 +33,7 @@
 
 				<a class="github" href="https://github.com/DamSenViet/LAHacks-Improved"><img src="/icons/github.svg"/></a>
 
-				<a class="logo" href="/">Login</a>
+				<a class="logo" href="/">Upload</a>
 
 
 				<label class="right hamburger center-parent mobile" for="hamburger">
@@ -82,29 +90,54 @@
 		</header>
 
 
-		<main class="login">
+		<main class="upload">
+
 			<div class="background desktop">
-				<img src="/media/login.svg" />
+				<img src="/media/upload.svg"/>
 			</div>
 
 			<div class="form">
-				<form class="loginForm">
-					<label for="username">Username</label>
-					<input id="username" class="username" type="text" name="username" placeholder="" autocorrect="off" required/>
+				<form class="uploadForm">
 
-					<label for="password">Password</label>
-					<input id="password" class="password" type="password" name="password" placeholder="" required title="wow"/>
+					<label for="title">Post Title</label>
+					<input id="title" class="title" type="text" name="title" placeholder="" autocomplete="off" required/>
+
+					<label for="description">Description</label>
+					<textarea id="description" class="description" maxlength="140" placeholder="Enter text here.."></textarea>
+
+					<label for>Add Photo</label>
+					<input id="file" class="filepond file" type="file" required/>
 
 					<div class="submit-container">
-						<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
-						<div class="conditional clearfix"></div>
-						<button type="submit">Login</button>
-						<div class="conditional clearfix"></div>
+						<button class="JSonprogress" type="submit"><div class="upload-progress"></div>Upload</button>
 					</div>
 				</form>
 			</div>
 		</main>
 
+
+		<!-- FilePond  script -->
+		<script>
+			FilePond.registerPlugin(
+				FilePondPluginImagePreview,
+				FilePondPluginFileEncode,
+				FilePondPluginFileValidateType
+			);
+
+			const inputElement = document.querySelector('.filepond');
+			const filepond = FilePond.create(inputElement, {
+				instantUpload: false
+			});
+
+
+		</script>
+
+		<script>
+		$('.upload button').click(function(){$(this).toggleClass('JSsuccess')})
+		// after upload succeeds
+		// 	disable the button set success animation
+		// 	THEN redirect
+		</script>
 
 		<script src="/scripts/main.js"></script>
 	</body>
