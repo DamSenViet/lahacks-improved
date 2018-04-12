@@ -1,0 +1,109 @@
+<!doctype html>
+
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+		<title>Create</title>
+
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
+		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<script src="/scripts/lib.js"></script>
+	</head>
+
+	<body>
+		<header>
+			<nav>
+				<input class="trigger" type="checkbox" id="hamburger"/>
+
+				<a class="github" href="https://github.com/DamSenViet/LAHacks-Improved"><img src="/icons/github.svg"/></a>
+
+				<a class="logo" href="/">Create</a>
+
+
+				<label class="right hamburger center-parent mobile" for="hamburger">
+					<div class="center">
+						<div class="top bar"></div>
+						<div class="middle bar"></div>
+						<div class="bottom bar"></div>
+					</div>
+				</label>
+
+				<div class="menu-items">
+					<div class="search">
+						<input type="text" list="suggestions" placeholder="Search..."/>
+
+						<datalist id="suggestions">
+							<option value="wow"></option>
+						</datalist>
+					</div>
+
+					<a class="main" href="/login.html"><span class="centered-text">Login</span></a>
+					<a class="main" href="/signup.html"><span class="centered-text">Sign Up</span></a>
+
+					<!-- <div class="dropdown settings">
+						<a class="main">DamSenViet</a>
+						<ul>
+							<li><a class="user-icon">Profile</a></li>
+							<li><a class="gear-icon">Settings</a></li>
+						</ul>
+					</div> -->
+
+
+					<div class="dropdown categories">
+						<a class="main desktop">Categories</a>
+						<ul class="desktop">
+							<li><a href="test">cats</a></li>
+							<li><a>dogs</a></li>
+							<li><a>thing</a></li>
+							<li><a>wow</a></li>
+						</ul>
+
+						<div class="select-wrapper mobile">
+							<select>
+							<option disabled selected hidden>Categories</option>
+								<option value="1">cats</option>
+								<option value="2">dogs</option>
+								<option value="3">humans</option>
+								<option value="4">robots</option>
+							</select>
+						</div>
+					</div>
+
+				</div>
+			</nav>
+		</header>
+
+
+		<main class="create">
+			<div class="background desktop">
+				<img src="/media/setup.svg" />
+			</div>
+
+			<div class="form">
+				<form class="createForm">
+					<label for="username">New Category Name</label>
+					<input id="category-name" class="category-name" type="text" name="category-name" placeholder="" autocorrect="off" required/>
+
+
+					<div class="submit-container">
+						<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
+						<div class="conditional clearfix"></div>
+						<button type="submit">Login</button>
+						<div class="conditional clearfix"></div>
+					</div>
+				</form>
+			</div>
+		</main>
+
+
+		<script src="/scripts/main.js"></script>
+	</body>
+</html>

@@ -1,3 +1,520 @@
+@import url("normalize.css");
+
+@font-face {
+	font-family: "Open-Sans";
+	src: url("/fonts/OpenSans-Regular.ttf") format("truetype");
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "Open-Sans";
+	src: url("/fonts/OpenSans-SemiBold.ttf") format("truetype");
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "Open-Sans";
+	src: url("/fonts/OpenSans-Bold.ttf") format("truetype");
+	font-weight: bold;
+}
+
+.desktop {
+	display: none !important;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+/* locking address bar */
+html, body {
+	height: 100%;
+}
+
+html {
+	overflow: hidden;
+}
+
 body {
-	background-color: red;
+	min-width: 320px;
+	overflow-y: hidden;
+	font-family: "Open-Sans";
+	min-height: 320px;
+}
+
+.left {float: left;}
+.right {float: right;}
+.center-parent {
+	position: relative;
+}
+
+.center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+header {
+	height: 3.9rem;
+	position: relative;
+	z-index: 100;
+}
+
+nav {
+	background-color: white;
+	/* background-image: linear-gradient(to top, rgb(207, 207, 207) 16%, rgb(252, 252, 252) 50%); */
+
+	position: fixed;
+	height: 3.9rem;
+	width: 100%;
+
+	/* parent's box-shadow can never be on top of child's; fix with pseudo element */
+	/* box-shadow: 0 0 10px 0px rgba(74, 74, 74, 0.42); */
+
+	/* border-bottom: 1px solid rgba(74, 74, 74, 0.42); */
+	line-height: 3.9rem;
+
+	text-align: center;
+	transition: all 1s ease;
+}
+
+nav:before {
+	content: "";
+
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	display: block;
+	width: 100%;
+	height: 100%;
+	box-shadow: 0 0 5px 0px rgba(74, 74, 74, 0.42);
+	/* before element sits on top of nav, need to be able to click through */
+	pointer-events: none;
+}
+
+nav > * {
+	display: inline-block;
+	/* text-transform: uppercase; */
+	vertical-align: middle;
+
+}
+
+nav > input.trigger {
+	display: none;
+}
+
+nav .github {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding-left: 20px;
+
+	height: 100%;
+}
+
+nav .github img {
+	height: 60%;
+	vertical-align: middle;
+}
+
+nav > .logo {
+	font-family: "Open-Sans";
+	font-weight: 600;
+	color: #333333;
+	text-transform: uppercase;
+
+	font-size: 1rem;
+	letter-spacing: 5px;
+	/* padding-left: 1.3rem; */
+	/* padding-right: 1.3rem; */
+	text-decoration: none;
+}
+
+nav > .hamburger {
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	height: 100%;
+	width: 3.9rem;
+	transition: all 0.35s linear;
+	cursor: pointer;
+}
+
+nav > .hamburger .bar {
+	background-color: #333333;
+	border-radius: 3px;
+
+	display: block;
+	height: 2px;
+	width: 100%;
+	margin: 3px 0px;
+	transition: all 0.2s linear;
+}
+
+nav > .hamburger > .center {
+	width: 30%;
+	line-height: 3px;
+}
+
+.trigger:checked ~ .hamburger .top {
+	transform: rotateZ(-45deg);
+	margin-bottom: -5px;
+}
+
+.trigger:checked ~ .hamburger .middle {
+	transform: rotateY(90deg);
+}
+
+.trigger:checked ~ .hamburger .bottom {
+	transform: rotateZ(45deg);
+	margin-top: -5px;
+}
+
+nav .search {
+	width: 100%;
+}
+
+nav .search input {
+	color: #8f8f8f;
+
+	display: inline-block;
+	width: 80%;
+	padding: 5px 5px 10px 15px ;
+	border-width: 0px;
+
+	border-bottom: 1px solid #8f8f8f;
+	transition: all 0.25s linear;
+}
+
+nav > .menu-items {
+	background-color: white;
+
+
+	transition: all 0.25s cubic-bezier(0.71, 0.06999, 0.6, 0.08999);
+	/* box-shadow: 0 5px 5px 0px rgba(74, 74, 74, 0.42); */
+	position: absolute;
+
+	margin-top: -1px;
+
+	top: 100%;
+	left: 0;
+	z-index: -1;
+
+	display: block;
+	width: 100%;
+	height: 0;
+	padding-top: 0;
+
+	overflow: hidden;
+
+	text-align: center;
+}
+
+.trigger:checked ~ .menu-items {
+	height: 100vh;
+	padding-top: 1rem;
+}
+
+
+nav > .menu-items a {
+	display: block;
+}
+
+nav > .menu-items a.main, nav > .menu-items select {
+	text-transform: uppercase;
+}
+nav > .menu-items option {
+	text-transform: lowercase;
+	text-align: center;
+}
+
+.menu-items a, .menu-items .select-wrapper {
+	transition: transform 0.5s 0.25s ease;
+	transform: scale(0);
+}
+
+.trigger:checked ~ .menu-items a, .trigger:checked ~ .menu-items .select-wrapper {
+	transform: scale(1);
+}
+
+nav > .menu-items a:hover, nav > .menu-items .select-wrapper:hover {
+	background-color: #EDF0F7;
+}
+
+.menu-items a {
+	text-decoration: none;
+	color: black;
+}
+
+
+nav .menu-items select {
+	font-family: Open-Sans;
+	text-align-last: center;
+	background-color: transparent !important;
+	border: none;
+	font-size: inherit;
+	width: 150px;
+	vertical-align: middle;
+	/* direction: rtl; */
+}
+
+nav .menu-items select:focus {
+	border: none;
+	outline: none;
+}
+
+
+.dropdown {
+	text-transform: uppercase;
+}
+
+.dropdown ul {
+	list-style: none;
+	padding-left: 0;
+	margin: 0;
+}
+
+.dropdown a {
+	transition: transform 0.5s 0.25s ease;
+}
+
+nav > .menu-items .dropdown.settings a.main {
+	text-transform: none;
+}
+
+.gear-icon:after, .user-icon:after {
+	transition: all 1s;
+	display: inline-block;
+	font-family: FontAwesome;
+	content: '\f013';
+	margin-left: 10px;
+	color: gray;
+	vertical-align: middle;
+}
+
+.gear-icon:after {content:'\f013';}
+.user-icon:after {content:'\f007'}
+
+
+main {
+	position: relative;
+	top: 0;
+	left: 0;
+	z-index: 0;
+	height: calc(100% - 3.9rem);
+	overflow-y: auto;
+}
+
+main.fit {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+
+@media only screen and (orientation: landscape) {
+	.menu-items {
+		column-count: 3;
+	}
+
+	nav .search {
+		column-span: all;
+	}
+
+	nav.hidden {
+		display: none;
+	}
+
+	.select-wrapper {
+		column-span: all;
+	}
+}
+
+/* Desktop View */
+@media only screen and (min-width: 700px) and (min-height: 700px) {
+	.desktop {
+		display: unset !important;
+	}
+
+	.mobile {
+		display: none !important;
+	}
+
+	nav .github {
+		position: static;
+		display: inline-block;
+		float: left;
+	}
+
+	nav .logo {
+		position: static;
+		margin-left: 30px;
+		float: left;
+	}
+
+
+	nav > .menu-items {
+		position: static;
+		transform: none;
+		height: 3.9rem;
+		width: calc(100% - 193px);
+
+		float: right;
+		/* overflow: visible; */
+
+		/* override landscape */
+		column-count: unset;
+		text-align: right;
+		padding-right: 20px;
+		transition: none;
+	}
+
+	.trigger:checked ~ .menu-items {
+		height: auto;
+		transform: none;
+		padding-top: 0;
+	}
+
+	nav .search {
+		display: inline-block;
+		width: 150px;
+		float: left;
+		margin-left: 30px;
+	}
+
+	nav .search:before {
+		font-family: FontAwesome;
+		content: '\f002';
+		display: block;
+		position: absolute;
+		color: gray;
+		margin-left: 8px;
+	}
+
+	nav .search input {
+		padding-bottom: 5px;
+		padding-left: 25px;
+		outline: none;
+		border: 1px solid black;
+		border-radius: 4px;
+		width: 100%;
+	}
+
+	nav .search input:focus {
+		color: black;
+	}
+
+	nav > .menu-items > a {
+		background-color: none;
+		font-weight: 600;
+
+		display: inline-block;
+		transform: none;
+		vertical-align: middle;
+		font-size: 0.8rem;
+	}
+
+	nav > .menu-items {
+		font-size: 0.9rem;
+		overflow: visible;
+	}
+
+	nav > .menu-items a:hover {
+		background-color: transparent;
+	}
+
+	/* using this class to style */
+	.centered-text, .dropdown a.main {
+		display: inline;
+		vertical-align: middle;
+		height: auto;
+		padding: 7px 15px;
+		border-radius: 3px;
+		font-size: 0.8rem;
+	}
+
+	.centered-text:hover, .dropdown a.main:hover {
+		background-color: #EDF0F7;
+		cursor: pointer;
+	}
+
+	.dropdown.categories {
+		float: left;
+	}
+
+	.dropdown.settings {
+		float: right;
+	}
+
+	.dropdown {
+		position: relative;
+		text-align: left;
+		margin-left: 30px;
+		font-weight: 600;
+	}
+
+	.dropdown ul {
+		transition: all 0.25s linear;
+		background-color: white;
+		border-radius: 4px;
+		list-style: none;
+		line-height: 3;
+		font-weight: normal;
+		box-shadow: 0 0 5px 0px rgba(74, 74, 74, 0.42);
+
+		position: absolute;
+		top: 100%;
+		left: 0;
+
+		display: block;
+		margin: 0;
+
+		padding: 0;
+		text-transform: capitalize;
+	}
+
+	.dropdown.categories ul {
+		max-height: 0px;
+		overflow-y: scroll;
+	}
+
+	.dropdown.settings ul {
+		overflow: hidden;
+		max-height: 0;
+		right: 0;
+	}
+
+	.dropdown li {
+		display: block;
+	}
+
+	.dropdown ul a {
+		padding-left: 15px;
+		padding-right: 15px;
+		transform: none;
+	}
+
+	nav > .menu-items .dropdown.settings a.main {
+		text-transform: uppercase;
+	}
+
+	.dropdown li a:hover {
+		background-color: #EDF0F7;
+	}
+
+	.dropdown.categories:hover ul {
+		max-height: 50vh;
+	}
+
+	.dropdown.settings:hover ul {
+		max-height: 10rem;
+	}
+
+	.gear-icon:after, .user-icon:after {
+		float: right;
+	}
+
 }
