@@ -1,0 +1,14 @@
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+
+}
+
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) and (min-width:700px) and (min-height: 700px) {
+	.dropdown.categories ul {
+		display: block;
+	}
+
+	.background.desktop {
+		display: block;
+	}
+}

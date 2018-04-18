@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
 		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
+		<link rel="stylesheet" type="text/css" href="/styles/microsoft.css" />
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -91,10 +92,10 @@
 			<div class="form">
 				<form class="signupForm">
 					<label for="username">Username</label>
-					<input id="username" class="username" type="text" name="username" placeholder="" pattern=".{4,}" autocorrect="off" required />
+					<input id="username" class="username" type="text" name="username" placeholder="" pattern="^.{4,16}" autocorrect="off" required />
 
 					<label for="password">Password</label>
-					<input id="password" class="password" type="password" name="password" placeholder="" required pattern=".{4,}" title="wow"/>
+					<input id="password" class="password" type="password" name="password" placeholder="" required pattern="^.{4,}" title="wow"/>
 
 					<label for="first-name">First Name</label>
 					<input id="first-name" class="first-name" type="text" name="first-name" placeholder="optional..." />
@@ -120,9 +121,18 @@
 			var username = document.querySelector('.username');
 			var password = document.querySelector('.password');
 			//set invalid message
-			username.oninvalid = password.oninvalid = function(evt) {
-				evt.target.setCustomValidity('At Least 4 Characters');
+			password.oninvalid = function(evt) {
+				evt.target.setCustomValidity('Password must be at least 4 characters.');
 			}
+
+			username.oninvalid = function(evt) {
+				if (this.value.length < 4) {
+					evt.target.setCustomValidity('Username must be at least 4 characters.');
+				} else if (this.value.length > 16) {
+					evt.target.setCustomValidity('Username cannot be more than 16 characters.');
+				}
+			}
+
 			// clear message when typing, otherwise it won't allow submit
 			username.oninput = password.oninput = function(evt) {
 				evt.target.setCustomValidity('');

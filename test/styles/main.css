@@ -18,9 +18,8 @@
 	font-weight: bold;
 }
 
-.desktop {
-	display: none !important;
-}
+
+
 
 * {
 	box-sizing: border-box;
@@ -314,6 +313,9 @@ main.fit {
 	padding-right: 1rem;
 }
 
+html body .desktop {
+	display: none;
+}
 
 @media only screen and (orientation: landscape) {
 	.menu-items {
@@ -335,12 +337,26 @@ main.fit {
 
 /* Desktop View */
 @media only screen and (min-width: 700px) and (min-height: 700px) {
-	.desktop {
-		display: unset !important;
+	::-webkit-scrollbar {
+	  width: 8px;
+	}
+	::-webkit-scrollbar-thumb {
+	  background-color: #c1c1c1;
+	  border-radius: 4px;
 	}
 
-	.mobile {
-		display: none !important;
+	.menu-items a {
+		transform: none;
+	}
+
+
+	/* WORKS ON CHROME && FF ONLY  */
+	html body .desktop {
+		display: initial;
+	}
+
+	html body .mobile {
+		display: none;
 	}
 
 	nav .github {
@@ -366,7 +382,7 @@ main.fit {
 		/* overflow: visible; */
 
 		/* override landscape */
-		column-count: unset;
+		column-count: auto;
 		text-align: right;
 		padding-right: 20px;
 		transition: none;
@@ -516,5 +532,4 @@ main.fit {
 	.gear-icon:after, .user-icon:after {
 		float: right;
 	}
-
 }

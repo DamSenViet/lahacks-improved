@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script type="text/javascript" src="/scripts/filepond.js"></script>
 		<link rel="stylesheet" type="text/css" href="/styles/filepond.css"/>
+		<script type="text/javascript" src="/scripts/filepond-polyfill.js"></script>
 		<script type="text/javascript" src="/scripts/filepond-plugin-image-preview.js"></script>
 		<link rel="stylesheet" type="text/css" href="/styles/filepond-plugin-image-preview.css" />
 		<script type="text/javascript" src="/scripts/filepond-plugin-file-encode.js"></script>
@@ -23,6 +24,7 @@
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
 		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
+		<link rel="stylesheet" type="text/css" href="/styles/microsoft.css" />
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 		<script src="/scripts/lib.js"></script>
@@ -112,6 +114,7 @@
 						<div class="character-count">140</div>
 					</div>
 
+					<!-- label here is different due to API -->
 					<label for="file"><span>Add Photo</span> <span class="error-message"></span></label>
 					<input id="file" class="filepond file" type="file" accept="image/*" required/>
 
@@ -246,16 +249,50 @@
                 };
                 return xhr;
             },
+						// keep in mind status is basically useless
 						success: function(res, status, xhr) {
 							// always know what's coming back
 							$('#submit').addClass('JSsuccess');
+
+							$('label .error-message').text('');
+
+							let inputs = $('.title, .description, .file');
+							inputs.removeClass('JSinvalid');
+							inputs.addClass('JSsuccess');
+
+
 							// setTimeout for animations
 							// do redirect to photo
+							console.log('success');
 						},
+						// status is always fail here, error is the typical
+						// status code's error message
 						error: function(xhr, status, error) {
 							// handle based on status
-
 							$('#submit').addClass('JSfail');
+							if (xhr.status === 400) {
+								console.log(xhr.responseJSON);
+
+								// set error messages and set invalid fields
+								for (var field in xhr.responseJSON) {
+									$('label[for="' + field + '"] .error-message').text(xhr.responseJSON[field]);
+									let inputs = $('.' + field);
+									// restart animation for invalid fields
+									inputs.removeClass('JSinvalid');
+									window.setTimeout(function(){
+										inputs.addClass('JSinvalid');
+									}, 100);
+								}
+							} else {
+								window.alert('¯\\\_(ツ)_/¯\nStatus Code: ' + xhr.status + '\n'
+								+ 'Error: ' + error);
+
+								// if (window.confirm('¯\\\_(ツ)_/¯\nStatus Code: ' + xhr.status + '\n'
+								// + 'Error: ' + error + '\n' + 'Report Error?')) {
+								// 	console.trace();
+								// }
+
+							}
 						},
 						complete: function(xhr, status) {
 							$('.upload-progress').css('width', '0%');

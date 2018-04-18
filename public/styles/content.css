@@ -328,6 +328,7 @@ form .submit-container {
 
 .filepond--panel-root {
 	background-color: #EDF0F7;
+	transition: all 0.1s linear;
 }
 
 .filepond--item-panel {
@@ -339,32 +340,52 @@ form .submit-container {
 }
 
 /* input validation for signup form */
-form.signupForm input[type="text"]:valid, form.signupForm input[type="email"]:valid,
-	form.signupForm input[type="password"]:valid {
+form.signupForm input[type="text"]:valid,
+	form.signupForm input[type="password"]:valid,
+	form input[type="text"].JSsuccess,
+	form input[type="password"].JSsuccess {
 	color: black;
 	border: 1px solid #1CBBB4 !important;
 	box-shadow: 0 0 0 2px rgba(46,204,64,.5);
 	border-radius: 4px;
-
 	padding-left: 10px;
 }
 
-/* form.signupForm input[type="text"]:invalid, form.signupForm input[type="email"]:invalid,
-	form.signupForm input[type="password"]:invalid {
-		box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.4);
-		border: 1px solid #F25D59 !important;
-		border-radius: 4px !important;
-		padding-left: 10px !important;
-} */
-
-/* for error response from server */
-input.JSinvalid {
+/* for error response from server, override valid styles */
+input.JSinvalid, form.signupForm input.JSinvalid[type="text"]:valid,
+ 	form.signupForm input.JSinvalid[type="password"]:valid {
 	box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.4);
 	border: 1px solid #F25D59 !important;
 	border-radius: 4px !important;
 	padding-left: 10px !important;
 
 	animation: shake 0.82s cubic-bezier(.35, .07, .19, .97) 1 both;
+}
+
+textarea.JSinvalid {
+	box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.4);
+	border: 1px solid #F25D59;
+	animation: shake 0.82s cubic-bezier(.35, .07, .19, .97) 1 both;
+}
+textarea.JSsuccess {
+	border: 1px solid #1CBBB4 !important;
+	box-shadow: 0 0 0 2px rgba(46,204,64,.5);
+}
+
+.file.JSinvalid {
+	animation: shake 0.82s cubic-bezier(.35, .07, .19, .97) 1 both;
+}
+
+.file.JSinvalid .filepond--panel-root {
+	background-color: #FF3565;
+}
+
+.file.JSsuccess .filepond--panel-root {
+	background-color: #1CBBB4;
+}
+
+.file.JSinvalid .filepond--drop-label {
+	color: white;
 }
 
 .submit-category {
