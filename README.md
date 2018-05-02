@@ -28,7 +28,7 @@ Instagram + Reddit Web Application
 	* Node.js and custom API
 	* Google Cloud: App Engine
 	* reCaptcha 2.0
-	* (PLANNED) MongoDB
+	* (PLANNED) MySQL
 	* (PLANNED) Mozilla Session
 
 

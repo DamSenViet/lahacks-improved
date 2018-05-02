@@ -189,6 +189,11 @@ nav .search input {
 	transition: all 0.25s linear;
 }
 
+/* remove dropdown icon */
+input::-webkit-calendar-picker-indicator {
+	display: none;
+}
+
 nav > .menu-items {
 	background-color: white;
 
@@ -412,12 +417,18 @@ html body .desktop {
 
 	nav .search input {
 		padding-bottom: 5px;
-		padding-left: 25px;
+		padding-top: 5px;
+		padding-left: 30px;
 		outline: none;
 		border: 1px solid black;
+		color: #a2a9b0;
+		/* background-color: #EDF0F7; */
+		font-size: 0.9rem;
 		border-radius: 4px;
 		width: 100%;
 	}
+
+
 
 	nav .search input:focus {
 		color: black;
@@ -495,6 +506,12 @@ html body .desktop {
 	.dropdown.categories ul {
 		max-height: 0px;
 		overflow-y: scroll;
+	}
+
+	@media screen and (-webkit-min-device-pixel-ratio:0) {
+		.dropdown.categories ul {
+			overflow-y: auto;
+		}
 	}
 
 	.dropdown.settings ul {

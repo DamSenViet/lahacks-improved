@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-		<title>Home</title>
+		<title>Category</title>
 
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
@@ -16,14 +16,14 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
 
-	<body>
+	<body class="category">
 		<header>
 			<nav>
 				<input class="trigger" type="checkbox" id="hamburger"/>
 
 				<a class="github" href="https://github.com/DamSenViet/LAHacks-Improved"><img src="/icons/github.svg"/></a>
 
-				<a class="logo" href="/">Explore</a>
+				<a class="logo" href="/">Browse</a>
 
 
 				<label class="right hamburger center-parent mobile" for="hamburger">
@@ -79,10 +79,14 @@
 			</nav>
 		</header>
 
-		<main class="index">
+		<main class="category">
+			<div class="close-out">
+				<div class="bar"></div>
+				<div class="bar"></div>
+			</div>
+
 			<div class="card">
 				<div class="image-container">
-					<a class="link-wrapper" href="">
 						<div class="overlay-container">
 							<div class="image" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP)">
 							</div>
@@ -91,30 +95,23 @@
 								Wallpapers
 							</div>
 						</div>
-					</a>
-
 					<!-- can't use image otherwise need more js -->
 				</div>
 			</div>
 
 			<div class="card">
 				<div class="image-container">
-					<a class="link-wrapper">
 						<div class="overlay-container">
 							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522931698295-e7b4d3e4188f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=309ec01234d4c837205b8e994a26b501&auto=format&fit=crop&w=934&q=80)"></div>
 							<div class="description">
 								Diving
 							</div>
 						</div>
-					</a>
 				</div>
 			</div>
 
-			<!-- Second Row -->
 			<div class="card">
 				<div class="image-container">
-
-					<a class="link-wrapper">
 						<div class="overlay-container">
 							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1501681506726-610246d81ade?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8913b1d2259602423f7c5ebafbd0d35a&auto=format&fit=crop&w=500&q=60)"></div>
 
@@ -122,16 +119,13 @@
 								Buildings
 							</div>
 						</div>
-					</a>
 				</div>
 			</div>
-
 
 
 			<div class="card">
 				<div class="image-container">
 
-					<a class="link-wrapper">
 						<div class="overlay-container">
 							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522901164215-21e2c3f4deb2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3e94da2d4ad11205b6fc6af8849b336&auto=format&fit=crop&w=1268&q=80)"></div>
 
@@ -139,16 +133,13 @@
 								Structures
 							</div>
 						</div>
-					</a>
 				</div>
 			</div>
 
 
 
-			<!-- Third Row -->
 			<div class="card">
 				<div class="image-container">
-					<a class="link-wrapper" href="">
 						<div class="overlay-container">
 							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1485340140625-c6edf4b069d6?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1600a41c495b1aa397fb3f9e8f45ddd3&auto=format&fit=crop&w=500&q=60)">
 							</div>
@@ -157,13 +148,12 @@
 								Photo Editing
 							</div>
 						</div>
-					</a>
 				</div>
 			</div>
 
+
 			<div class="card">
 				<div class="image-container">
-					<a class="link-wrapper">
 						<div class="overlay-container">
 							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1502014822147-1aedfb0676e0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a6a4ecb663beb4222450833f23c74017&auto=format&fit=crop&w=500&q=60)"></div>
 
@@ -171,16 +161,13 @@
 								Color
 							</div>
 						</div>
-					</a>
 				</div>
 			</div>
 
 
 
-			<!-- Row 4 -->
 			<div class="card">
 				<div class="image-container">
-					<a class="link-wrapper">
 						<div class="overlay-container">
 							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1481386642130-4a31ef3bf00d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=59fb10afb12965d26ac1dfcd110b3cff&auto=format&fit=crop&w=500&q=60)"></div>
 
@@ -188,34 +175,103 @@
 								Stairs
 							</div>
 						</div>
-					</a>
 				</div>
 			</div>
 
 			<div class="card">
 				<div class="image-container">
-					<a class="link-wrapper">
 						<div class="overlay-container">
 							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522897355400-c4fdec73d979?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cf638e454f0b741812a40edc5df77086&auto=format&fit=crop&w=800&q=60)"></div>
 							<div class="description">
 								Everyday Carry
 							</div>
 						</div>
-					</a>
 				</div>
 			</div>
 
 			<div class="floating-add">
-				<img src="/icons/idea.svg" class="icon"/>
+				<img src="/icons/camera.svg" class="icon"/>
 			</div>
 		</main>
+		</div>
 
 		<script>
+			function whichTransitionEvent(){
+					var el = document.createElement('fakeelement');
+					var transitions = {
+						'transition':'transitionend',
+						'OTransition':'oTransitionEnd',
+						'MozTransition':'transitionend',
+						'WebkitTransition':'webkitTransitionEnd'
+					}
+
+					for(var t in transitions){
+							if( el.style[t] !== undefined ){
+									return transitions[t];
+							}
+					}
+			}
+
+
+			var transitionEnd = whichTransitionEvent();
+
+
 			$('.floating-add').click(function() {
 				setTimeout(function(){
-					window.location.href = '/create.html';
+					window.location.href = '/upload.html';
 				}, 200);
 			});
+
+
+			var animate = function animate(card) {
+				// FIRST
+				var first = card.getBoundingClientRect();
+
+				// LAST
+				if(card.classList.contains('active')) {
+					card.classList.remove('active');
+					$('body').removeClass('active');
+				} else {
+					card.classList.add('active');
+					$('body').addClass('active');
+				}
+				var last = card.getBoundingClientRect();
+
+
+
+				// INVERT
+				var invert = {
+					// position
+					x: first.left - last.left,
+					y: first.top - last.top,
+					// scales
+					sx: first.width / last.width,
+					sy: first.height / last.height
+				};
+
+				// transforms to the current position
+				card.style.transform = 'translate(' + invert.x + 'px, ' + invert.y + 'px) scale(' + invert.sx + ', ' + invert.sy + ')';
+
+				// PLAY
+				requestAnimationFrame(function () {
+					card.classList.add('animate');
+					// transforms to the new position
+					card.style.transform = '';
+					// CLEAR
+					card.addEventListener('transitionend', clearAnimation);
+				});
+			};
+
+			// CLEAR
+			var clearAnimation = function clearAnimation(event) {
+				this.classList.remove('animate');
+				this.removeEventListener('transitionend', clearAnimation);
+			};
+
+			$('.card').click(function() {
+				animate(this);
+			});
+
 		</script>
 
 		<script src="/scripts/main.js"></script>
