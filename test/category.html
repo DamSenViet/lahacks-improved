@@ -211,10 +211,10 @@
 							}
 					}
 			}
-
-
 			var transitionEnd = whichTransitionEvent();
 
+
+			var currentScrollPos = 0;
 
 			$('.floating-add').click(function() {
 				setTimeout(function(){
@@ -238,8 +238,7 @@
 				var last = card.getBoundingClientRect();
 
 
-
-				// INVERT
+				// get current position and scales
 				var invert = {
 					// position
 					x: first.left - last.left,
@@ -255,9 +254,9 @@
 				// PLAY
 				requestAnimationFrame(function () {
 					card.classList.add('animate');
-					// transforms to the new position
+					// reset transform to form it to move back into place
 					card.style.transform = '';
-					// CLEAR
+					// CLEAR, moves to desired position
 					card.addEventListener('transitionend', clearAnimation);
 				});
 			};
@@ -266,10 +265,21 @@
 			var clearAnimation = function clearAnimation(event) {
 				this.classList.remove('animate');
 				this.removeEventListener('transitionend', clearAnimation);
+				$(this).toggleClass('final');
 			};
 
-			$('.card').click(function() {
-				animate(this);
+			var attachFocusCard = function() {
+				$('.card').click(function() {
+					animate(this);
+					$('.card').off();
+				});
+			}
+
+			attachFocusCard();
+			$('.close-out').click(function() {
+				let activeCard = document.querySelector('.card.active');
+				animate(activeCard);
+				attachFocusCard();
 			});
 
 		</script>

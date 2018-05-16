@@ -23,31 +23,31 @@ create table post (
 	description varchar(1000),
 	username varchar(20) not null,
 	category varchar(30) not null,
-	photoID varchar(20) not null,
+	postID varchar(20) not null,
 	imgAddress varchar(200) not null,
 	at datetime not null default CURRENT_TIMESTAMP,
-	primary key (photoID),
+	primary key (postID),
 	foreign key (username) references users(username),
 	foreign key (category) references category(name)
 );
 
 create table likes (
 	username varchar(20) not null,
-	photoID varchar(20) not null,
+	postID varchar(20) not null,
 	likeState bit not null,
 	at datetime not null default CURRENT_TIMESTAMP,
-	primary key (username, photoID),
+	primary key (username, postID),
 	foreign key (username) references users(username),
-	foreign key (photoID) references uploads(photoID)
+	foreign key (postID) references uploads(postID)
 );
 
 create table comments (
 	username varchar(20) not null,
-	photoID varchar(20) not null,
+	postID varchar(20) not null,
 	content varchar(10000) not null,
 	at datetime not null default CURRENT_TIMESTAMP,
 	foreign key (username) references users(username),
-	foreign key (photoID) references uploads(photoID)
+	foreign key (postID) references uploads(postID)
 );
 
 /* use this table to prevent brute-forcing */

@@ -5,17 +5,18 @@ Instagram + Reddit Web Application
 * cross-browser compatibility °˖✧◝(⁰▿⁰)◜✧˖°
 * responsive design, great for your phone (ღゝ◡╹)ノ♡)
 * (IMPROVEMENT IN PROGRESS) upload photos
-* (PLANNED) actual database using Mongoose (MongoDB)
+* (IMPROVEMENT IN PROGRESS) SQL database
+* (IMPROVEMENT IN PROGRESS) SQL injection protection
 * (PLANNED) compression of photos (server and client)
 * (IMPROVEMENT IN PROGRESS) vote on photos
-* (IMPROVEMENT IN PROGRESS) account system + session tracking (secure cookies)
+* (IMPROVEMENT IN PROGRESS) account system + session tracking (via secure cookies)
 * (IMPROVEMENT IN PROGRESS) view all your uploaded photos
+	* lazy loading implementation
 * (IMPROVEMENT IN PROGRESS) view category of photos by other users
 * (IMPROVEMENT IN PROGRESS) create your own categories
 * (IMPROVEMENT IN PROGRESS) signup/login input validation (server and client)
 * (IMPROVEMENT IN PROGRESS) brute force token protection (server-side)
 * (IMPROVEMENT IN PROGRESS) reCaptcha validation (server and client)
-* (IMPROVEMENT IN PROGRESS) slow-traffic guarantees
 * (PLANNED) live-updating votes
 
 
@@ -28,8 +29,8 @@ Instagram + Reddit Web Application
 	* Node.js and custom API
 	* Google Cloud: App Engine
 	* reCaptcha 2.0
-	* (PLANNED) MySQL
-	* (PLANNED) Mozilla Session
+	* MySQL
+	* Mozilla Session
 
 
 # Installing the Project
