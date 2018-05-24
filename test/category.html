@@ -2,31 +2,28 @@
 
 
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-		<title>Category</title>
+	<title>Category</title>
 
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
-		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
-		<link rel="stylesheet" type="text/css" href="/styles/microsoft.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	</head>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/styles/main.css" />
+	<link rel="stylesheet" type="text/css" href="/styles/content.css" />
+	<link rel="stylesheet" type="text/css" href="/styles/microsoft.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
 
-	<body class="category">
-		<header>
-			<nav>
-				<input class="trigger" type="checkbox" id="hamburger"/>
-
-				<a class="github" href="https://github.com/DamSenViet/LAHacks-Improved"><img src="/icons/github.svg"/></a>
-
-				<a class="logo" href="/">Browse</a>
-
-
-				<label class="right hamburger center-parent mobile" for="hamburger">
+<body class="category">
+	<header>
+		<nav>
+			<input class="trigger" type="checkbox" id="hamburger" />
+			<a class="github" href="https://github.com/DamSenViet/LAHacks-Improved"><img src="/icons/github.svg"/></a>
+			<a class="logo" href="/">Browse</a>
+			<label class="right hamburger center-parent mobile" for="hamburger">
 					<div class="center">
 						<div class="top bar"></div>
 						<div class="middle bar"></div>
@@ -34,19 +31,19 @@
 					</div>
 				</label>
 
-				<div class="menu-items">
-					<div class="search">
-						<input type="text" list="suggestions" placeholder="Search..."/>
+			<div class="menu-items">
+				<div class="search">
+					<input type="text" list="suggestions" placeholder="Search..." />
 
-						<datalist id="suggestions">
+					<datalist id="suggestions">
 							<option value="wow"></option>
 						</datalist>
-					</div>
+				</div>
 
-					<a class="main" href="/login.html"><span class="centered-text">Login</span></a>
-					<a class="main" href="/signup.html"><span class="centered-text">Sign Up</span></a>
+				<a class="main" href="/login.html"><span class="centered-text">Login</span></a>
+				<a class="main" href="/signup.html"><span class="centered-text">Sign Up</span></a>
 
-					<!-- <div class="dropdown settings">
+				<!-- <div class="dropdown settings">
 						<a class="main">DamSenViet</a>
 						<ul>
 							<li><a class="user-icon">Profile</a></li>
@@ -55,235 +52,256 @@
 					</div> -->
 
 
-					<div class="dropdown categories">
-						<a class="main desktop">Categories</a>
-						<ul class="desktop">
-							<li><a href="test">cats</a></li>
-							<li><a>dogs</a></li>
-							<li><a>thing</a></li>
-							<li><a>wow</a></li>
-						</ul>
+				<div class="dropdown categories">
+					<a class="main desktop">Categories</a>
+					<ul class="desktop">
+						<li><a href="test">cats</a></li>
+						<li><a>dogs</a></li>
+						<li><a>thing</a></li>
+						<li><a>wow</a></li>
+					</ul>
 
-						<div class="select-wrapper mobile">
-							<select>
+					<div class="select-wrapper mobile">
+						<select>
 								<option disabled selected hidden>Categories</option>
 								<option value="1">cats</option>
 								<option value="2">dogs</option>
 								<option value="3">humans</option>
 								<option value="4">robots</option>
 							</select>
-						</div>
 					</div>
-
 				</div>
-			</nav>
-		</header>
 
-		<main class="category">
-			<div class="close-out">
-				<div class="bar"></div>
-				<div class="bar"></div>
 			</div>
+		</nav>
+	</header>
 
-			<div class="card">
-				<div class="image-container">
-						<div class="overlay-container">
-							<div class="image" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP)">
-							</div>
-
-							<div class="description">
-								Wallpapers
-							</div>
-						</div>
-					<!-- can't use image otherwise need more js -->
-				</div>
-			</div>
-
-			<div class="card">
-				<div class="image-container">
-						<div class="overlay-container">
-							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522931698295-e7b4d3e4188f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=309ec01234d4c837205b8e994a26b501&auto=format&fit=crop&w=934&q=80)"></div>
-							<div class="description">
-								Diving
-							</div>
-						</div>
-				</div>
-			</div>
-
-			<div class="card">
-				<div class="image-container">
-						<div class="overlay-container">
-							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1501681506726-610246d81ade?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8913b1d2259602423f7c5ebafbd0d35a&auto=format&fit=crop&w=500&q=60)"></div>
-
-							<div class="description">
-								Buildings
-							</div>
-						</div>
-				</div>
-			</div>
-
-
-			<div class="card">
-				<div class="image-container">
-
-						<div class="overlay-container">
-							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522901164215-21e2c3f4deb2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3e94da2d4ad11205b6fc6af8849b336&auto=format&fit=crop&w=1268&q=80)"></div>
-
-							<div class="description">
-								Structures
-							</div>
-						</div>
-				</div>
-			</div>
-
-
-
-			<div class="card">
-				<div class="image-container">
-						<div class="overlay-container">
-							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1485340140625-c6edf4b069d6?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1600a41c495b1aa397fb3f9e8f45ddd3&auto=format&fit=crop&w=500&q=60)">
-							</div>
-
-							<div class="description">
-								Photo Editing
-							</div>
-						</div>
-				</div>
-			</div>
-
-
-			<div class="card">
-				<div class="image-container">
-						<div class="overlay-container">
-							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1502014822147-1aedfb0676e0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a6a4ecb663beb4222450833f23c74017&auto=format&fit=crop&w=500&q=60)"></div>
-
-							<div class="description">
-								Color
-							</div>
-						</div>
-				</div>
-			</div>
-
-
-
-			<div class="card">
-				<div class="image-container">
-						<div class="overlay-container">
-							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1481386642130-4a31ef3bf00d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=59fb10afb12965d26ac1dfcd110b3cff&auto=format&fit=crop&w=500&q=60)"></div>
-
-							<div class="description">
-								Stairs
-							</div>
-						</div>
-				</div>
-			</div>
-
-			<div class="card">
-				<div class="image-container">
-						<div class="overlay-container">
-							<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522897355400-c4fdec73d979?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cf638e454f0b741812a40edc5df77086&auto=format&fit=crop&w=800&q=60)"></div>
-							<div class="description">
-								Everyday Carry
-							</div>
-						</div>
-				</div>
-			</div>
-
-			<div class="floating-add">
-				<img src="/icons/camera.svg" class="icon"/>
-			</div>
-		</main>
+	<main class="category">
+		<div class="close-out">
+			<div class="bar"></div>
+			<div class="bar"></div>
 		</div>
 
-		<script>
-			function whichTransitionEvent(){
-					var el = document.createElement('fakeelement');
-					var transitions = {
-						'transition':'transitionend',
-						'OTransition':'oTransitionEnd',
-						'MozTransition':'transitionend',
-						'WebkitTransition':'webkitTransitionEnd'
-					}
+		<div class="card">
+			<div class="image-container">
+				<div class="overlay-container">
+					<div class="image" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP)">
+					</div>
 
-					for(var t in transitions){
-							if( el.style[t] !== undefined ){
-									return transitions[t];
-							}
-					}
+					<div class="description">
+						Wallpapers
+					</div>
+				</div>
+				<!-- can't use image otherwise need more js -->
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="image-container">
+				<div class="overlay-container">
+					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522931698295-e7b4d3e4188f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=309ec01234d4c837205b8e994a26b501&auto=format&fit=crop&w=934&q=80)"></div>
+					<div class="description">
+						Diving
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="image-container">
+				<div class="overlay-container">
+					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1501681506726-610246d81ade?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8913b1d2259602423f7c5ebafbd0d35a&auto=format&fit=crop&w=500&q=60)"></div>
+
+					<div class="description">
+						Buildings
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="card">
+			<div class="image-container">
+
+				<div class="overlay-container">
+					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522901164215-21e2c3f4deb2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3e94da2d4ad11205b6fc6af8849b336&auto=format&fit=crop&w=1268&q=80)"></div>
+
+					<div class="description">
+						Structures
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="card">
+			<div class="image-container">
+				<div class="overlay-container">
+					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1485340140625-c6edf4b069d6?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1600a41c495b1aa397fb3f9e8f45ddd3&auto=format&fit=crop&w=500&q=60)">
+					</div>
+
+					<div class="description">
+						Photo Editing
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="card">
+			<div class="image-container">
+				<div class="overlay-container">
+					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1502014822147-1aedfb0676e0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a6a4ecb663beb4222450833f23c74017&auto=format&fit=crop&w=500&q=60)"></div>
+
+					<div class="description">
+						Color
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="card">
+			<div class="image-container">
+				<div class="overlay-container">
+					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1481386642130-4a31ef3bf00d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=59fb10afb12965d26ac1dfcd110b3cff&auto=format&fit=crop&w=500&q=60)"></div>
+
+					<div class="description">
+						Stairs
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="image-container">
+				<div class="overlay-container">
+					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522897355400-c4fdec73d979?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cf638e454f0b741812a40edc5df77086&auto=format&fit=crop&w=800&q=60)"></div>
+					<div class="description">
+						Everyday Carry
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="floating-add">
+			<img src="/icons/camera.svg" class="icon" />
+		</div>
+	</main>
+
+	<script>
+		function whichTransitionEvent() {
+			var el = document.createElement('fakeelement');
+			var transitions = {
+				'transition': 'transitionend',
+				'OTransition': 'oTransitionEnd',
+				'MozTransition': 'transitionend',
+				'WebkitTransition': 'webkitTransitionEnd'
 			}
-			var transitionEnd = whichTransitionEvent();
 
-
-			var currentScrollPos = 0;
-
-			$('.floating-add').click(function() {
-				setTimeout(function(){
-					window.location.href = '/upload.html';
-				}, 200);
-			});
-
-
-			var animate = function animate(card) {
-				// FIRST
-				var first = card.getBoundingClientRect();
-
-				// LAST
-				if(card.classList.contains('active')) {
-					card.classList.remove('active');
-					$('body').removeClass('active');
-				} else {
-					card.classList.add('active');
-					$('body').addClass('active');
+			for (var t in transitions) {
+				if (el.style[t] !== undefined) {
+					return transitions[t];
 				}
-				var last = card.getBoundingClientRect();
+			}
+		}
+		var transitionEnd = whichTransitionEvent();
 
 
-				// get current position and scales
-				var invert = {
-					// position
-					x: first.left - last.left,
-					y: first.top - last.top,
-					// scales
-					sx: first.width / last.width,
-					sy: first.height / last.height
-				};
+		$('.floating-add').click(function() {
+			setTimeout(function() {
+				window.location.href = '/upload.html';
+			}, 200);
+		});
 
-				// transforms to the current position
-				card.style.transform = 'translate(' + invert.x + 'px, ' + invert.y + 'px) scale(' + invert.sx + ', ' + invert.sy + ')';
 
-				// PLAY
-				requestAnimationFrame(function () {
-					card.classList.add('animate');
-					// reset transform to form it to move back into place
-					card.style.transform = '';
-					// CLEAR, moves to desired position
-					card.addEventListener('transitionend', clearAnimation);
-				});
-			};
+		var animate = function animate(card) {
+			// FIRST
+			// LAST
 
-			// CLEAR
-			var clearAnimation = function clearAnimation(event) {
-				this.classList.remove('animate');
-				this.removeEventListener('transitionend', clearAnimation);
-				$(this).toggleClass('final');
-			};
-
-			var attachFocusCard = function() {
-				$('.card').click(function() {
-					animate(this);
-					$('.card').off();
-				});
+			let first;
+			let last;
+			if ($(card).hasClass('active')) {
+				// removing active
+				let image =  card.querySelector('.image');
+				first = image.getBoundingClientRect();
+				$(card).removeClass('active');
+				$('body').removeClass('active');
+				last = image.getBoundingClientRect();
+			} else {
+				// adding active
+				first = card.getBoundingClientRect();
+				$(card).addClass('active');
+				$('body').addClass('active');
+				last = card.getBoundingClientRect();
 			}
 
-			attachFocusCard();
-			$('.close-out').click(function() {
-				let activeCard = document.querySelector('.card.active');
-				animate(activeCard);
-				attachFocusCard();
+
+			// get current position and scales
+			let invert = {
+				// position
+				x: first.left - last.left,
+				y: first.top - last.top,
+				// scales
+				sx: first.width / last.width,
+				sy: first.height / last.height
+			};
+
+			// transforms to the current position according to scaling
+			card.style.transform = 'translate(' + invert.x + 'px, ' + invert.y + 'px) scale(' + invert.sx + ', ' + invert.sy + ')';
+
+			// PLAY
+			window.requestAnimationFrame(function() {
+				card.classList.add('animate');
+				// reset transform to form it to move back into place
+				card.style.transform = "";
+				// CLEAR, moves to desired position
+
+				// activating card, add final state in the middle of 'animate'
+				if (card.classList.contains('active')) {
+					card.classList.add('final');
+				}
+				card.addEventListener(transitionEnd, clearAnimation);
 			});
+		};
 
-		</script>
+		// CLEAR
+		var clearAnimation = function clearAnimation(event) {
+			// it's triggering randomly, not caring about transition duration on animate
+			this.removeEventListener(transitionEnd, clearAnimation);
+			this.classList.remove('animate');
 
-		<script src="/scripts/main.js"></script>
-	</body>
+			// logic for final class
+			// needs to add after animation end
+			// needs to be removed before animation starts when coming back
+
+		};
+
+		// ATTACH HANDLER WHEN NO CARDS ARE ACTIVE
+		// REMOVE HANDLER WHEN ONE CARD ACTIVE
+		var attachFocusCard = function() {
+			$('.card').click(function() {
+				$('.card').unbind();
+				animate(this);
+			});
+		};
+		$('.close-out').click(function() {
+			let activeCard = document.querySelector('.card.active');
+			activeCard.classList.remove('final');
+			animate(activeCard);
+			attachFocusCard();
+		});
+		// INITIAL ATTACHMENT
+		attachFocusCard();
+
+		// Prevent event bubble from interfering with card animation
+		$('.image-container, .overlay-container').on(transitionEnd, function(event) {
+			event.stopImmediatePropagation();
+		});
+	</script>
+	<script src="/scripts/main.js"></script>
+</body>
+
 </html>

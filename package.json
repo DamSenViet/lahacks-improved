@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "rm -r ./public/pictures/* && mysql -u root -p < ./mysql/initialize.sql && rm -r ./public/pictures/* && node ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

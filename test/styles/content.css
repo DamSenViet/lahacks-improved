@@ -40,7 +40,6 @@ main.index, main.category {
 	background-size: cover;
 	background-repeat: no-repeat;
 	border-radius: 7px 7px 0px 0px;
-
 }
 
 .image-container .image:before {
@@ -52,7 +51,8 @@ main.index, main.category {
 .card .description {
 	border-radius: 0px 0px 7px 7px;
 	background-color: white;
-	transition: all 1s ease;
+	min-height: 30px;
+	transition: all 0.45s ease;
 
 	word-wrap: break-word;
 	color: black;
@@ -471,18 +471,20 @@ body.active .floating-add {
 }
 
 .card.active {
+	will-change: transform;
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 
 	overflow-y: auto;
+	margin: 0;
 	z-index: 10;
 }
 
 .card.animate {
 	will-change: transform;
-	transition: transform 0.2s ease-out;
+	transition: transform 0.35s ease-out;
 	transform-origin: 0 0;
 	z-index: 10;
 }
@@ -496,8 +498,19 @@ body.active .floating-add {
 	border-radius: 0;
 }
 
+.card.final {
+	height: 100%;
+	overflow-y: auto;
+}
+
 .card.active .description {
 	border-radius: 0;
+}
+
+/* reserve height for comments */
+.card.final .description {
+	/* temporary height for testing */
+	min-height: 50vmax;
 }
 
 .close-out {

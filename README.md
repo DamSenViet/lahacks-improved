@@ -30,7 +30,7 @@ Instagram + Reddit Web Application
 	* Google Cloud: App Engine
 	* reCaptcha 2.0
 	* MySQL
-	* Mozilla Session
+	* (PLANNED) Mozilla Session
 
 
 # Installing the Project
@@ -40,19 +40,21 @@ You'll want to git clone and then change into the project directory. In any dire
 npm install
 ```
 
-This will install all the required dependencies. Then you'll want to run this command (inside the project):
+This will install all the required dependencies. We still need to start up the MySQL database where the exchanges will be happening.
+```
+mysqld
+```
+Keep the MySQL server up while the web application is running otherwise there'll be a lot of errors.
+
 ```
 npm start
 ```
-That should start up the server.
+That's all the setup in one command. Take note that the `start` command also functions as a "reset". It will reset the database associated with this web application and delete all uploaded pictures.
 
-
-You'll then want to go to this URL inside your browser:
+After starting up the web server, you'll then want to go to this URL inside your browser:
 ```
 localhost:3000
 ```
-
-Voila! Feel free to start uploading photos.
 
 
 # Using the Test Folder Prototype
