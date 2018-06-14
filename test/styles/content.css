@@ -484,7 +484,7 @@ body.active .floating-add {
 
 .card.animate {
 	will-change: transform;
-	transition: transform 0.35s ease-out;
+	transition: transform 0.25s ease-out;
 	transform-origin: 0 0;
 	z-index: 10;
 }
@@ -510,7 +510,7 @@ body.active .floating-add {
 /* reserve height for comments */
 .card.final .description {
 	/* temporary height for testing */
-	min-height: 50vmax;
+	min-height: 50vh;
 }
 
 .close-out {

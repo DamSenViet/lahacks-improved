@@ -224,7 +224,7 @@
 			let first;
 			let last;
 			if ($(card).hasClass('active')) {
-				// removing active
+				// removing active use image instead
 				let image =  card.querySelector('.image');
 				first = image.getBoundingClientRect();
 				$(card).removeClass('active');
@@ -257,47 +257,55 @@
 				card.classList.add('animate');
 				// reset transform to form it to move back into place
 				card.style.transform = "";
-				// CLEAR, moves to desired position
 
 				// activating card, add final state in the middle of 'animate'
 				if (card.classList.contains('active')) {
 					card.classList.add('final');
 				}
+				// CLEAR, moves to desired position once animate transition ends
 				card.addEventListener(transitionEnd, clearAnimation);
 			});
 		};
 
-		// CLEAR
+		// CLEAR ANIMATION PHASE
 		var clearAnimation = function clearAnimation(event) {
-			// it's triggering randomly, not caring about transition duration on animate
 			this.removeEventListener(transitionEnd, clearAnimation);
 			this.classList.remove('animate');
-
-			// logic for final class
-			// needs to add after animation end
-			// needs to be removed before animation starts when coming back
-
 		};
 
 		// ATTACH HANDLER WHEN NO CARDS ARE ACTIVE
 		// REMOVE HANDLER WHEN ONE CARD ACTIVE
-		var attachFocusCard = function() {
+		var scrollPos = null;
+		var attachFocusToCards = function() {
 			$('.card').click(function() {
 				$('.card').unbind();
+				$('main').height($('main').height());
 				animate(this);
 			});
 		};
 		$('.close-out').click(function() {
 			let activeCard = document.querySelector('.card.active');
+
+			// clearAnimation manually for high speed error correction
+			// when close out is activated too fast, before clearAnimation activates
+			// from transitionEnd, animate will stay there forever b/c it's never
+			// cleared, even in consecutive calls, therefore need to clear transitionEnd
+			activeCard.removeEventListener(transitionEnd, clearAnimation);
+			activeCard.classList.remove('animate');
+
+			// remove final first before inducing animation
 			activeCard.classList.remove('final');
 			animate(activeCard);
-			attachFocusCard();
+			attachFocusToCards();
+
+			// unlock height after card returns to normal position
+			$('main').height("");
 		});
 		// INITIAL ATTACHMENT
-		attachFocusCard();
+		attachFocusToCards();
 
-		// Prevent event bubble from interfering with card animation
-		$('.image-container, .overlay-container').on(transitionEnd, function(event) {
+		// PREVENT EVENT BUBBLING FROM TRIGGERING TRANSITION END OF PARENT ('.CARD')
+		$('.card *').on(transitionEnd, function(event) {
 			event.stopImmediatePropagation();
 		});
 	</script>
