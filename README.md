@@ -1,6 +1,10 @@
 # POST LAHacks
 Instagram + Reddit Web Application
 
+<p align="center">
+	<img src="./screenshots/landing.png" height="500" />
+</p>
+
 # Features
 * cross-browser compatibility °˖✧◝(⁰▿⁰)◜✧˖°
 * responsive design, great for your phone (ღゝ◡╹)ノ♡)
@@ -26,10 +30,10 @@ Instagram + Reddit Web Application
 	* reCaptcha 2.0
 	* EJS templates
 * Back End
-	* Node.js and custom API
+	* Node.JS and custom API
 	* Google Cloud: App Engine
 	* reCaptcha 2.0
-	* MySQL
+	* MySQL Database
 	* (PLANNED) Mozilla Session
 
 

@@ -74,4 +74,4 @@ create table attempts (
 );
 
 -- TEST INSERTS
--- insert into users(true, 'username', 'password', 'firstName', 'lastName');
+-- insert into users values (true, 'username', 'password', 'firstName', 'lastName');

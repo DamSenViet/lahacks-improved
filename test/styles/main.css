@@ -342,13 +342,13 @@ html body .desktop {
 
 /* Desktop View */
 @media only screen and (min-width: 700px) and (min-height: 700px) {
-	::-webkit-scrollbar {
+	/* ::-webkit-scrollbar {
 	  width: 8px;
 	}
 	::-webkit-scrollbar-thumb {
 	  background-color: #c1c1c1;
 	  border-radius: 4px;
-	}
+	} */
 
 	.menu-items a {
 		transform: none;

@@ -2,7 +2,6 @@
 
 
 <html>
-
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -218,13 +217,16 @@
 
 
 		var animate = function animate(card) {
-			// FIRST
-			// LAST
-
+			// FIRST position before transform
+			// LAST position after transform
 			let first;
 			let last;
 			if ($(card).hasClass('active')) {
-				// removing active use image instead
+				// delete placeholder first to make sure first and last are correct
+				$('.placeholder').remove();
+
+				// removing active using image instead
+				// prevents image distortion
 				let image =  card.querySelector('.image');
 				first = image.getBoundingClientRect();
 				$(card).removeClass('active');
@@ -236,6 +238,10 @@
 				$(card).addClass('active');
 				$('body').addClass('active');
 				last = card.getBoundingClientRect();
+
+				// add placeholder element
+				var emptyCard = "<div class='card placeholder'><div class='image-container'><div class='overlay-container'><div class='image'></div><div class='description'></div></div></div></div>"
+				$(emptyCard).insertAfter(card);
 			}
 
 
@@ -255,13 +261,14 @@
 			// PLAY
 			window.requestAnimationFrame(function() {
 				card.classList.add('animate');
-				// reset transform to form it to move back into place
+				// reset transform to have it move back into its proper place
 				card.style.transform = "";
 
 				// activating card, add final state in the middle of 'animate'
 				if (card.classList.contains('active')) {
 					card.classList.add('final');
 				}
+
 				// CLEAR, moves to desired position once animate transition ends
 				card.addEventListener(transitionEnd, clearAnimation);
 			});
@@ -278,11 +285,16 @@
 		var scrollPos = null;
 		var attachFocusToCards = function() {
 			$('.card').click(function() {
+				// remove handler from all cards after clicking, continue
 				$('.card').unbind();
-				$('main').height($('main').height());
-				animate(this);
+				try {
+					// animate the clicked card
+					animate(this);
+				} catch (err) {return null;}
 			});
 		};
+
+
 		$('.close-out').click(function() {
 			let activeCard = document.querySelector('.card.active');
 
@@ -290,24 +302,35 @@
 			// when close out is activated too fast, before clearAnimation activates
 			// from transitionEnd, animate will stay there forever b/c it's never
 			// cleared, even in consecutive calls, therefore need to clear transitionEnd
-			activeCard.removeEventListener(transitionEnd, clearAnimation);
-			activeCard.classList.remove('animate');
+			try {
+				activeCard.removeEventListener(transitionEnd, clearAnimation);
+				// need this to kill left behind placeholder bug
+				$('.animate').removeClass('animate');
+				$('.final').removeClass('final');
+			} catch (error) {return null;}
 
 			// remove final first before inducing animation
-			activeCard.classList.remove('final');
 			animate(activeCard);
 			attachFocusToCards();
-
-			// unlock height after card returns to normal position
-			$('main').height("");
 		});
+
+
+		$(document).keyup(function(e) {
+			if (e.keyCode == 27) {
+				$('.close-out').click();
+			}
+		});
+
+
 		// INITIAL ATTACHMENT
 		attachFocusToCards();
-
 		// PREVENT EVENT BUBBLING FROM TRIGGERING TRANSITION END OF PARENT ('.CARD')
 		$('.card *').on(transitionEnd, function(event) {
 			event.stopImmediatePropagation();
 		});
+
+
+
 	</script>
 	<script src="/scripts/main.js"></script>
 </body>
