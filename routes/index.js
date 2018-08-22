@@ -41,7 +41,7 @@ router.post('/TEMPORARY/', function(req, res, next) {
     console.log(req.body.description);
     // console.log(req.body.imgData);
     res.status(400);
-    res.send({title:'too long', file: 'oops'});
+    res.send({title:'too long', description: 'wow', file: 'oops'});
 });
 
 module.exports = router;

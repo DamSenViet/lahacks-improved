@@ -20,7 +20,6 @@
 
 
 
-
 * {
 	box-sizing: border-box;
 }
@@ -36,7 +35,7 @@ html {
 
 body {
 	min-width: 320px;
-	/* overflow-y: hidden; */
+	overflow-y: hidden;
 	font-family: "Open-Sans";
 	min-height: 320px;
 }
@@ -80,7 +79,6 @@ nav {
 
 nav:before {
 	content: "";
-
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -198,7 +196,7 @@ nav > .menu-items {
 	background-color: white;
 
 
-	transition: all 0.25s cubic-bezier(0.71, 0.06999, 0.6, 0.08999);
+	transition: all 0.20s cubic-bezier(0.71, 0.06999, 0.6, 0.08999);
 	/* box-shadow: 0 5px 5px 0px rgba(74, 74, 74, 0.42); */
 	position: absolute;
 
@@ -237,7 +235,7 @@ nav > .menu-items option {
 }
 
 .menu-items a, .menu-items .select-wrapper {
-	transition: transform 0.5s 0.25s ease;
+	transition: transform 0.20s 0.20s ease;
 	transform: scale(0);
 }
 
@@ -310,7 +308,7 @@ main {
 	left: 0;
 	z-index: 0;
 	height: calc(100% - 3.9rem);
-	overflow-y: auto;
+	overflow-y: scroll;
 }
 
 main.fit {

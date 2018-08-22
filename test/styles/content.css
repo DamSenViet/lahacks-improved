@@ -10,9 +10,11 @@ main.index, main.category {
 	position: relative;
 }
 
+/* CARD STYLES */
 .card {
 	position: relative;
 	display: inline-block;
+	cursor: pointer;
 
 	width: 85%;
 	margin-bottom: 50px;
@@ -48,15 +50,14 @@ main.index, main.category {
 	padding-bottom: 100%;
 }
 
-.card .description {
+.card .content {
 	border-radius: 0px 0px 7px 7px;
 	background-color: white;
 	min-height: 30px;
 	transition: all 0.45s ease;
+	position: relative;
 
-	word-wrap: break-word;
 	color: black;
-	text-transform: capitalize;
 	text-align: left;
 
 	padding: 30px 30px;
@@ -65,8 +66,324 @@ main.index, main.category {
 	font-size: 1rem;
 }
 
-/* Only allow description selection on all not index  */
-main.index .card .description {
+.card .title {
+	position: relative;
+	/* word-wrap: break-word; */
+	overflow: hidden;
+	width: calc(100% - 40px);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	line-height: 1.3;
+	vertical-align: middle;
+
+	display: inline-block;
+	user-select: none;
+}
+
+/* simplify structure */
+.like-wrapper {
+	display: inline-block;
+	user-select: none;
+}
+
+/* hiding default checkbox icon */
+.card .like-input {
+	display: none;
+}
+
+/* replacing with label */
+.card .like-button {
+	cursor: pointer;
+	display: inline-block;
+	user-select: none;
+	vertical-align: middle;
+	/* background-color: red; */
+	border: none;
+
+	background-image: url(/icons/like-backward.png);
+	background-position: left;
+	background-repeat: no-repeat;
+	background-size: 1300%;
+
+	transform: scale(1.8);
+
+	height: 35px;
+	width: 35px;
+	transition: background-position 0.2s steps(12);
+}
+
+.card .like-input:checked ~ .like-button {
+	background-image: url(/icons/like-forward.png);
+
+	background-size: 1300%;
+	background-position: right;
+	transition: background-position 0.3s steps(12);
+}
+
+.card .description {
+	transition: all 0.15s ease-out, opacity 0.05s linear, padding 0.05s linear;
+	opacity: 0;
+	word-wrap: break-word;
+
+	font-size: 0.85rem;
+	line-height: 1.3;
+	/* background-color: #EDF0F7; */
+	border-radius: 4px;
+
+	max-height: 0px;
+	margin-top: 0px;
+	padding: 0px 15px;
+	overflow: hidden;
+}
+
+.card .author {
+	transition: all 0.15s ease-out, opacity 0.05s linear, padding: 0.05s linear;
+	font-size: 0.85rem;
+	font-weight: bold;
+	color: #A2A8B1;
+
+	opacity: 0;
+	overflow: hidden;
+	max-height: 0px;
+	padding: 0px;
+	margin-top: 0px;
+}
+
+.author .author-name {
+	color: #A2A8B1;
+	text-decoration: none;
+}
+
+.author .author-name:hover {
+	text-decoration: underline;
+}
+
+.card .comments {
+	transition: all 0.10s linear, opacity 0.05s linear;
+	opacity: 0;
+	font-size: 0.85rem;
+
+	max-height: 0px;
+	margin-top: 0px;
+	overflow: hidden;
+}
+
+.card .comment {
+	transition: all 0.15s linear, opacity 0.10s linear;
+	opacity: 1;
+	margin-top: 20px;
+	transform: translateY(0px);
+}
+
+.card .comment.hidden {
+	opacity: 0;
+	transform: translateY(30px);
+}
+
+.comment-author * {
+	display: block;
+}
+
+.comment-author .username {
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #2D2D2D;
+	text-decoration: none;
+}
+
+.comment-author .username:hover {
+	text-decoration: underline;
+}
+
+.comment-text {
+	background-color: #EDF0F7;
+	border-radius: 4px;
+	padding: 15px;
+	color: rgba(76, 87, 102, .87);
+	line-height: 1.3;
+
+	margin: 0px;
+	margin-top: 10px;
+}
+
+.card .view-more-comments {
+	margin-top: 10px;
+	display: inline-block;
+	cursor: pointer;
+	text-decoration: underline;
+	color: #A2A8B1;
+}
+
+/* STYLES FOR CARD FOCUS */
+header {
+	transition: height 0.2s linear, opacity 0.1s linear;
+	overflow: hidden;
+}
+
+body.active header {
+	opacity: 0;
+	pointer-events: none;
+}
+
+main.category {
+	position: static;
+	transition: all 0.2s linear;
+}
+
+body.active main {
+	padding-top: 0;
+	height: 100%;
+}
+
+body.active .floating-add {
+	transition: all 0.1s linear;
+	transform: scale(0);
+	pointer-events: none;
+}
+
+.card.active {
+	/* will-change: transform; */
+	cursor: default;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+
+	margin: 0;
+	z-index: 10;
+}
+
+.card.placeholder {
+	opacity: 0;
+}
+
+.card.animate {
+	/* will-change: transform; */
+	transition: transform 0.25s ease-out;
+	transform-origin: 0 0;
+	z-index: 10;
+}
+
+.card.active .image-container {
+	border-radius: 0;
+	box-shadow: 0px 10px 50px -100px #9FAFCA;
+	background-color: white;
+}
+
+.card.active .image {
+	border-radius: 0;
+}
+
+.card.final {
+	height: 100%;
+	overflow-y: auto;
+}
+
+.card.active .content {
+	border-radius: 0;
+}
+
+/* reserve height for comments */
+.card.final .content {
+	/* temporary height for testing */
+	min-height: 75vh;
+}
+
+.card.active .title {
+	/* font-weight: 600; */
+	font-weight: bold;
+}
+
+.card.active .like-wrapper {
+	position: absolute;
+}
+
+.card.active .author {
+	transition: all 0.25s ease, opacity 0.15s linear, padding 0.05s linear;
+
+	opacity: 1;
+	margin-top: 5px;
+	padding: 0px 15px;
+
+	max-height: 9999vh;
+}
+
+.card.active .description {
+	transition: all 0.25s ease, opacity 0.15s linear, padding 0.05s linear;
+
+	opacity: 1;
+	padding: 15px 15px;
+
+	max-height: 9999vh;
+}
+
+.card.final .description:empty {
+	display: none;
+}
+
+.card.active .comments {
+	transition: all 0.25s ease, opacity 0.10s linear;
+	opacity: 1;
+	max-height: 9999vh;
+}
+
+textarea:focus {
+	outline: none;
+}
+
+.card .reply {
+	transition: all 0.13s linear;
+	width: 100%;
+	border-radius: 4px;
+	border: 0.5px solid #8e8e8e;
+	padding: 15px 15px;
+	margin-top: 20px;
+	line-height: 1.35;
+}
+
+.card .reply::-webkit-scrollbar {
+	display: none;
+}
+
+.close-out {
+	position: absolute;
+	z-index: 200;
+	background-color: rgba(0, 0, 0, 0.55);
+	border-radius: 100%;
+	height: 35px;
+	width: 35px;
+	top: 10px;
+	right: 10px;
+	opacity: 0;
+	pointer-events: none;
+
+	transition: opacity 0s;
+	cursor: pointer;
+}
+
+.close-out .bar {
+	background-color: white;
+	border-radius: 999px;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+
+	height: 60%;
+	width: 3px;
+}
+.close-out .bar:nth-child(1) {transform: translate(-50%, -50%) rotate(45deg)}
+.close-out .bar:nth-child(2) {transform: translate(-50%, -50%) rotate(-45deg)}
+
+body.active .close-out {
+	transition: opacity 0s 0.2s;
+	opacity: 1;
+	pointer-events: auto;
+}
+
+
+/* Only allow content selection on all not index  */
+.card .title {
 	user-select: none;
 }
 
@@ -446,118 +763,6 @@ textarea.JSsuccess {
 }
 
 
-/* STYLES FOR VIEWING */
-header {
-	transition: height 0.2s linear, opacity 0.1s linear;
-	overflow: hidden;
-}
-
-body.active header {
-	opacity: 0;
-	pointer-events: none;
-}
-
-main.category {
-	position: static;
-	transition: all 0.2s linear;
-}
-
-body.active main {
-	padding-top: 0;
-	height: 100%;
-}
-
-body.active .floating-add {
-	transition: all 0.1s linear;
-	transform: scale(0);
-	pointer-events: none;
-}
-
-.card.active {
-	will-change: transform;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-
-	overflow-y: auto;
-	margin: 0;
-	z-index: 10;
-}
-
-.card.placeholder {
-	opacity: 0;
-}
-
-.card.animate {
-	will-change: transform;
-	transition: transform 0.25s ease-out;
-	transform-origin: 0 0;
-	z-index: 10;
-}
-
-.card.active .image-container {
-	border-radius: 0;
-	box-shadow: 0px 10px 50px -100px #9FAFCA;
-	background-color: white;
-}
-
-.card.active .image {
-	border-radius: 0;
-}
-
-.card.final {
-	height: 100%;
-	overflow-y: auto;
-}
-
-.card.active .description {
-	border-radius: 0;
-}
-
-/* reserve height for comments */
-.card.final .description {
-	/* temporary height for testing */
-	min-height: 50vh;
-}
-
-
-.close-out {
-	position: fixed;
-	z-index: 200;
-	background-color: rgba(0, 0, 0, 0.55);
-	border-radius: 100%;
-	height: 35px;
-	width: 35px;
-	top: 10px;
-	right: 10px;
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity 0s;
-	cursor: pointer;
-}
-
-.close-out .bar {
-	background-color: white;
-	border-radius: 999px;
-
-	position: absolute;
-	top: 50%;
-	left: 50%;
-
-	height: 60%;
-	width: 3px;
-}
-.close-out .bar:nth-child(1) {transform: translate(-50%, -50%) rotate(45deg)}
-.close-out .bar:nth-child(2) {transform: translate(-50%, -50%) rotate(-45deg)}
-
-body.active .close-out {
-	transition: opacity 0s 0.2s;
-	opacity: 1;
-	pointer-events: auto;
-}
-
-
 @media only screen and (max-width: 360px) {
 	.g-recaptcha {
 		transform: scale(0.8);
@@ -585,10 +790,31 @@ body.active .close-out {
 		margin-bottom: 20px;
 	}
 
-	.card .description {
-		text-align: center;
+	.card.active .image {
+		width: 50%;
+		margin: auto;
+	}
+
+	.card.active .overlay-container {
+		background: black;
+	}
+
+	.card .content {
 		height: auto;
 		padding: 15px 25px;
+	}
+
+	.card.active .title {
+		width: 100%;
+		text-align: center;
+	}
+
+	.card .author {
+		text-align: center;
+	}
+
+	.card .description {
+		text-align: center;
 	}
 
 	.clearfix {
@@ -614,13 +840,13 @@ body.active .close-out {
 		margin-bottom: 30px;
 	}
 
-	.card .description {
-		text-align: center;
-		padding: 13px 20px;
+	.card .content {
+		transition: all 0.25s ease;
+		padding: 15px 10%;
 	}
 
-	.card.active .overlay-container {
-		background: black;
+	.card.active .content {
+		padding: 15px 20%;
 	}
 
 	.card.active .image {
@@ -628,12 +854,36 @@ body.active .close-out {
 		margin: auto;
 	}
 
+	.card.active .overlay-container {
+		background: black;
+	}
+
+	.card .title {
+		padding: 5px;
+	}
+
+	.card.active .title {
+		/* making room for like-button and offset to center */
+		width: calc(100% - 35px);
+		padding-left: 35px;
+		text-align: center;
+	}
+
+	.card .author {
+		text-align: center;
+	}
+
+	.card .description {
+		text-align: center;
+	}
+
+
 	.close-out {
 		right: 30px;
 	}
 
 	.floating-add {
-		transform: translateY(0), rotate(0deg);
+		transform: translateY(0) rotate(0deg);
 		transition: all 0.2s linear;
 		right: 50px;
 		bottom: 40px;
@@ -677,10 +927,6 @@ body.active .close-out {
 	form .submit-container {
 		padding-bottom: 100px;
 	}
-
-	/* .character-count {
-		right: 25px;
-	} */
 
 	@media only screen and (min-width: 1090px) {
 		.card {

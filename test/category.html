@@ -6,7 +6,6 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-
 	<title>Category</title>
 
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
@@ -81,15 +80,58 @@
 			<div class="bar"></div>
 		</div>
 
-		<div class="card">
+		<div class="card" data-post-id="10">
 			<div class="image-container">
 				<div class="overlay-container">
 					<div class="image" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP)">
 					</div>
 
-					<div class="description">
-						Wallpapers
+					<div class="content">
+						<div class="title">
+							Wallpapers
+						</div>
+						<div class="like-wrapper">
+							<input id="post-id" type="checkbox" class="like-input"/>
+							<label for="post-id" class="like-button"></label>
+						</div>
+
+						<div class="author">
+							by <a class="author-name" href="">Mahdi</a>
+						</div>
+						<div class="description">
+							A bunch of wallpapers I picked up last month.
+						</div>
+
+
+						<div class="comments">
+							<div class="comment-thread">
+								<div class="comment">
+									<div class="comment-author">
+										<a class="username" href="">Akashkutappa</a>
+									</div>
+									<p class="comment-text">
+										Test text
+									</p>
+								</div>
+
+								<div class="comment">
+									<div class="comment-author">
+										<a class="username" href="">DamSenViet</a>
+									</div>
+									<p class="comment-text">
+										Great work! But don't you think the interaction of the user to close the card isn't self explanatory ? A user would generally click the card again to probably view the image or expand on the information provided
+									</p>
+								</div>
+							</div>
+							<div>
+								<span class="view-more-comments">View more comments...</span>
+							</div>
+							<textarea class="reply post-reply" placeholder="Write a comment..." rows="1"></textarea>
+						</div>
 					</div>
+
+
+
 				</div>
 				<!-- can't use image otherwise need more js -->
 			</div>
@@ -99,9 +141,18 @@
 			<div class="image-container">
 				<div class="overlay-container">
 					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522931698295-e7b4d3e4188f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=309ec01234d4c837205b8e994a26b501&auto=format&fit=crop&w=934&q=80)"></div>
-					<div class="description">
-						Diving
+
+					<div class="content">
+						<div class="title">
+							Diving
+						</div>
+						<div class="description"></div>
+						<div class="comments">
+
+
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -111,9 +162,15 @@
 				<div class="overlay-container">
 					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1501681506726-610246d81ade?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8913b1d2259602423f7c5ebafbd0d35a&auto=format&fit=crop&w=500&q=60)"></div>
 
-					<div class="description">
-						Buildings
+					<div class="content">
+						<div class="title">
+							Buildings
+						</div>
+						<div class="description"></div>
+						<div class="comments">
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -121,13 +178,18 @@
 
 		<div class="card">
 			<div class="image-container">
-
 				<div class="overlay-container">
 					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522901164215-21e2c3f4deb2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3e94da2d4ad11205b6fc6af8849b336&auto=format&fit=crop&w=1268&q=80)"></div>
 
-					<div class="description">
-						Structures
+					<div class="content">
+						<div class="title">
+							Structures
+						</div>
+						<div class="description"></div>
+						<div class="comments">
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -140,9 +202,15 @@
 					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1485340140625-c6edf4b069d6?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1600a41c495b1aa397fb3f9e8f45ddd3&auto=format&fit=crop&w=500&q=60)">
 					</div>
 
-					<div class="description">
-						Photo Editing
+					<div class="content">
+						<div class="title">
+							Photo Editing
+						</div>
+						<div class="description"></div>
+						<div class="comments">
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -153,9 +221,15 @@
 				<div class="overlay-container">
 					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1502014822147-1aedfb0676e0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a6a4ecb663beb4222450833f23c74017&auto=format&fit=crop&w=500&q=60)"></div>
 
-					<div class="description">
-						Color
+					<div class="content">
+						<div class="title">
+							Color
+						</div>
+						<div class="description"></div>
+						<div class="comments">
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -167,9 +241,15 @@
 				<div class="overlay-container">
 					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1481386642130-4a31ef3bf00d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=59fb10afb12965d26ac1dfcd110b3cff&auto=format&fit=crop&w=500&q=60)"></div>
 
-					<div class="description">
-						Stairs
+					<div class="content">
+						<div class="title">
+							Stairs
+						</div>
+						<div class="description"></div>
+						<div class="comments">
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -178,9 +258,16 @@
 			<div class="image-container">
 				<div class="overlay-container">
 					<div class="image" style="background-image: url(https://images.unsplash.com/photo-1522897355400-c4fdec73d979?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cf638e454f0b741812a40edc5df77086&auto=format&fit=crop&w=800&q=60)"></div>
-					<div class="description">
-						Everyday Carry
+
+					<div class="content">
+						<div class="title">
+							Everyday Carry
+						</div>
+						<div class="description"></div>
+						<div class="comments">
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -204,6 +291,7 @@
 				if (el.style[t] !== undefined) {
 					return transitions[t];
 				}
+				return transitions['transition'];
 			}
 		}
 		var transitionEnd = whichTransitionEvent();
@@ -216,12 +304,26 @@
 		});
 
 
-		var animate = function animate(card) {
+		function animate(card) {
 			// FIRST position before transform
 			// LAST position after transform
 			let first;
 			let last;
-			if ($(card).hasClass('active')) {
+			if (!$(card).hasClass('active')) {
+				// reset all other animation states
+				$('.card').removeClass('animate final');
+
+				// adding active
+				first = card.getBoundingClientRect();
+				$(card).addClass('active');
+				$('body').addClass('active');
+				last = card.getBoundingClientRect();
+
+				// add placeholder element
+				var emptyCard = "<div class='card placeholder'><div class='image-container'><div class='overlay-container'><div class='image'></div><div class='content'></div></div></div></div>"
+				$(emptyCard).insertAfter(card);
+
+			} else {
 				// delete placeholder first to make sure first and last are correct
 				$('.placeholder').remove();
 
@@ -232,16 +334,6 @@
 				$(card).removeClass('active');
 				$('body').removeClass('active');
 				last = image.getBoundingClientRect();
-			} else {
-				// adding active
-				first = card.getBoundingClientRect();
-				$(card).addClass('active');
-				$('body').addClass('active');
-				last = card.getBoundingClientRect();
-
-				// add placeholder element
-				var emptyCard = "<div class='card placeholder'><div class='image-container'><div class='overlay-container'><div class='image'></div><div class='description'></div></div></div></div>"
-				$(emptyCard).insertAfter(card);
 			}
 
 
@@ -270,14 +362,14 @@
 				}
 
 				// CLEAR, moves to desired position once animate transition ends
-				card.addEventListener(transitionEnd, clearAnimation);
+				card.addEventListener(transitionEnd, clearCardAnimation);
 			});
 		};
 
 		// CLEAR ANIMATION PHASE
-		var clearAnimation = function clearAnimation(event) {
-			this.removeEventListener(transitionEnd, clearAnimation);
+		function clearCardAnimation(event) {
 			this.classList.remove('animate');
+			this.removeEventListener(transitionEnd, clearCardAnimation);
 		};
 
 		// ATTACH HANDLER WHEN NO CARDS ARE ACTIVE
@@ -298,22 +390,23 @@
 		$('.close-out').click(function() {
 			let activeCard = document.querySelector('.card.active');
 
-			// clearAnimation manually for high speed error correction
-			// when close out is activated too fast, before clearAnimation activates
+			// clearCardAnimation manually for high speed error correction
+			// when close out is activated too fast, before clearCardAnimation activates
 			// from transitionEnd, animate will stay there forever b/c it's never
-			// cleared, even in consecutive calls, therefore need to clear transitionEnd
+			// cleared, even in consecutive calls, therefore need to manually clear transitionEnd
 			try {
-				activeCard.removeEventListener(transitionEnd, clearAnimation);
+				activeCard.removeEventListener(transitionEnd, clearCardAnimation);
 				// need this to kill left behind placeholder bug
-				$('.animate').removeClass('animate');
-				$('.final').removeClass('final');
+				$('.card').removeClass('animate final');
 			} catch (error) {return null;}
 
 			// remove final first before inducing animation
 			animate(activeCard);
 			attachFocusToCards();
-		});
 
+			// remove focus from inputs inside the card
+			$('.reply').blur();
+		});
 
 		$(document).keyup(function(e) {
 			if (e.keyCode == 27) {
@@ -321,16 +414,85 @@
 			}
 		});
 
-
+		// PREVENT EVENT BUBBLING FROM TRIGGERING TRANSITION END OF PARENT ('.CARD')
+		// prevents some race conditions
+		$('.card > *').on('transitionend', function(event) {
+			event.stopImmediatePropagation();
+		});
 		// INITIAL ATTACHMENT
 		attachFocusToCards();
-		// PREVENT EVENT BUBBLING FROM TRIGGERING TRANSITION END OF PARENT ('.CARD')
-		$('.card *').on(transitionEnd, function(event) {
+
+		function textAreaAutoAdjust(event) {
+			this.style.height = '';
+			this.style.height = this.scrollHeight + 'px';
+		}
+		$('textarea.reply').on('input', textAreaAutoAdjust);
+
+		function textAreaCommentKeys(event) {
+			// ctrl + enter -> newline
+			if (event.ctrlKey && event.keyCode ==13) {
+				event.preventDefault();
+				this.value += "\n";
+				$(this).trigger('input');
+			}
+			// enter -> send comment
+			else if (event.keyCode == 13) {
+				event.preventDefault();
+				// send out comment POST request
+			}
+		}
+		$('textarea.reply').on('keydown', textAreaCommentKeys)
+
+
+
+		// prevent event bubbling + ensure smooth animation
+		function disableLike(event) {
 			event.stopImmediatePropagation();
+			//disable clicking until animation has finished
+			$(this).unbind('click');
+			$(this).on('click', function(event){
+				event.stopImmediatePropagation();
+				event.preventDefault();
+			});
+
+			// reenable like after animation completes
+			// since this is a label, the input DOESN'T change checked state until after
+			// this click trigger has finished running
+			let resetTime = 0;
+			if ($(this).siblings('.like-input').prop('checked') === true) {
+				resetTime = 205
+			} else if ($(this).siblings('.like-input').prop('checked') === false) {
+				resetTime = 305
+			}
+			let likebutton = this; // outside reference, this lost in setTimeout
+			setTimeout(function(event) {
+				$(likebutton).unbind();
+				$(likebutton).on('click', disableLike);
+			}, resetTime);
+		}
+		$('.like-button').on('click', disableLike);
+
+
+
+		$('.like-input').click(function(event) {
+			event.stopImmediatePropagation();
+		});
+		$('.like-input').change(function(event) {
+			console.log(this.checked);
+			// send like request
 		});
 
 
 
+		var cardsOffSet = 0;
+		// postId (string) -> commentOffSet
+		var commentsOffSet = {};
+		function addCards() {
+
+		}
+
+
+		/* "start": "rm -r ./public/pictures/* && mysql -u root -p < ./mysql/initialize.sql && rm -r ./public/pictures/* && node ./bin/www" */
 	</script>
 	<script src="/scripts/main.js"></script>
 </body>

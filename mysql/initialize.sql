@@ -3,10 +3,8 @@ create database lahacks;
 use lahacks;
 
 create table users (
-	isAdmin boolean,
 	username varchar(20) not null,
-
-	-- password size tbh for hashing
+	-- max password size tbh for hashing
 	password varchar(20) not null,
 
 	firstName varchar(30),
@@ -35,7 +33,7 @@ create table posts (
 	foreign key (category) references categories(name)
 );
 
-create table likes (
+create table postLikes (
 	username varchar(20) not null,
 	postID varchar(20) not null,
 	likeState bit not null,
@@ -46,6 +44,7 @@ create table likes (
 );
 
 -- comments also going to handle replies with depth and parentID
+-- now going with max depth of 2 to avoid overdesigning
 create table comments (
 	commentID varchar(10) not null,
 
@@ -53,13 +52,11 @@ create table comments (
 	parentID varchar(10) default null,
 
 -- need to create trigger, on add, check if item has parent, if it does +=1 to depth
-	depth int default 0,
 
 	username varchar(20) not null,
 	postID varchar(20) not null,
 	content varchar(10000) not null,
 	at datetime not null default CURRENT_TIMESTAMP,
-
 	primary key (commentID),
 	foreign key (parentID) references comments(commentID),
 	foreign key (username) references users(username),
