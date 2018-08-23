@@ -22,7 +22,7 @@ create table categories (
 create table posts (
 	postID varchar(20) not null,
 	title varchar(150) not null,
-	description varchar(1000),
+	description varchar(140),
 	username varchar(20) not null,
 	category varchar(30) not null,
 	imgAddress varchar(200) not null,

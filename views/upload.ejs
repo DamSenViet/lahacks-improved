@@ -13,16 +13,17 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script type="text/javascript" src="/scripts/filepond.js"></script>
 		<link rel="stylesheet" type="text/css" href="/styles/filepond.css"/>
+		<script type="text/javascript" src="/scripts/filepond-polyfill.js"></script>
 		<script type="text/javascript" src="/scripts/filepond-plugin-image-preview.js"></script>
 		<link rel="stylesheet" type="text/css" href="/styles/filepond-plugin-image-preview.css" />
 		<script type="text/javascript" src="/scripts/filepond-plugin-file-encode.js"></script>
 		<script type="text/javascript" src="/scripts/filepond-plugin-file-validate-type.js"></script>
 
 
-
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
 		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
+		<link rel="stylesheet" type="text/css" href="/styles/microsoft.css" />
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 		<script src="/scripts/lib.js"></script>
@@ -221,7 +222,7 @@
 					console.log('encoding finished');
 					// begin upload process, disable interference
 					button = document.querySelector('.submit');
-					button.disabled = true; //disable button
+					button.disabled = true; //disable button while uploading
 					// button.querySelector('span').innerHTML = "Uploading";
 
 					//begin to send AJAX request
@@ -251,7 +252,6 @@
 						success: function(res, status, xhr) {
 							// always know what's coming back
 							$('#submit').addClass('JSsuccess');
-
 							$('label .error-message').text('');
 							$('.title, .description, .file').removeClass('JSinvalid');
 							$('.title, .description, .file').addClass('JSsuccess');
@@ -278,9 +278,8 @@
 										inputs.addClass('JSinvalid');
 									}, 100);
 								}
-
 							} else {
-								alert('¯\\\_(ツ)_/¯\nStatus Code: ' + xhr.status + '\n'
+								window.alert('¯\\\_(ツ)_/¯\nStatus Code: ' + xhr.status + '\n'
 								+ 'Error: ' + error);
 							}
 						},
@@ -297,8 +296,6 @@
 				}
 			}, 300);
 		};
-
-
 		</script>
 		<script src="/scripts/main.js"></script>
 	</body>

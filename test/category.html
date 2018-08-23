@@ -464,7 +464,7 @@
 			} else if ($(this).siblings('.like-input').prop('checked') === false) {
 				resetTime = 305
 			}
-			let likebutton = this; // outside reference, this lost in setTimeout
+			let likebutton = this; // outside reference, this context lost in setTimeout
 			setTimeout(function(event) {
 				$(likebutton).unbind();
 				$(likebutton).on('click', disableLike);
@@ -480,6 +480,7 @@
 		$('.like-input').change(function(event) {
 			console.log(this.checked);
 			// send like request
+
 		});
 
 

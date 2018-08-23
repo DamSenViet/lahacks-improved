@@ -1,17 +1,22 @@
 var express = require('express');
+var expressSession = require('express-session');
+// app.use(expressSession({secret: 'random secret', saveUninitialized: false, resave: false,}));
 var router = express.Router();
 var fs = require('fs');
 
+var mysql = require('mysql');
+mysqlCredentials = JSON.parse(fs.readFileSync('mysqlCredentials.json', 'utf8'));
+mysqlHost = mysqlCredentials.host;
+mysqlUser = mysqlCredentials.user;
+mysqlPassword = mysqlCredentials.password;
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('upload');
+    res.render('index');
 });
 
 router.get('/login/', function(req, res, next) {
-
+	res.render('login');
 });
-
 
 router.post('/login/', function(req, res, next) {
 
