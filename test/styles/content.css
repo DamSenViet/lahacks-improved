@@ -491,6 +491,7 @@ form label {
 form label span {
 	vertical-align: middle;
 }
+
 .error-message {
 	font-size: 0.9rem;
 
@@ -505,14 +506,18 @@ form label span {
 	display: inline-block;
 	padding: 3px 10px;
 	margin-left: 10px;
-
 }
 .error-message:empty {
 	display: none;
 }
 
+.login .error-message {
+	margin-top: 30px;
+	margin-left: 0px;
+}
+
 form .submit-container {
-	margin-top: 50px;
+	margin-top: 30px;
 	padding-bottom: 80px;
 	text-align: right;
 }
@@ -553,7 +558,9 @@ form .submit-container {
 	box-shadow: 0 10px 20px -10px #6c63ff;
 }
 
-.upload .submit-container button:after {
+.upload .submit-container button:after,
+.signup button[type="submit"]:after,
+.login button[type="submit"]:after  {
 	box-sizing: content-box;
 	font-family: FontAwesome;
 	content: '\f093';
@@ -564,7 +571,9 @@ form .submit-container {
 	float: right;
 }
 
-.upload .submit-container button.JSonprogress:after {
+.upload .submit-container button.JSonprogress:after,
+.signup button.JSonprogress[type="submit"]:after,
+.login button.JSonprogress[type="submit"]:after {
 	content: '';
 	border: 2px solid white;
 	border-left: 2px solid transparent;
@@ -581,12 +590,16 @@ form .submit-container {
 	background-color: #1CBBB4;
 }
 
-.upload .submit-container button.JSfail {
+.upload .submit-container button.JSfail,
+.signup button[type="submit"].JSfail,
+.login button[type="submit"].JSfail {
 	background-color: #FF3565;
 	box-shadow: 0 10px 20px -10px rgba(255, 54, 101, 0.55);
 }
 
-.upload .submit-container button.JSfail:after {
+.upload .submit-container button.JSfail:after,
+.signup button[type="submit"].JSfail:after,
+.login button[type="submit"].JSfail:after {
 	font-size: 1em;
 	content: '\f00d';
 }

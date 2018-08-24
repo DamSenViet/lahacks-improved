@@ -18,9 +18,7 @@
 	font-weight: bold;
 }
 
-.desktop {
-	display: none !important;
-}
+
 
 * {
 	box-sizing: border-box;
@@ -81,7 +79,6 @@ nav {
 
 nav:before {
 	content: "";
-
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -190,11 +187,16 @@ nav .search input {
 	transition: all 0.25s linear;
 }
 
+/* remove dropdown icon */
+input::-webkit-calendar-picker-indicator {
+	display: none;
+}
+
 nav > .menu-items {
 	background-color: white;
 
 
-	transition: all 0.25s cubic-bezier(0.71, 0.06999, 0.6, 0.08999);
+	transition: all 0.20s cubic-bezier(0.71, 0.06999, 0.6, 0.08999);
 	/* box-shadow: 0 5px 5px 0px rgba(74, 74, 74, 0.42); */
 	position: absolute;
 
@@ -233,7 +235,7 @@ nav > .menu-items option {
 }
 
 .menu-items a, .menu-items .select-wrapper {
-	transition: transform 0.5s 0.25s ease;
+	transition: transform 0.20s 0.20s ease;
 	transform: scale(0);
 }
 
@@ -306,7 +308,7 @@ main {
 	left: 0;
 	z-index: 0;
 	height: calc(100% - 3.9rem);
-	overflow-y: auto;
+	overflow-y: scroll;
 }
 
 main.fit {
@@ -314,6 +316,9 @@ main.fit {
 	padding-right: 1rem;
 }
 
+html body .desktop {
+	display: none;
+}
 
 @media only screen and (orientation: landscape) {
 	.menu-items {
@@ -335,12 +340,26 @@ main.fit {
 
 /* Desktop View */
 @media only screen and (min-width: 700px) and (min-height: 700px) {
-	.desktop {
-		display: unset !important;
+	/* ::-webkit-scrollbar {
+	  width: 8px;
+	}
+	::-webkit-scrollbar-thumb {
+	  background-color: #c1c1c1;
+	  border-radius: 4px;
+	} */
+
+	.menu-items a {
+		transform: none;
 	}
 
-	.mobile {
-		display: none !important;
+
+	/* WORKS ON CHROME && FF ONLY  */
+	html body .desktop {
+		display: initial;
+	}
+
+	html body .mobile {
+		display: none;
 	}
 
 	nav .github {
@@ -366,7 +385,7 @@ main.fit {
 		/* overflow: visible; */
 
 		/* override landscape */
-		column-count: unset;
+		column-count: auto;
 		text-align: right;
 		padding-right: 20px;
 		transition: none;
@@ -396,12 +415,18 @@ main.fit {
 
 	nav .search input {
 		padding-bottom: 5px;
-		padding-left: 25px;
+		padding-top: 5px;
+		padding-left: 30px;
 		outline: none;
 		border: 1px solid black;
+		color: #a2a9b0;
+		/* background-color: #EDF0F7; */
+		font-size: 0.9rem;
 		border-radius: 4px;
 		width: 100%;
 	}
+
+
 
 	nav .search input:focus {
 		color: black;
@@ -481,6 +506,12 @@ main.fit {
 		overflow-y: scroll;
 	}
 
+	@media screen and (-webkit-min-device-pixel-ratio:0) {
+		.dropdown.categories ul {
+			overflow-y: auto;
+		}
+	}
+
 	.dropdown.settings ul {
 		overflow: hidden;
 		max-height: 0;
@@ -516,5 +547,4 @@ main.fit {
 	.gear-icon:after, .user-icon:after {
 		float: right;
 	}
-
 }

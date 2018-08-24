@@ -199,10 +199,10 @@
 		// only one encodedChecker interval exists at any time
 		var encodedChecker = null;
 		// AJAX SEND SEQUENCE
-		form.onsubmit = function(evt) {
+		form.onsubmit = function(event) {
 			// NOTE: pattern matching occurs before preventDefault :)
 			// input required checking also done for us
-			evt.preventDefault();
+			event.preventDefault();
 			console.log('attempted submit')
 
 			$('#submit').removeClass('JSfail');
@@ -242,9 +242,9 @@
                 // get the native XmlHttpRequest object
                 var xhr = $.ajaxSettings.xhr() ;
                 // set the onprogress event handler
-                xhr.upload.onprogress = function(evt){
-                    $('.upload-progress').css('width', (evt.loaded/evt.total * 100) + '%');
-                    console.log('upload progress:', evt.loaded/evt.total * 100);
+                xhr.upload.onprogress = function(event){
+                    $('.upload-progress').css('width', (event.loaded/event.total * 100) + '%');
+                    console.log('upload progress:', event.loaded/event.total * 100);
                 };
                 return xhr;
             },

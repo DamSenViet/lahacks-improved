@@ -91,18 +91,14 @@
 
 			<div class="form">
 				<form class="signupForm">
-					<label for="username">Username</label>
+					<label for="username">Username<span class="error-message"></span></label>
 					<input id="username" class="username" type="text" name="username" placeholder="" pattern="^.{4,16}" autocorrect="off" required />
 
-					<label for="password">Password</label>
-					<input id="password" class="password" type="password" name="password" placeholder="" required pattern="^.{4,}" title="wow"/>
+					<label for="password">Password<span class="error-message"></span></label>
+					<input id="password" class="password" type="password" name="password" placeholder="" required pattern="^.{4,}"/>
 
-					<label for="first-name">First Name</label>
-					<input id="first-name" class="first-name" type="text" name="first-name" placeholder="optional..." />
-
-					<label for="last-name">Last Name</label>
-					<input id="last-name" class="last-name" type="text" name="last-name" placeholder="optional..." />
-
+					<label for="password-confirm">Confirm Password<span class="error-message"></span></label>
+					<input id="password-confirm" class="password" type="password" name="password" placeholder="" required pattern="hello">
 
 					<div class="submit-container">
 						<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
@@ -117,29 +113,80 @@
 
 		<script>
 
-			// validate username and password before sending it off
-			var username = document.querySelector('.username');
-			var password = document.querySelector('.password');
 			//set invalid message
-			password.oninvalid = function(evt) {
-				evt.target.setCustomValidity('Password must be at least 4 characters.');
-			}
-
-			username.oninvalid = function(evt) {
-				if (this.value.length < 4) {
-					evt.target.setCustomValidity('Username must be at least 4 characters.');
-				} else if (this.value.length > 16) {
-					evt.target.setCustomValidity('Username cannot be more than 16 characters.');
+			$("#username").on('invalid', function(event) {
+				if ($(this).val().trim().length < 4) {
+					event.target.setCustomValidity('Username must be at least 4 characters.');
+				} else if ($(this).val().trim().length > 16) {
+					event.target.setCustomValidity('Username cannot be more than 16 characters.');
 				}
-			}
+			});
 
-			// clear message when typing, otherwise it won't allow submit
-			username.oninput = password.oninput = function(evt) {
-				evt.target.setCustomValidity('');
-			}
+			//clear to allow submit/rechecks
+			$("#username").on('input', function(event) {
+				event.target.setCustomValidity('');
+			});
 
 
+			$("#password").on('invalid', function(event) {
+				event.target.setCustomValidity('Password must be at least 4 characters.');
+			});
 
+			$("#password").on('input', function(event) {
+				event.target.setCustomValidity('');
+				$("#password-confirm").prop("pattern", $(this).val());
+			});
+
+			$('#password-confirm').on('invalid', function(event) {
+				event.target.setCustomValidity('Passwords must match');
+			});
+
+			$("#password-confirm").on('input', function(event) {
+				event.target.setCustomValidity('');
+			});
+
+			$(".signupForm").on('submit', function(event) {
+				event.preventDefault();
+
+				$("button[type='submit']").addClass("JSonprogress");
+				$("button[type='submit']").prop('disabled', true);
+				$.ajax({
+					url: "/signup",
+					type: "POST",
+					data: JSON.stringify({
+						username: $("#username").val().trim(),
+						password: $("#password").val()
+						// firstName: $(".first-name").val().trim(),
+						// lastName: $(".last-name").val().trim()
+					}),
+					contentType: "application/json",
+					dataType: 'json',
+					success: function (res, status, xhr) {
+						// perform redirect to homepage
+					},
+					error: function (xhr, status, error) {
+						$('button[type="submit"]').addClass('JSfail');
+						if (xhr.status === 400) {
+							console.log(xhr.responseJSON);
+							for (var field in xhr.responseJSON) {
+								$('label[for="' + field + '"] .error-message').text(xhr.responseJSON[field]);
+								let inputs = $('.' + field);
+								inputs.removeClass('JSinvalid');
+								window.setTimeout(function(){
+									inputs.addClass('JSinvalid');
+								}, 100);
+							}
+						} else {
+							window.alert('¯\\\_(ツ)_/¯\nStatus Code: ' + xhr.status + '\n'
+							+ 'Error: ' + error);
+						}
+					},
+					complete: function(xhr, status) {
+						$('button[type="submit"]').removeClass('JSonprogress');
+						$('button[type="submit"]').prop('disabled', false);
+					}
+				});
+			});
 		</script>
 
 		<script src="/scripts/main.js"></script>

@@ -1,6 +1,5 @@
-main.index {
+main.index, main.category {
 	/* remove white space between blocks */
-	font-size: 0;
 	padding-top: 30px;
 	text-align: center;
 }
@@ -11,18 +10,23 @@ main.index {
 	position: relative;
 }
 
+/* CARD STYLES */
 .card {
 	position: relative;
 	display: inline-block;
+	cursor: pointer;
+
 	width: 85%;
 	margin-bottom: 50px;
 	font-size: 1rem;
 }
 
 .image-container {
-	width: 100%;
-	box-shadow: 0px 10px 50px -10px #9FAFCA;
+	transition: all 0.5s ease;
 
+	width: 100%;
+	height: 100%;
+	box-shadow: 0px 10px 50px -10px #9FAFCA;
 	border-radius: 7px;
 }
 
@@ -32,12 +36,12 @@ main.index {
 }
 
 .image-container .image {
+	transition: border-radius 1s ease, margin 1s 1s ease;
 	width: 100%;
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
 	border-radius: 7px 7px 0px 0px;
-
 }
 
 .image-container .image:before {
@@ -46,17 +50,341 @@ main.index {
 	padding-bottom: 100%;
 }
 
-.card .description {
-	word-wrap: break-word;
-	color: black;
-	text-transform: capitalize;
-	text-align: left;
-	user-select: none;
+.card .content {
+	border-radius: 0px 0px 7px 7px;
+	background-color: white;
+	min-height: 30px;
+	transition: all 0.45s ease;
+	position: relative;
 
-	padding: 30px 10%;
+	color: black;
+	text-align: left;
+
+	padding: 30px 30px;
 	width: 100%;
 
 	font-size: 1rem;
+}
+
+.card .title {
+	position: relative;
+	/* word-wrap: break-word; */
+	overflow: hidden;
+	width: calc(100% - 40px);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	line-height: 1.3;
+	vertical-align: middle;
+
+	display: inline-block;
+	user-select: none;
+}
+
+/* simplify structure */
+.like-wrapper {
+	display: inline-block;
+	user-select: none;
+}
+
+/* hiding default checkbox icon */
+.card .like-input {
+	display: none;
+}
+
+/* replacing with label */
+.card .like-button {
+	cursor: pointer;
+	display: inline-block;
+	user-select: none;
+	vertical-align: middle;
+	/* background-color: red; */
+	border: none;
+
+	background-image: url(/icons/like-backward.png);
+	background-position: left;
+	background-repeat: no-repeat;
+	background-size: 1300%;
+
+	transform: scale(1.8);
+
+	height: 35px;
+	width: 35px;
+	transition: background-position 0.2s steps(12);
+}
+
+.card .like-input:checked ~ .like-button {
+	background-image: url(/icons/like-forward.png);
+
+	background-size: 1300%;
+	background-position: right;
+	transition: background-position 0.3s steps(12);
+}
+
+.card .description {
+	transition: all 0.15s ease-out, opacity 0.05s linear, padding 0.05s linear;
+	opacity: 0;
+	word-wrap: break-word;
+
+	font-size: 0.85rem;
+	line-height: 1.3;
+	/* background-color: #EDF0F7; */
+	border-radius: 4px;
+
+	max-height: 0px;
+	margin-top: 0px;
+	padding: 0px 15px;
+	overflow: hidden;
+}
+
+.card .author {
+	transition: all 0.15s ease-out, opacity 0.05s linear, padding: 0.05s linear;
+	font-size: 0.85rem;
+	font-weight: bold;
+	color: #A2A8B1;
+
+	opacity: 0;
+	overflow: hidden;
+	max-height: 0px;
+	padding: 0px;
+	margin-top: 0px;
+}
+
+.author .author-name {
+	color: #A2A8B1;
+	text-decoration: none;
+}
+
+.author .author-name:hover {
+	text-decoration: underline;
+}
+
+.card .comments {
+	transition: all 0.10s linear, opacity 0.05s linear;
+	opacity: 0;
+	font-size: 0.85rem;
+
+	max-height: 0px;
+	margin-top: 0px;
+	overflow: hidden;
+}
+
+.card .comment {
+	transition: all 0.15s linear, opacity 0.10s linear;
+	opacity: 1;
+	margin-top: 20px;
+	transform: translateY(0px);
+}
+
+.card .comment.hidden {
+	opacity: 0;
+	transform: translateY(30px);
+}
+
+.comment-author * {
+	display: block;
+}
+
+.comment-author .username {
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #2D2D2D;
+	text-decoration: none;
+}
+
+.comment-author .username:hover {
+	text-decoration: underline;
+}
+
+.comment-text {
+	background-color: #EDF0F7;
+	border-radius: 4px;
+	padding: 15px;
+	color: rgba(76, 87, 102, .87);
+	line-height: 1.3;
+
+	margin: 0px;
+	margin-top: 10px;
+}
+
+.card .view-more-comments {
+	margin-top: 10px;
+	display: inline-block;
+	cursor: pointer;
+	text-decoration: underline;
+	color: #A2A8B1;
+}
+
+/* STYLES FOR CARD FOCUS */
+header {
+	transition: height 0.2s linear, opacity 0.1s linear;
+	overflow: hidden;
+}
+
+body.active header {
+	opacity: 0;
+	pointer-events: none;
+}
+
+main.category {
+	position: static;
+	transition: all 0.2s linear;
+}
+
+body.active main {
+	padding-top: 0;
+	height: 100%;
+}
+
+body.active .floating-add {
+	transition: all 0.1s linear;
+	transform: scale(0);
+	pointer-events: none;
+}
+
+.card.active {
+	/* will-change: transform; */
+	cursor: default;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+
+	margin: 0;
+	z-index: 10;
+}
+
+.card.placeholder {
+	opacity: 0;
+}
+
+.card.animate {
+	/* will-change: transform; */
+	transition: transform 0.25s ease-out;
+	transform-origin: 0 0;
+	z-index: 10;
+}
+
+.card.active .image-container {
+	border-radius: 0;
+	box-shadow: 0px 10px 50px -100px #9FAFCA;
+	background-color: white;
+}
+
+.card.active .image {
+	border-radius: 0;
+}
+
+.card.final {
+	height: 100%;
+	overflow-y: auto;
+}
+
+.card.active .content {
+	border-radius: 0;
+}
+
+/* reserve height for comments */
+.card.final .content {
+	/* temporary height for testing */
+	min-height: 75vh;
+}
+
+.card.active .title {
+	/* font-weight: 600; */
+	font-weight: bold;
+}
+
+.card.active .like-wrapper {
+	position: absolute;
+}
+
+.card.active .author {
+	transition: all 0.25s ease, opacity 0.15s linear, padding 0.05s linear;
+
+	opacity: 1;
+	margin-top: 5px;
+	padding: 0px 15px;
+
+	max-height: 9999vh;
+}
+
+.card.active .description {
+	transition: all 0.25s ease, opacity 0.15s linear, padding 0.05s linear;
+
+	opacity: 1;
+	padding: 15px 15px;
+
+	max-height: 9999vh;
+}
+
+.card.final .description:empty {
+	display: none;
+}
+
+.card.active .comments {
+	transition: all 0.25s ease, opacity 0.10s linear;
+	opacity: 1;
+	max-height: 9999vh;
+}
+
+textarea:focus {
+	outline: none;
+}
+
+.card .reply {
+	transition: all 0.13s linear;
+	width: 100%;
+	border-radius: 4px;
+	border: 0.5px solid #8e8e8e;
+	padding: 15px 15px;
+	margin-top: 20px;
+	line-height: 1.35;
+}
+
+.card .reply::-webkit-scrollbar {
+	display: none;
+}
+
+.close-out {
+	position: absolute;
+	z-index: 200;
+	background-color: rgba(0, 0, 0, 0.55);
+	border-radius: 100%;
+	height: 35px;
+	width: 35px;
+	top: 10px;
+	right: 10px;
+	opacity: 0;
+	pointer-events: none;
+
+	transition: opacity 0s;
+	cursor: pointer;
+}
+
+.close-out .bar {
+	background-color: white;
+	border-radius: 999px;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+
+	height: 60%;
+	width: 3px;
+}
+.close-out .bar:nth-child(1) {transform: translate(-50%, -50%) rotate(45deg)}
+.close-out .bar:nth-child(2) {transform: translate(-50%, -50%) rotate(-45deg)}
+
+body.active .close-out {
+	transition: opacity 0s 0.2s;
+	opacity: 1;
+	pointer-events: auto;
+}
+
+
+/* Only allow content selection on all not index  */
+.card .title {
+	user-select: none;
 }
 
 a.link-wrapper {
@@ -75,17 +403,19 @@ a.link-wrapper {
 	position: fixed;
 	bottom: 20px;
 	right: 8%;
+	z-index: 1000;
+	transform: scale(1);
 
 
 	border-radius: 100%;
 	width: 75px;
-	line-height: 75px;
+	line-height: 72px;
 	height: 75px;
 
 	border: 1px solid black;
 
 
-	transition: all 0.1s linear;
+	transition: all 0.2s linear;
 	text-align: center;
 }
 
@@ -113,6 +443,8 @@ a.link-wrapper {
 .floating-add img.icon {
 	height: 60%;
 	transition: all 0.05s ease;
+	pointer-events: none;
+	user-select: none;
 }
 
 /* generic styles for forms */
@@ -159,6 +491,7 @@ form label {
 form label span {
 	vertical-align: middle;
 }
+
 .error-message {
 	font-size: 0.9rem;
 
@@ -173,14 +506,18 @@ form label span {
 	display: inline-block;
 	padding: 3px 10px;
 	margin-left: 10px;
-
 }
 .error-message:empty {
 	display: none;
 }
 
+.login .error-message {
+	margin-top: 30px;
+	margin-left: 0px;
+}
+
 form .submit-container {
-	margin-top: 50px;
+	margin-top: 30px;
 	padding-bottom: 80px;
 	text-align: right;
 }
@@ -221,7 +558,9 @@ form .submit-container {
 	box-shadow: 0 10px 20px -10px #6c63ff;
 }
 
-.upload .submit-container button:after {
+.upload .submit-container button:after,
+.signup button[type="submit"]:after,
+.login button[type="submit"]:after  {
 	box-sizing: content-box;
 	font-family: FontAwesome;
 	content: '\f093';
@@ -232,7 +571,9 @@ form .submit-container {
 	float: right;
 }
 
-.upload .submit-container button.JSonprogress:after {
+.upload .submit-container button.JSonprogress:after,
+.signup button.JSonprogress[type="submit"]:after,
+.login button.JSonprogress[type="submit"]:after {
 	content: '';
 	border: 2px solid white;
 	border-left: 2px solid transparent;
@@ -249,12 +590,16 @@ form .submit-container {
 	background-color: #1CBBB4;
 }
 
-.upload .submit-container button.JSfail {
+.upload .submit-container button.JSfail,
+.signup button[type="submit"].JSfail,
+.login button[type="submit"].JSfail {
 	background-color: #FF3565;
 	box-shadow: 0 10px 20px -10px rgba(255, 54, 101, 0.55);
 }
 
-.upload .submit-container button.JSfail:after {
+.upload .submit-container button.JSfail:after,
+.signup button[type="submit"].JSfail:after,
+.login button[type="submit"].JSfail:after {
 	font-size: 1em;
 	content: '\f00d';
 }
@@ -274,7 +619,7 @@ form .submit-container {
 	/* width: 50%; */
 
 	height: 100%;
-	transition: width 1s linear;
+	transition: width 0.25s linear;
 }
 
 .upload .submit-container button.JSsuccess:after {
@@ -282,7 +627,7 @@ form .submit-container {
 	border: none;
 	width: auto;
 	height: auto;
-	border-radius: none;
+	border-radius: 0px;
 	animation: none;
 }
 
@@ -384,9 +729,11 @@ textarea.JSsuccess {
 	background-color: #1CBBB4;
 }
 
-.file.JSinvalid .filepond--drop-label {
+.file.JSinvalid .filepond--drop-label,
+.file.JSsuccess .filepond--drop-label {
 	color: white;
 }
+
 
 .submit-category {
 	margin-top: 50px;
@@ -437,7 +784,8 @@ textarea.JSsuccess {
 }
 
 @media only screen and (orientation: landscape) {
-	main.index {
+	main.index, main.category {
+		font-size: 0;
 		padding-left: 8%;
 		padding-right: 8%;
 		text-align: left;
@@ -455,10 +803,31 @@ textarea.JSsuccess {
 		margin-bottom: 20px;
 	}
 
-	.card .description {
-		text-align: center;
+	.card.active .image {
+		width: 50%;
+		margin: auto;
+	}
+
+	.card.active .overlay-container {
+		background: black;
+	}
+
+	.card .content {
 		height: auto;
 		padding: 15px 25px;
+	}
+
+	.card.active .title {
+		width: 100%;
+		text-align: center;
+	}
+
+	.card .author {
+		text-align: center;
+	}
+
+	.card .description {
+		text-align: center;
 	}
 
 	.clearfix {
@@ -467,7 +836,8 @@ textarea.JSsuccess {
 }
 
 @media only screen and (min-width: 700px) and (min-height: 700px) {
-	main.index {
+	main.index, main.category {
+		font-size: 0;
 		padding-left: 2%;
 		padding-right: 2%;
 	}
@@ -483,13 +853,51 @@ textarea.JSsuccess {
 		margin-bottom: 30px;
 	}
 
+	.card .content {
+		transition: all 0.25s ease;
+		padding: 15px 10%;
+	}
+
+	.card.active .content {
+		padding: 15px 20%;
+	}
+
+	.card.active .image {
+		width: 50%;
+		margin: auto;
+	}
+
+	.card.active .overlay-container {
+		background: black;
+	}
+
+	.card .title {
+		padding: 5px;
+	}
+
+	.card.active .title {
+		/* making room for like-button and offset to center */
+		width: calc(100% - 35px);
+		padding-left: 35px;
+		text-align: center;
+	}
+
+	.card .author {
+		text-align: center;
+	}
+
 	.card .description {
 		text-align: center;
-		padding: 13px 20px;
+	}
+
+
+	.close-out {
+		right: 30px;
 	}
 
 	.floating-add {
-		transition: all 0.1s linear;
+		transform: translateY(0) rotate(0deg);
+		transition: all 0.2s linear;
 		right: 50px;
 		bottom: 40px;
 	}
@@ -533,10 +941,6 @@ textarea.JSsuccess {
 		padding-bottom: 100px;
 	}
 
-	/* .character-count {
-		right: 25px;
-	} */
-
 	@media only screen and (min-width: 1090px) {
 		.card {
 			width: 19%;
@@ -552,4 +956,5 @@ textarea.JSsuccess {
 		.clearfix {
 			display: none;
 		}
+	}
 }

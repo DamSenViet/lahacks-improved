@@ -6,9 +6,6 @@ create table users (
 	username varchar(20) not null,
 	-- max password size tbh for hashing
 	password varchar(20) not null,
-
-	firstName varchar(30),
-	lastName varchar(30),
 	primary key (username)
 );
 
