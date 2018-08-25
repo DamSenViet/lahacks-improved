@@ -131,7 +131,7 @@
 				contentType: 'application/json',
 				dataType: 'json',
 				success: function (res, status, xhr) {
-					window.location = xhr.responseJSON['lastPage'];
+					window.location = xhr.responseJSON['newCategoryPage'];
 				},
 				error: function (xhr, status, error) {
 					$('button[type="submit"]').addClass('JSfail');

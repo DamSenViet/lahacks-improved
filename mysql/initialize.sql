@@ -11,9 +11,7 @@ create table users (
 
 create table categories (
 	name varchar(30) not null,
-	creator varchar(20) not null,
-	primary key (name),
-	foreign key (creator) references users(username)
+	primary key (name)
 );
 
 create table posts (

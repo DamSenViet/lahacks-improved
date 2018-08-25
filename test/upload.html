@@ -230,12 +230,12 @@
 						// on error set error message, invalidate invalid fields
 					$.ajax({
 						url: '/TEMPORARY',
+						type: 'POST',
 						data: JSON.stringify({
 							title: title.value,
 							description: description.value,
 							imgData: JSON.parse($('input[name="filepond"]')[0].value)
 						}),
-						type: 'POST',
 						contentType: 'application/json',
 						dataType: 'json',
 						xhr: function(){
@@ -253,9 +253,8 @@
 							// always know what's coming back
 							$('#submit').addClass('JSsuccess');
 							$('label .error-message').text('');
-							let inputs = $('.title, .description, .file');
-							inputs.removeClass('JSinvalid');
-							inputs.addClass('JSsuccess');
+							$('.title, .description, .file').removeClass('JSinvalid');
+							$('.title, .description, .file').addClass('JSsuccess');
 
 							// setTimeout for animations
 							// do redirect to photo
@@ -266,7 +265,7 @@
 						error: function(xhr, status, error) {
 							// handle based on status
 							$('#submit').addClass('JSfail');
-							if (xhr.status === 400) {
+							if (xhr.status === 400 && xhr.responseJSON) {
 								console.log(xhr.responseJSON);
 
 								// set error messages and set invalid fields

@@ -1,8 +1,9 @@
 # POST LAHacks
 Instagram + Reddit Web Application
 
-<p align="center">
-	<img src="./screenshots/landing.png" height="500" />
+<p float="left" align="center">
+<img src="./screenshots/landing desktop.png" height="300" width="512"/>
+	<img src="./screenshots/landing.png" height="300" />
 </p>
 
 # Features
@@ -12,8 +13,8 @@ Instagram + Reddit Web Application
 * (IMPROVEMENT IN PROGRESS) mySQL database
 * (IMPROVEMENT IN PROGRESS) SQL injection prevention
 * (PLANNED) compression of photos (server and client)
-* (IMPROVEMENT IN PROGRESS) vote on photos
-* (IMPROVEMENT IN PROGRESS) account system + session tracking (via secure cookies)
+* (IMPROVEMENT IN PROGRESS) like/vote on photos
+* (IMPROVEMENT IN PROGRESS) account system + session tracking
 * (IMPROVEMENT IN PROGRESS) view all your uploaded photos
 	* lazy loading implementation
 * (IMPROVEMENT IN PROGRESS) view category of photos by other users

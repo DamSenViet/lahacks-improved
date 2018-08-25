@@ -105,10 +105,10 @@ main.index, main.category {
 	background-repeat: no-repeat;
 	background-size: 1300%;
 
-	transform: scale(1.8);
+	transform: scale(2.2);
 
-	height: 35px;
-	width: 35px;
+	height: 30px;
+	width: 30px;
 	transition: background-position 0.2s steps(12);
 }
 
@@ -507,13 +507,17 @@ form label span {
 	padding: 3px 10px;
 	margin-left: 10px;
 }
+
 .error-message:empty {
 	display: none;
 }
 
-.login .error-message {
+.login label[for="error-message"] .error-message {
 	margin-top: 30px;
 	margin-left: 0px;
+}
+.login label[for="error-message"] {
+	margin: 0px;
 }
 
 form .submit-container {
@@ -687,6 +691,7 @@ form .submit-container {
 /* input validation for signup form */
 form.signupForm input[type="text"]:valid,
 	form.signupForm input[type="password"]:valid,
+	form.createForm input[type="text"]:valid,
 	form input[type="text"].JSsuccess,
 	form input[type="password"].JSsuccess {
 	color: black;
@@ -697,8 +702,10 @@ form.signupForm input[type="text"]:valid,
 }
 
 /* for error response from server, override valid styles */
-input.JSinvalid, form.signupForm input.JSinvalid[type="text"]:valid,
- 	form.signupForm input.JSinvalid[type="password"]:valid {
+input.JSinvalid,
+	form.signupForm input.JSinvalid[type="text"]:valid,
+ 	form.signupForm input.JSinvalid[type="password"]:valid,
+	form.createForm input.JSinvalid[type="text"]:valid {
 	box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.4);
 	border: 1px solid #F25D59 !important;
 	border-radius: 4px !important;
@@ -818,9 +825,12 @@ textarea.JSsuccess {
 	}
 
 	.card.active .title {
-		width: 100%;
+		/* making room for like-button and offset to center */
+		width: calc(100% - 35px);
+		padding-left: 35px;
 		text-align: center;
 	}
+
 
 	.card .author {
 		text-align: center;
@@ -896,8 +906,6 @@ textarea.JSsuccess {
 	}
 
 	.floating-add {
-		transform: translateY(0) rotate(0deg);
-		transition: all 0.2s linear;
 		right: 50px;
 		bottom: 40px;
 	}

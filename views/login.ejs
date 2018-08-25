@@ -111,6 +111,8 @@
 		<script>
 		$('.loginForm').on('submit', function(event) {
 			event.preventDefault();
+
+			$("button[type='submit']").removeClass("JSfail");
 			$("button[type='submit']").addClass("JSonprogress");
 			$("button[type='submit']").prop('disabled', true);
 

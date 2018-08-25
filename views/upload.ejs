@@ -196,11 +196,14 @@
 			}, 100);
 		}
 
+
+
+		// have to poll b/c old version of FilePond didn't have callback
 		// only one encodedChecker interval exists at any time
 		var encodedChecker = null;
 		// AJAX SEND SEQUENCE
-		form.onsubmit = function(event) {
-			// NOTE: pattern matching occurs before preventDefault :)
+		$('.uploadForm').on('submit', function(event) {
+			// NOTE: pattern matching occurs before preventDefault
 			// input required checking also done for us
 			event.preventDefault();
 			console.log('attempted submit')
@@ -265,7 +268,7 @@
 						error: function(xhr, status, error) {
 							// handle based on status
 							$('#submit').addClass('JSfail');
-							if (xhr.status === 400) {
+							if (xhr.status === 400 && xhr.responseJSON) {
 								console.log(xhr.responseJSON);
 
 								// set error messages and set invalid fields
@@ -295,6 +298,8 @@
 					encodedChecker = null;
 				}
 			}, 300);
+		});
+		form.onsubmit = function(event) {
 		};
 		</script>
 		<script src="/scripts/main.js"></script>

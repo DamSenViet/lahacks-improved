@@ -90,13 +90,13 @@
 
 			<div class="form">
 				<form class="loginForm">
-					<label for="username">Username</label>
+					<label for="username">Username<span class="error-message"></span></label>
 					<input id="username" class="username" type="text" name="username" placeholder="" autocorrect="off" required/>
 
-					<label for="password">Password</label>
-					<input id="password" class="password" type="password" name="password" placeholder="" required title="wow"/>
+					<label for="password">Password<span class="error-message"></span></label>
+					<input id="password" class="password" type="password" name="password" placeholder="" required/>
 
-					<span class="error-message"></span>
+					<label for="error-message"><span class="error-message"></span></label>
 
 					<div class="submit-container">
 						<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
@@ -108,7 +108,51 @@
 			</div>
 		</main>
 
+		<script>
+		$('.loginForm').on('submit', function(event) {
+			event.preventDefault();
 
+			$("button[type='submit']").removeClass("JSfail");
+			$("button[type='submit']").addClass("JSonprogress");
+			$("button[type='submit']").prop('disabled', true);
+
+			$.ajax({
+				url: '/login',
+				type: "POST",
+				data: JSON.stringify({
+					username: $('#username').val().trim(),
+					password: $('#password').val(),
+					captchaResponse: $('#g-recaptcha-response').val()
+				}),
+				contentType: 'application/json',
+				dataType: 'json',
+				success: function (res, status, xhr) {
+					window.location = xhr.responseJSON['lastPage'];
+				},
+				error: function (xhr, status, error) {
+					$('button[type="submit"]').addClass('JSfail');
+					if (xhr.status === 400 && xhr.responseJSON) {
+						console.log(xhr.responseJSON);
+						for (var field in xhr.responseJSON) {
+							$('label[for="' + field + '"] .error-message').text(xhr.responseJSON[field]);
+							let inputs = $('.' + field);
+							inputs.removeClass('JSinvalid');
+							window.setTimeout(function(){
+								inputs.addClass('JSinvalid');
+							}, 100);
+						}
+					} else {
+						window.alert('¯\\\_(ツ)_/¯\nStatus Code: ' + xhr.status + '\n'
+						+ 'Error: ' + xhr.responseText);
+					}
+				},
+				complete: function(xhr, status) {
+					$('button[type="submit"]').removeClass('JSonprogress');
+					$('button[type="submit"]').prop('disabled', false);
+				}
+			});
+		});
+		</script>
 		<script src="/scripts/main.js"></script>
 	</body>
 </html>
