@@ -4,8 +4,8 @@ use lahacks;
 
 create table users (
 	username varchar(20) not null,
-	-- max password size tbh for hashing
-	password varchar(20) not null,
+	-- bcrypt unique salt for each user
+	password varchar(60) not null,
 	primary key (username)
 );
 

@@ -101,7 +101,7 @@
 					<input id="password-confirm" class="password" type="password" name="password" placeholder="" required pattern="hello">
 
 					<div class="submit-container">
-						<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi" 	></div>
+						<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi"></div>
 						<div class="conditional clearfix"></div>
 						<button type="submit">Sign Up</button>
 						<div class="conditional clearfix"></div>
@@ -155,16 +155,17 @@
 					type: "POST",
 					data: JSON.stringify({
 						username: $("#username").val().trim(),
-						password: $("#password").val()
+						password: $("#password").val(),
+						captchaResponse: $('#g-recaptcha-response').val()
 					}),
 					contentType: "application/json",
 					dataType: 'json',
 					success: function (res, status, xhr) {
-						// perform redirect to homepage
+						window.location = xhr.responseJSON['lastPage'];
 					},
 					error: function (xhr, status, error) {
 						$('button[type="submit"]').addClass('JSfail');
-						if (xhr.status === 400) {
+						if (xhr.status === 400 && xhr.responseJSON) {
 							console.log(xhr.responseJSON);
 							for (var field in xhr.responseJSON) {
 								$('label[for="' + field + '"] .error-message').text(xhr.responseJSON[field]);
@@ -176,7 +177,7 @@
 							}
 						} else {
 							window.alert('¯\\\_(ツ)_/¯\nStatus Code: ' + xhr.status + '\n'
-							+ 'Error: ' + error);
+							+ 'Error: ' + xhr.responseText);
 						}
 					},
 					complete: function(xhr, status) {

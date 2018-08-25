@@ -1,0 +1,98 @@
+<!doctype html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+		<title>Home</title>
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
+		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
+		<link rel="stylesheet" type="text/css" href="/styles/microsoft.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<header>
+			<nav>
+				<input class="trigger" type="checkbox" id="hamburger"/>
+
+				<a class="github" href="https://github.com/DamSenViet/LAHacks-Improved"><img src="/icons/github.svg"/></a>
+
+				<a class="logo" href="/">Explore</a>
+
+
+				<label class="right hamburger center-parent mobile" for="hamburger">
+					<div class="center">
+						<div class="top bar"></div>
+						<div class="middle bar"></div>
+						<div class="bottom bar"></div>
+					</div>
+				</label>
+
+				<div class="menu-items">
+					<div class="search">
+						<input type="text" list="suggestions" placeholder="Search..."/>
+
+						<datalist id="suggestions">
+							<option value="wow"></option>
+						</datalist>
+					</div>
+
+					<a class="main" href="/login.html"><span class="centered-text">Login</span></a>
+					<a class="main" href="/signup.html"><span class="centered-text">Sign Up</span></a>
+
+					<!-- <div class="dropdown settings">
+						<a class="main">DamSenViet</a>
+						<ul>
+							<li><a class="user-icon">Profile</a></li>
+							<li><a class="gear-icon">Settings</a></li>
+						</ul>
+					</div> -->
+
+
+					<div class="dropdown categories">
+						<a class="main desktop">Categories</a>
+						<ul class="desktop">
+							<li><a href="test">cats</a></li>
+							<li><a>dogs</a></li>
+							<li><a>thing</a></li>
+							<li><a>wow</a></li>
+						</ul>
+
+						<div class="select-wrapper mobile">
+							<select>
+								<option disabled selected hidden>Categories</option>
+								<option value="1">cats</option>
+								<option value="2">dogs</option>
+								<option value="3">humans</option>
+								<option value="4">robots</option>
+							</select>
+						</div>
+					</div>
+
+				</div>
+			</nav>
+		</header>
+
+		<main class="index">
+
+
+			<div class="floating-add">
+				<img src="/icons/idea.svg" class="icon"/>
+			</div>
+		</main>
+
+		<script>
+			$('.floating-add').click(function() {
+				setTimeout(function(){
+					window.location.href = '/create.html';
+				}, 200);
+			});
+		</script>
+
+		<script src="/scripts/main.js"></script>
+	</body>
+</html>

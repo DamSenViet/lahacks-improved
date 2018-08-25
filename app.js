@@ -4,8 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-
 var indexRouter = require('./routes/index');
+
+
+var session = require('express-session');
+
 
 var app = express();
 
@@ -24,6 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({secret: 'random secret', saveUninitialized: false, resave: false}));
 
 
 app.use('/', indexRouter);
@@ -43,6 +47,20 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+// globals
+mysqlCredentials = require('./mysqlCredentials.json');
+mysqlHost = mysqlCredentials.host;
+mysqlUser = mysqlCredentials.user;
+mysqlPassword = mysqlCredentials.password;
+
+mysqlConfig = {
+	host: mysqlHost,
+	user: mysqlUser,
+	password: mysqlPassword,
+	database: 'lahacks'
+}
 
 
 module.exports = app;
