@@ -105,10 +105,10 @@ main.index, main.category {
 	background-repeat: no-repeat;
 	background-size: 1300%;
 
-	transform: scale(2.2);
+	transform: scale(1.8);
 
-	height: 30px;
-	width: 30px;
+	height: 35px;
+	width: 35px;
 	transition: background-position 0.2s steps(12);
 }
 

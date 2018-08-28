@@ -506,12 +506,6 @@ html body .desktop {
 		overflow-y: scroll;
 	}
 
-	@media screen and (-webkit-min-device-pixel-ratio:0) {
-		.dropdown.categories ul {
-			overflow-y: auto;
-		}
-	}
-
 	.dropdown.settings ul {
 		overflow: hidden;
 		max-height: 0;

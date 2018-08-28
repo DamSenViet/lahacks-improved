@@ -63,19 +63,19 @@ localhost:3000
 
 # Using the Test Folder Prototype
 
-You may choose to use Python's simple HTTP server or you may use npm's live-server. As long as the servlet is able to set the root directory to be the test directory, it should be fine.
+You may choose to use Python's simple HTTP server or you may use npm's live-server. As long as the servlet is able to set the root directory to be the 'prototype' directory, it should be fine.
 
 ## Python
-If you have python (v3.6+) you may make the following call inside the test directory:
+If you have python (v3.6+) you may make the following call inside the prototype directory:
 ```
 python -m http.server
 ```
 Then, just go to the port inside your web browser.
 
 ## Live-Server
-Otherwise, you'll need to install [npm live-server](https://www.npmjs.com/package/live-server) first. I didn't include this in my modules since I have this globally installed for specific testing and everyone's tools are different.
+Otherwise, you'll need to install [npm live-server](https://www.npmjs.com/package/live-server) globally first. I didn't include this in my modules since I have this globally installed for specific testing and everyone's tools are different.
 
-Go into the test folder directory and then call:
+Go into the prototype folder directory and then call:
 ```
 live-server
 ```

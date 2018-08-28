@@ -41,13 +41,36 @@ var verifyCaptcha = function(req, res, next) {
 	});
 };
 
+// get list of categories using existing connection
+var getCategories = function(connection, callback) {
+	let sql = "select name from categories order by name asc";
+	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+		connection.end();
+
+		let categories = [];
+		for (let i = 0; i < results.length; ++i) {
+			categories.push(results[i].name);
+		}
+		callback(categories);
+		return;
+	});
+}
+
 router.get('/', function(req, res, next) {
 	req.session.lastPage = "/";
-  res.render('index', {
-		isAuthenticated: req.session.isAuthenticated,
-		username: req.session.user
+	let connection = mysql.createConnection(mysqlConfig);
+
+	getCategories(connection, function(categories) {
+		// NOTE: can use variables in outer scope
+		// e.g. don't need to pass in req, res, next
+		res.render('index', {
+			categories: categories,
+			isAuthenticated: req.session.isAuthenticated,
+			username: req.session.user
+		});
+		return;
 	});
-	return;
 });
 
 router.get('/login/', function(req, res, next) {
@@ -56,11 +79,16 @@ router.get('/login/', function(req, res, next) {
 		res.redirect((req.session.lastPage)? req.session.lastPage: "/");
 		return;
 	}
-	res.render('login', {
-		isAuthenticated: req.session.isAuthenticated,
-		username: req.session.user
+
+	let connection = mysql.createConnection(mysqlConfig);
+	getCategories(connection, function(categories) {
+		res.render('login', {
+			categories: categories,
+			isAuthenticated: req.session.isAuthenticated,
+			username: req.session.user
+		});
+		return;
 	});
-	return;
 });
 
 router.post('/login/', verifyCaptcha, function(req, res, next) {
@@ -129,11 +157,16 @@ router.get('/signup/', function(req, res, next) {
 		res.redirect((req.session.lastPage)? req.session.lastPage: "/");
 		return;
 	}
-	res.render('signup', {
-		isAuthenticated: req.session.isAuthenticated,
-		username: req.session.user
-	});
-	return;
+
+	let connection = mysql.createConnection(mysqlConfig);
+	getCategories(connection, function(categories) {
+		res.render('signup', {
+			categories: categories,
+			isAuthenticated: req.session.isAuthenticated,
+			username: req.session.user
+		});
+		return;
+	})
 });
 
 router.post('/signup/', verifyCaptcha, function(req, res, next) {
@@ -208,11 +241,15 @@ router.get('/create/', function(req, res, next) {
 		return;
 	};
 
-	res.render('create', {
-		isAuthenticated: req.session.isAuthenticated,
-		username: req.session.user
+	let connection = mysql.createConnection(mysqlConfig);
+	getCategories(connection, function(cateogories) {
+		res.render('create', {
+			categories: categories,
+			isAuthenticated: req.session.isAuthenticated,
+			username: req.session.user
+		});
+		return;
 	});
-	return;
 });
 
 router.post('/create/', verifyCaptcha, function(req, res, next) {
@@ -266,11 +303,15 @@ router.post('/create/', verifyCaptcha, function(req, res, next) {
 });
 
 router.get('/category/*', function(req, res, next) {
-	res.render('category', {
-		isAuthenticated: req.session.isAuthenticated,
-		username: req.session.user
+	let connection = mysql.createConnection(mysqlConfig);
+	getCategories(connection, function(categories) {
+		res.render('category', {
+			categories: categories,
+			isAuthenticated: req.session.isAuthenticated,
+			username: req.session.user
+		});
+		return;
 	});
-	return;
 });
 
 router.get('/upload/*', function(req, res, next) {
@@ -280,11 +321,16 @@ router.get('/upload/*', function(req, res, next) {
 		return;
 	};
 
-	res.render('upload', {
-		isAuthenticated: req.session.isAuthenticated,
-		username: req.session.user
+
+	let connection = mysql.createConnection(mysqlConfig);
+	getCategories(connection, function(categories) {
+		res.render('upload', {
+			categories: categories,
+			isAuthenticated: req.session.isAuthenticated,
+			username: req.session.user
+		});
+		return;
 	});
-	return;
 });
 
 router.post('/upload/*', function(req, res, next) {
@@ -304,6 +350,15 @@ router.get('/logout', function(req, res, next) {
 	let lastPage = (req.session.lastPage)? req.session.lastPage : "/";
 	req.session.destroy(function(error) {
 		res.redirect(lastPage);
+	});
+});
+
+
+// get list of categories?
+router.get('/categories', function(req, res, next) {
+	let connection = mysql.createConnection(mysqlConfig);
+	let sql = "";
+	connection.query(sql, function(error, results, fields) {
 	});
 });
 
