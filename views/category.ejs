@@ -375,7 +375,7 @@
 		function addCards() {
 			// gets cards, not comments
 			$.ajax({
-				url: "/category/smash_bros/cards",
+				url: "/category/<UNMODIFIED CATEGORY NAME>/cards",
 				type: "GET",
 				data: JSON.stringify({
 					Offset: cardsOffSet,
@@ -461,6 +461,10 @@
 				},
 				error: function(xhr, status, error) {
 					console.log(xhr.responseText);
+				},
+				complete: function(xhr, status) {
+					// reenable function on scroll
+
 				}
 			});
 		}

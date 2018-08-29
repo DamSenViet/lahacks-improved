@@ -15,7 +15,7 @@ create table categories (
 );
 
 create table posts (
-	postID varchar(20) not null,
+	postID int auto_increment,
 	title varchar(150) not null,
 	description varchar(140),
 	username varchar(20) not null,
@@ -30,7 +30,7 @@ create table posts (
 
 create table postLikes (
 	username varchar(20) not null,
-	postID varchar(20) not null,
+	postID int not null,
 	likeState bit not null,
 	at datetime not null default CURRENT_TIMESTAMP,
 	primary key (username, postID),
@@ -41,15 +41,15 @@ create table postLikes (
 -- comments also going to handle replies with depth and parentID
 -- now going with max depth of 2 to avoid overdesigning
 create table comments (
-	commentID varchar(10) not null,
+	commentID int auto_increment,
 
 -- need trigger to prevent insert if commentID = parentID
-	parentID varchar(10) default null,
+	parentID int default null,
 
 -- need to create trigger, on add, check if item has parent, if it does +=1 to depth
 
 	username varchar(20) not null,
-	postID varchar(20) not null,
+	postID int,
 	content varchar(10000) not null,
 	at datetime not null default CURRENT_TIMESTAMP,
 	primary key (commentID),
@@ -57,13 +57,3 @@ create table comments (
 	foreign key (username) references users(username),
 	foreign key (postID) references posts(postID)
 );
-
--- use this table to prevent brute-forcing
--- NOTE: using setTimeout to poll / update table occasionally
-create table attempts (
-	IP varchar(15) not null,
-	attempts int not null default 0
-);
-
--- TEST INSERTS
--- insert into users values (true, 'username', 'password', 'firstName', 'lastName');

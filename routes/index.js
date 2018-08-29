@@ -459,11 +459,13 @@ router.get('/profile/[a-z0-9_](.html)?$', function(req, res, next) {
 });
 
 router.post('/comment$', function(req, res, next) {
-	
+	res.send(200);
+	res.send("");
 });
 
 router.post('/like$' function(req, res, next) {
-
+	res.send(200);
+	res.send("");
 });
 
 module.exports = router;
