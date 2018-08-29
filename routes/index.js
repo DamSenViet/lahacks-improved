@@ -14,11 +14,11 @@ var bcrypt = require('bcrypt');
 var verifyCaptcha = function(req, res, next) {
 	// check for recaptcha first
 	let captchaResponse = req.body.captchaResponse;
-	if (!captchaResponse) {
-		res.status(403);
-		res.send("Please verify reCaptcha before submitting.");
-		return;
-	}
+	// if (!captchaResponse) {
+	// 	res.status(403);
+	// 	res.send("Please verify reCaptcha before submitting.");
+	// 	return;
+	// }
 
 	// verify captcha token on google's servers
 	let captchaSecret = "6LcOdlEUAAAAAN1LqTRe3CpXdRX5JdwAEgfwCKZI";
@@ -31,12 +31,38 @@ var verifyCaptcha = function(req, res, next) {
 		// console.log("grecaptcha verification: " + body);
 		// body holds the json reply
 		// send error message if not correct
-		if (!JSON.parse(body).success) {
-			res.status(403);
-			res.send("reCaptcha was invalid, try again.");
+
+
+		// if (!JSON.parse(body).success) {
+		// 	res.status(403);
+		// 	res.send("reCaptcha was invalid, try again.");
+		// 	return;
+		// }
+		// verified reCaptcha
+		next();
+	});
+};
+
+// MIDDLEWARE FUNCTION
+var verifyCategory = function(req, res, next) {
+	let unmodifiedCategoryName =  req.url.split("/")[2];
+	let categoryName = unmodifiedCategoryName.replace(/_/, " ");
+	let connection = mysql.createConnection(mysqlConfig);
+
+	res.locals.unmodifiedCategoryName = unmodifiedCategoryName;
+	res.locals.categoryName = categoryName;
+	res.locals.connection = connection;
+
+	let sql = "select name from categories where name="+mysql.escape(categoryName);
+	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+
+		if (results.length !== 1) {
+			res.status(404);
+			res.send("Category '"+categoryName+"' does not exist.");
 			return;
 		}
-		// verified reCaptcha
+
 		next();
 	});
 };
@@ -55,9 +81,9 @@ var getCategories = function(connection, callback) {
 		callback(categories);
 		return;
 	});
-}
+};
 
-router.get('/', function(req, res, next) {
+router.get('(/$)|(/index.html$)', function(req, res, next) {
 	req.session.lastPage = "/";
 	let connection = mysql.createConnection(mysqlConfig);
 
@@ -73,7 +99,11 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.get('/login/', function(req, res, next) {
+router.get('/cards$', function(req, res, next) {
+
+});
+
+router.get('/login(.html)?$', function(req, res, next) {
 	// prevent logging in once logged in (flow control)
 	if (req.session.isAuthenticated) {
 		res.redirect((req.session.lastPage)? req.session.lastPage: "/");
@@ -91,7 +121,7 @@ router.get('/login/', function(req, res, next) {
 	});
 });
 
-router.post('/login/', verifyCaptcha, function(req, res, next) {
+router.post('/login$', verifyCaptcha, function(req, res, next) {
 	// prevent logged in users from logging in (flow control)
 	let lastPage = (req.session.lastPage)? req.session.lastPage : "/";
 	if (req.session.isAuthenticated) {
@@ -100,7 +130,7 @@ router.post('/login/', verifyCaptcha, function(req, res, next) {
 		return;
 	}
 
-	let username = req.body.username;
+	let username = req.body.username.trim().toLowerCase();
 	let password = req.body.password;
 
 	// START ERROR CHECK
@@ -132,7 +162,6 @@ router.post('/login/', verifyCaptcha, function(req, res, next) {
 			return;
 		}
 
-		console.log(results);
 		bcrypt.compare(password, results[0].password, function(error, isCorrect) {
 			if (!isCorrect) {
 				errors['error-message'] = "invalid username or password";
@@ -151,7 +180,7 @@ router.post('/login/', verifyCaptcha, function(req, res, next) {
 	});
 });
 
-router.get('/signup/', function(req, res, next) {
+router.get('/signup(.html)?$', function(req, res, next) {
 	// prevent signing up once logged in (flow control)
 	if (req.session.isAuthenticated) {
 		res.redirect((req.session.lastPage)? req.session.lastPage: "/");
@@ -169,7 +198,7 @@ router.get('/signup/', function(req, res, next) {
 	})
 });
 
-router.post('/signup/', verifyCaptcha, function(req, res, next) {
+router.post('/signup$', verifyCaptcha, function(req, res, next) {
 	// prevent logged in users from signing up (flow control)
 	let lastPage = (req.session.lastPage)? req.session.lastPage : "/";
 	if (req.session.isAuthenticated) {
@@ -178,16 +207,20 @@ router.post('/signup/', verifyCaptcha, function(req, res, next) {
 		return;
 	}
 
-	let username = req.body.username;
+	let username = req.body.username.trim().toLowerCase();
 	let password = req.body.password;
 
 
 	// START ERROR CHECK
 	let errors = {};
-	if (username.trim().length < 4) {
+	if (username.length < 4) {
 		errors.username = "too short";
-	} else if (username.trim().length > 16) {
+	} else if (username.length > 20) {
 		errors.username = "too long";
+	}
+
+	if (!/[a-z0-9_]/.test(username)) {
+		errors.username = "special characters not allowed";
 	}
 
 	if (password.length < 4) {
@@ -233,7 +266,7 @@ router.post('/signup/', verifyCaptcha, function(req, res, next) {
 	});
 });
 
-router.get('/create/', function(req, res, next) {
+router.get('/create(.html)?$', function(req, res, next) {
 	// prevent anonymous users from creating categories (flow control)
 	if (!req.session.isAuthenticated) {
 		req.session.lastPage = '/create'
@@ -242,7 +275,7 @@ router.get('/create/', function(req, res, next) {
 	};
 
 	let connection = mysql.createConnection(mysqlConfig);
-	getCategories(connection, function(cateogories) {
+	getCategories(connection, function(categories) {
 		res.render('create', {
 			categories: categories,
 			isAuthenticated: req.session.isAuthenticated,
@@ -252,7 +285,7 @@ router.get('/create/', function(req, res, next) {
 	});
 });
 
-router.post('/create/', verifyCaptcha, function(req, res, next) {
+router.post('/create$', verifyCaptcha, function(req, res, next) {
 	// prevent un-authenticated users from creating categories
 	if (!req.session.isAuthenticated) {
 		res.status(400);
@@ -260,7 +293,7 @@ router.post('/create/', verifyCaptcha, function(req, res, next) {
 		return;
 	};
 
-	let categoryName = req.body.categoryName;
+	let categoryName = req.body.categoryName.trim().toLowerCase();
 
 	// START ERROR CHECK
 	let errors = {};
@@ -271,8 +304,8 @@ router.post('/create/', verifyCaptcha, function(req, res, next) {
 		return;
 	}
 
-	if (!/^[a-z]+$/.test(categoryName)) {
-		errors['category-name'] = "must be only lowercase letters";
+	if (!/^[a-z ]+$/.test(categoryName)) {
+		errors['category-name'] = "must only be letters";
 		res.status(400);
 		res.send(errors);
 		return;
@@ -284,7 +317,7 @@ router.post('/create/', verifyCaptcha, function(req, res, next) {
 		if (error) throw error;
 
 		if (results.length !== 0) {
-			errors['category-name'] = "category already exists";
+			errors['category-name'] = "already exists";
 			res.status(400);
 			res.send(errors);
 			return;
@@ -296,17 +329,23 @@ router.post('/create/', verifyCaptcha, function(req, res, next) {
 			connection.end();
 
 			res.status(200);
-			res.send({newCategoryPage: "/category/" + categoryName});
+			res.send({newCategoryPage: "/category/" + categoryName.replace(/ /, "_")});
 			return;
 		});
 	});
 });
 
-router.get('/category/*', function(req, res, next) {
-	let connection = mysql.createConnection(mysqlConfig);
+router.get('/category/[a-z_]+(.html)?$', verifyCategory, function(req, res, next) {
+	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
+	let categoryName = res.locals.categoryName;
+	let connection = res.locals.connection;
+
+	req.session.lastPage = "/category/" + unmodifiedCategoryName;
+
 	getCategories(connection, function(categories) {
 		res.render('category', {
 			categories: categories,
+			categoryName: categoryName,
 			isAuthenticated: req.session.isAuthenticated,
 			username: req.session.user
 		});
@@ -314,18 +353,23 @@ router.get('/category/*', function(req, res, next) {
 	});
 });
 
-router.get('/upload/*', function(req, res, next) {
-	// prevent anonymous users from creating uploads (flow control)
+router.get('/category/[a-z_]+/upload(.html)?$', verifyCategory, function(req, res, next) {
+	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
+	let categoryName = res.locals.categoryName;
+	let connection = res.locals.connection;
+
+	// prevent anonymous users from uploading (flow control)
 	if (!req.session.isAuthenticated) {
+		req.session.lastPage = "/category/" + unmodifiedCategoryName + "/upload";
 		res.redirect('/login');
 		return;
 	};
 
 
-	let connection = mysql.createConnection(mysqlConfig);
 	getCategories(connection, function(categories) {
 		res.render('upload', {
 			categories: categories,
+			categoryName: categoryName,
 			isAuthenticated: req.session.isAuthenticated,
 			username: req.session.user
 		});
@@ -333,11 +377,64 @@ router.get('/upload/*', function(req, res, next) {
 	});
 });
 
-router.post('/upload/*', function(req, res, next) {
+router.get('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next){
+	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
+	let categoryName = res.locals.categoryName;
+	let connection = res.locals.connection;
 
+	res.status(200);
+	res.send([
+		{
+			postId: "1",
+			postTitle: "Wallpapers",
+			imageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP",
+			liked: true,
+			author: "whoop",
+			description: "some description"
+		},
+		{
+			postId: "2",
+			postTitle: "Wallpapers",
+			imageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP",
+			liked: true,
+			author: "whoop",
+			description: "some description"
+		},
+		{
+			postId: "3",
+			postTitle: "Wallpapers",
+			imageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP",
+			liked: true,
+			author: "whoop",
+			description: "some description"
+		},
+		{
+			postId: "4",
+			postTitle: "Wallpapers",
+			imageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP",
+			liked: true,
+			author: "whoop",
+			description: "some description"
+		}
+		]);
 });
 
-router.post('/TEMPORARY/', function(req, res, next) {
+router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next) {
+	// make authenticated users self-redirect to index
+	if (!req.session.isAuthenticated) {
+		res.status(400);
+		res.send("Log in you goof.");
+		return;
+	};
+
+	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
+	let categoryName = res.locals.categoryName;
+	let connection = res.locals.connection;
+});
+
+
+
+router.post('/TEMPORARY$', function(req, res, next) {
   // console.log(req.body.title);
   // console.log(req.body.description);
 	console.log(req.body);
@@ -346,20 +443,27 @@ router.post('/TEMPORARY/', function(req, res, next) {
   res.send({title:'too long', description: 'wow', file: 'oops'});
 });
 
-router.get('/logout', function(req, res, next) {
+router.get('/logout(.html)?$', function(req, res, next) {
 	let lastPage = (req.session.lastPage)? req.session.lastPage : "/";
 	req.session.destroy(function(error) {
 		res.redirect(lastPage);
 	});
 });
 
-
 // get list of categories?
-router.get('/categories', function(req, res, next) {
+router.get('/profile/[a-z0-9_](.html)?$', function(req, res, next) {
 	let connection = mysql.createConnection(mysqlConfig);
 	let sql = "";
 	connection.query(sql, function(error, results, fields) {
 	});
+});
+
+router.post('/comment$', function(req, res, next) {
+	
+});
+
+router.post('/like$' function(req, res, next) {
+
 });
 
 module.exports = router;

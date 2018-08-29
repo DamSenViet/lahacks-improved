@@ -92,7 +92,7 @@
 			<div class="form">
 				<form class="signupForm">
 					<label for="username">Username<span class="error-message"></span></label>
-					<input id="username" class="username" type="text" name="username" placeholder="" pattern="^.{4,16}" autocorrect="off" required />
+					<input id="username" class="username" type="text" name="username" placeholder="" pattern="^[a-zA-Z0-9_]{4,20}" autocorrect="off" required />
 
 					<label for="password">Password<span class="error-message"></span></label>
 					<input id="password" class="password" type="password" name="password" placeholder="" required pattern="^.{4,}"/>
@@ -117,8 +117,10 @@
 			$("#username").on('invalid', function(event) {
 				if ($(this).val().trim().length < 4) {
 					event.target.setCustomValidity('Username must be at least 4 characters.');
-				} else if ($(this).val().trim().length > 16) {
-					event.target.setCustomValidity('Username cannot be more than 16 characters.');
+				} else if ($(this).val().trim().length > 20) {
+					event.target.setCustomValidity('Username cannot be more than 20 characters.');
+				} else if (!/[a-zA-Z0-9_]/.test($(this).val())) {
+					event.target.setCustomValidity('Username cannot contain special characters.');
 				}
 			});
 

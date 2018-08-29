@@ -91,7 +91,7 @@
 			<div class="form">
 				<form class="createForm">
 					<label for="category-name">New Category Name<span class="error-message"></span></label>
-					<input id="category-name" class="category-name" type="text" name="category-name" placeholder="" autocorrect="off" required pattern="^[a-z]+$"/>
+					<input id="category-name" class="category-name" type="text" name="category-name" placeholder="" autocorrect="off" required pattern="^[a-zA-Z ]+$"/>
 
 					<div class="submit-container">
 						<div class="g-recaptcha" data-sitekey="6LcOdlEUAAAAAD69U5gKePezF71TjgjX1faIvnKi"></div>
@@ -106,14 +106,13 @@
 		<script>
 
 		$('#category-name').on('invalid', function(event) {
-			event.target.setCustomValidity('Category may only contain letters.');
+			event.target.setCustomValidity("Category must consist of only letters.");
 		});
 
 		$('#category-name').on('input', function(event) {
 			event.target.setCustomValidity('');
-			$(this).val($(this).val().toLowerCase());
-		});
 
+		});
 		$('.createForm').on('submit', function(event) {
 			event.preventDefault();
 

@@ -95,8 +95,8 @@
 							Wallpapers
 						</div>
 						<div class="like-wrapper">
-							<input id="1" type="checkbox" data-post-id="10" class="like-input"/>
-							<label for="1" class="like-button"></label>
+							<input id="post-id1" type="checkbox" class="like-input"/>
+							<label for="post-id1" class="like-button"></label>
 						</div>
 
 						<div class="author">
@@ -284,7 +284,7 @@
 			$('.card > *').on('transitionend', function(event) {
 				event.stopImmediatePropagation();
 			});
-		}
+		};
 
 		function textAreaAutoAdjust(event) {
 			this.style.height = '';
@@ -307,11 +307,11 @@
 				event.preventDefault();
 				// send out comment POST request
 			}
-		}
+		};
 
 		function attachTextAreaCommentKeys() {
 			$('textarea.reply').on('keydown', textAreaCommentKeys);
-		}
+		};
 
 
 
@@ -343,18 +343,31 @@
 
 		function attachDisableLike() {
 			$('.like-button').on('click', disableLike);
-		}
+		};
 
 		function attachLike() {
-			$('.like-input').click(function(event) {
+			$('.like-input').on('click', function(event) {
 				event.stopImmediatePropagation();
 			});
-			$('.like-input').change(function(event) {
-				console.log(this.checked);
-
-
+			$('.like-input').on('change', function(event) {
+				$.ajax({
+					url: "/like",
+					type: "POST",
+					data: JSON.stringify({
+						postId: $(this).data('post-id'),
+						liked: $(this).prop('checked'),
+					}),
+					contentType: "application/json",
+					dataType: "text",
+					success: function(res, status, xhr) {
+						// do nothing
+					},
+					error: function(xhr, status, error) {
+						window.alert("like for postId" + $(this).data('postId') + "failed");
+					}
+				});
 			});
-		}
+		};
 
 		var cardsOffSet = 0;
 		// postId (string) -> commentOffSet
@@ -437,6 +450,7 @@
 							}, 300);
 						}, 100 * i);
 					}
+
 					// support animation and functionality on every card
 					stopCardTransitionBubble();
 					attachFocusToCards();

@@ -30,8 +30,7 @@ Instagram + Reddit Web Application
 	* reCaptcha 2.0
 	* EJS templates
 * Back End
-	* Node.JS and custom API
-	* Google Cloud: App Engine
+	* Node.js and custom API
 	* reCaptcha 2.0
 	* MySQL Database
 	* Express Session
@@ -48,22 +47,17 @@ This will install all the required dependencies. We still need to start up the M
 ```
 mysqld
 ```
-Keep the MySQL server up while the web application is running otherwise there'll be a lot of errors.
+Keep the MySQL server up while the web application is running.
 
 ```
 npm start
 ```
-That's all the setup in one command. Take note that the `start` command also functions as a "reset". It will reset the database associated with this web application and delete all uploaded pictures.
-
-After starting up the web server, you'll then want to go to this URL inside your browser:
-```
-localhost:3000
-```
+This will start the server on [port 8080](127.0.0.1:8080).
 
 
 # Using the Test Folder Prototype
 
-You may choose to use Python's simple HTTP server or you may use npm's live-server. As long as the servlet is able to set the root directory to be the 'prototype' directory, it should be fine.
+You may choose to use Python's simple HTTP server or you may use npm's live-server. As long as the server is able to set the root directory to be the 'prototype' directory, it should be fine.
 
 ## Python
 If you have python (v3.6+) you may make the following call inside the prototype directory:
