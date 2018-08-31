@@ -12,6 +12,7 @@ main.index, main.category {
 
 /* CARD STYLES */
 .card {
+	opacity: 1;
 	position: relative;
 	display: inline-block;
 	cursor: pointer;
@@ -19,7 +20,15 @@ main.index, main.category {
 	width: 85%;
 	margin-bottom: 50px;
 	font-size: 1rem;
+	transform: translateY(0px);
 }
+
+.card.sliding-in {
+	opacity: 0;
+	transform: translateY(150px);
+	pointer-events: none;
+}
+
 
 .image-container {
 	transition: all 0.5s ease;

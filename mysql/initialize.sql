@@ -16,11 +16,10 @@ create table categories (
 
 create table posts (
 	postID int auto_increment,
-	title varchar(150) not null,
+	title varchar(100) not null,
 	description varchar(140),
 	username varchar(20) not null,
 	category varchar(30) not null,
-	imgAddress varchar(200) not null,
 	at datetime not null default CURRENT_TIMESTAMP,
 
 	primary key (postID),
@@ -50,7 +49,7 @@ create table comments (
 
 	username varchar(20) not null,
 	postID int,
-	content varchar(10000) not null,
+	content varchar(1000) not null,
 	at datetime not null default CURRENT_TIMESTAMP,
 	primary key (commentID),
 	foreign key (parentID) references comments(commentID),

@@ -507,9 +507,10 @@ html body .desktop {
 	}
 
 	.dropdown.settings ul {
-		overflow: hidden;
+		overflow-y: hidden;
 		max-height: 0;
 		right: 0;
+		left: auto;
 	}
 
 	.dropdown li {

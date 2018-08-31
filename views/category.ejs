@@ -34,41 +34,42 @@
 					<input type="text" list="suggestions" placeholder="Search..." />
 
 					<datalist id="suggestions">
-							<option value="wow"></option>
-						</datalist>
+					</datalist>
 				</div>
 
-				<a class="main" href="/login.html"><span class="centered-text">Login</span></a>
-				<a class="main" href="/signup.html"><span class="centered-text">Sign Up</span></a>
+				<% if (!isAuthenticated) { %>
+				<a class="main" href="/login"><span class="centered-text">Login</span></a>
+				<a class="main" href="/signup"><span class="centered-text">Sign Up</span></a>
 
-				<!-- <div class="dropdown settings">
-					<a class="main">DamSenViet</a>
+				<% } else { %>
+
+				<div class="dropdown settings">
+					<a class="main"><%=username %></a>
 					<ul>
 						<li><a class="user-icon">Profile</a></li>
 						<li><a class="gear-icon">Settings</a></li>
 					</ul>
-				</div> -->
-
+				</div>
+				<% } %>
 
 				<div class="dropdown categories">
 					<a class="main desktop">Categories</a>
 					<ul class="desktop">
-						<li><a href="test">cats</a></li>
-						<li><a>dogs</a></li>
-						<li><a>thing</a></li>
-						<li><a>wow</a></li>
+						<% for (let i = 0; i < categories.length; ++i) { %>
+							<li><a href="<%= '/category/'+categories[i].unmodifiedName %>"><%= categories[i].name %></a></li>
+						<% } %>
 					</ul>
 
 					<div class="select-wrapper mobile">
 						<select>
-								<option disabled selected hidden>Categories</option>
-								<option value="1">cats</option>
-								<option value="2">dogs</option>
-								<option value="3">humans</option>
-								<option value="4">robots</option>
-							</select>
+							<option disabled selected hidden>Categories</option>
+							<% for (let i = 0; i < categories.length; ++i) { %>
+								<option value="<%= '/category/'+categories[i].unmodifiedName %>"><%= categories[i].name %></option>
+							<% } %>
+						</select>
 					</div>
 				</div>
+
 
 			</div>
 		</nav>
@@ -84,60 +85,6 @@
 			<div class="bar"></div>
 		</div>
 
-		<div class="card" data-post-id="10">
-			<div class="image-container">
-				<div class="overlay-container">
-					<div class="image" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP)">
-					</div>
-
-					<div class="content">
-						<div class="title">
-							Wallpapers
-						</div>
-						<div class="like-wrapper">
-							<input id="post-id1" type="checkbox" class="like-input"/>
-							<label for="post-id1" class="like-button"></label>
-						</div>
-
-						<div class="author">
-							by <a class="author-name" href="">Mahdi</a>
-						</div>
-						<div class="description">
-							A bunch of wallpapers I picked up last month.
-						</div>
-
-
-						<div class="comments">
-							<div class="comment">
-								<div class="comment-author">
-									<a class="username" href="">Akashkutappa</a>
-								</div>
-								<p class="comment-text">
-									Test text
-								</p>
-							</div>
-
-							<div class="comment">
-								<div class="comment-author">
-									<a class="username" href="">DamSenViet</a>
-								</div>
-								<p class="comment-text">
-									Great work! But don't you think the interaction of the user to close the card isn't self explanatory ? A user would generally click the card again to probably view the image or expand on the information provided
-								</p>
-							</div>
-
-							<div>
-								<span class="view-more-comments">View more comments...</span>
-							</div>
-							<textarea class="reply post-reply" placeholder="Write a comment..." rows="1"></textarea>
-						</div>
-					</div>
-
-
-
-				</div>
-			</div>
-		</div>
 	</main>
 
 	<script>
@@ -154,15 +101,15 @@
 				if (el.style[t] !== undefined) {
 					return transitions[t];
 				}
-				return transitions['transition'];
 			}
+			return transitions['transition'];
 		}
 		var transitionEnd = whichTransitionEvent();
 
 
 		$('.floating-add').click(function() {
 			setTimeout(function() {
-				window.location.href = '/upload.html';
+				window.location.href = '/category/<%= unmodifiedCategoryName %>/upload';
 			}, 200);
 		});
 
@@ -373,9 +320,12 @@
 		// postId (string) -> commentOffSet
 		var commentsOffSet = {};
 		function addCards() {
+			// disable trigger
+
+
 			// gets cards, not comments
 			$.ajax({
-				url: "/category/<UNMODIFIED CATEGORY NAME>/cards",
+				url: "/category/<%= unmodifiedCategoryName %>/cards",
 				type: "GET",
 				data: JSON.stringify({
 					Offset: cardsOffSet,
@@ -411,11 +361,13 @@
 												postTitle,
 											"</div>",
 
-											// disable like-button for unauthenticated
+											<% if (isAuthenticated) { %>
+												// disable like-button for unauthenticated
 											"<div class='like-wrapper'>",
 												"<input id='"+postId+"' type='checkbox' class='like-input' data-post-id='"+postId+"' "+ ((liked)? "checked": "")+"/>",
 												"<label for='"+postId+"' class='like-button'></label>",
 											"</div>",
+											<% } %>
 
 											"<div class='author'>",
 												"by <a class='author-name' href='/profile/"+author+"'>"+author+"</a>",
@@ -429,8 +381,10 @@
 												"<div>",
 													"<span class='view-more-comments'>View more comments...</span>",
 												"</div>",
+												<% if (isAuthenticated) { %>
 												// disable commenting for non-authenticated users
 												"<textarea class='reply post-reply' placeholder='Write a comment...' rows='1' data-post-id='"+postId+"'></textarea>",
+												<% } %>
 											"</div>",
 										"</div>",
 									"</div>",
@@ -440,7 +394,6 @@
 
 						let element = $(card);
 						$('main').append(element);
-
 
 						// animations
 						window.setTimeout(function(){
@@ -463,12 +416,11 @@
 					console.log(xhr.responseText);
 				},
 				complete: function(xhr, status) {
-					// reenable function on scroll
+					// reenable function on scroll, reenable trigger
 
 				}
 			});
 		}
-
 		// for prototype
 		stopCardTransitionBubble();
 		attachFocusToCards();
@@ -476,6 +428,11 @@
 		attachTextAreaCommentKeys();
 		attachLike();
 		attachDisableLike();
+
+
+		// bind addCards to a scroll trigger
+
+
 	</script>
 	<script src="/scripts/main.js"></script>
 </body>

@@ -38,16 +38,16 @@
 						</datalist>
 				</div>
 
-				<a class="main" href="/login.html"><span class="centered-text">Login</span></a>
-				<a class="main" href="/signup.html"><span class="centered-text">Sign Up</span></a>
+				<!-- <a class="main" href="/login.html"><span class="centered-text">Login</span></a>
+				<a class="main" href="/signup.html"><span class="centered-text">Sign Up</span></a> -->
 
-				<!-- <div class="dropdown settings">
+				<div class="dropdown settings">
 					<a class="main">DamSenViet</a>
 					<ul>
 						<li><a class="user-icon">Profile</a></li>
 						<li><a class="gear-icon">Settings</a></li>
 					</ul>
-				</div> -->
+				</div>
 
 
 				<div class="dropdown categories">
@@ -154,8 +154,8 @@
 				if (el.style[t] !== undefined) {
 					return transitions[t];
 				}
-				return transitions['transition'];
 			}
+			return transitions['transition'];
 		}
 		var transitionEnd = whichTransitionEvent();
 

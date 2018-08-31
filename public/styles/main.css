@@ -18,8 +18,6 @@
 	font-weight: bold;
 }
 
-
-
 * {
 	box-sizing: border-box;
 }
@@ -285,7 +283,7 @@ nav .menu-items select:focus {
 }
 
 nav > .menu-items .dropdown.settings a.main {
-	text-transform: none;
+	text-transform: uppercase;
 }
 
 .gear-icon:after, .user-icon:after {
@@ -507,9 +505,10 @@ html body .desktop {
 	}
 
 	.dropdown.settings ul {
-		overflow: hidden;
+		overflow-y: hidden;
 		max-height: 0;
 		right: 0;
+		left: auto;
 	}
 
 	.dropdown li {
@@ -536,6 +535,10 @@ html body .desktop {
 
 	.dropdown.settings:hover ul {
 		max-height: 10rem;
+	}
+
+	.gear-icon, .user-icon {
+		width: 10rem;
 	}
 
 	.gear-icon:after, .user-icon:after {

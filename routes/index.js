@@ -46,7 +46,7 @@ var verifyCaptcha = function(req, res, next) {
 // MIDDLEWARE FUNCTION
 var verifyCategory = function(req, res, next) {
 	let unmodifiedCategoryName =  req.url.split("/")[2];
-	let categoryName = unmodifiedCategoryName.replace(/_/, " ");
+	let categoryName = unmodifiedCategoryName.replace(/_/g, " ");
 	let connection = mysql.createConnection(mysqlConfig);
 
 	res.locals.unmodifiedCategoryName = unmodifiedCategoryName;
@@ -76,7 +76,10 @@ var getCategories = function(connection, callback) {
 
 		let categories = [];
 		for (let i = 0; i < results.length; ++i) {
-			categories.push(results[i].name);
+			categories.push({
+				name: results[i].name,
+				unmodifiedName: results[i].name.replace(/ /g, "_")
+			});
 		}
 		callback(categories);
 		return;
@@ -328,9 +331,13 @@ router.post('/create$', verifyCaptcha, function(req, res, next) {
 			if (error) throw error;
 			connection.end();
 
-			res.status(200);
-			res.send({newCategoryPage: "/category/" + categoryName.replace(/ /, "_")});
-			return;
+			fs.mkdir("./public/pictures/" + categoryName.replace(/ /g, "_"), function(error) {
+				if (error) throw error;
+
+				res.status(200);
+				res.send({newCategoryPage: "/category/" + categoryName.replace(/ /g, "_")});
+				return;
+			});
 		});
 	});
 });
@@ -345,30 +352,7 @@ router.get('/category/[a-z_]+(.html)?$', verifyCategory, function(req, res, next
 	getCategories(connection, function(categories) {
 		res.render('category', {
 			categories: categories,
-			categoryName: categoryName,
-			isAuthenticated: req.session.isAuthenticated,
-			username: req.session.user
-		});
-		return;
-	});
-});
-
-router.get('/category/[a-z_]+/upload(.html)?$', verifyCategory, function(req, res, next) {
-	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
-	let categoryName = res.locals.categoryName;
-	let connection = res.locals.connection;
-
-	// prevent anonymous users from uploading (flow control)
-	if (!req.session.isAuthenticated) {
-		req.session.lastPage = "/category/" + unmodifiedCategoryName + "/upload";
-		res.redirect('/login');
-		return;
-	};
-
-
-	getCategories(connection, function(categories) {
-		res.render('upload', {
-			categories: categories,
+			unmodifiedCategoryName: unmodifiedCategoryName,
 			categoryName: categoryName,
 			isAuthenticated: req.session.isAuthenticated,
 			username: req.session.user
@@ -419,7 +403,35 @@ router.get('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next){
 		]);
 });
 
+router.get('/category/[a-z_]+/upload(.html)?$', verifyCategory, function(req, res, next) {
+	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
+	let categoryName = res.locals.categoryName;
+	let connection = res.locals.connection;
+
+	// prevent anonymous users from uploading (flow control)
+	if (!req.session.isAuthenticated) {
+		req.session.lastPage = "/category/" + unmodifiedCategoryName + "/upload";
+		res.redirect('/login');
+		return;
+	};
+
+	getCategories(connection, function(categories) {
+		res.render('upload', {
+			categories: categories,
+			unmodifiedCategoryName: unmodifiedCategoryName,
+			categoryName: categoryName,
+			isAuthenticated: req.session.isAuthenticated,
+			username: req.session.user
+		});
+		return;
+	});
+});
+
 router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next) {
+	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
+	let categoryName = res.locals.categoryName;
+	let connection = res.locals.connection;
+
 	// make authenticated users self-redirect to index
 	if (!req.session.isAuthenticated) {
 		res.status(400);
@@ -427,20 +439,52 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 		return;
 	};
 
-	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
-	let categoryName = res.locals.categoryName;
-	let connection = res.locals.connection;
-});
+	console.log(req.body.title);
+  console.log(req.body.description);
+	// console.log(req.body.imgData);
+	// imgdata has id, name, type, size, data
+
+	let title = req.body.title;
+	let description = req.body.description;
+	let imgData = req.body.imgData;
+
+	let errors = {};
+
+	if (!title) {
+		errors.title = "missing";
+	} else if (title.length > 100) {
+		errors.title = "too long";
+	}
 
 
+	if (description !== undefined && description !== null) {
+		if (description.length > 140) {
+			errors.description = "too long";
+		}
+	}
 
-router.post('/TEMPORARY$', function(req, res, next) {
-  // console.log(req.body.title);
-  // console.log(req.body.description);
-	console.log(req.body);
-  // console.log(req.body.imgData);
-  res.status(400);
-  res.send({title:'too long', description: 'wow', file: 'oops'});
+
+	if (Object.keys(errors).length > 0) {
+		res.status(400);
+		res.send(errors);
+		return;
+	}
+
+
+	// perform insert first, if success save file
+	let sql = "insert into posts values ("
+	+ "null,"+mysql.escape(title)+","+mysql.escape(description)+","+mysql.escape(req.session.user)+","+mysql.escape(categoryName)+","
+	+ " default)";
+	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+		fs.writeFile(("./public/pictures/"+unmodifiedCategoryName+"/"+results.insertId), imgData.data, 'base64', function(error) {
+			if (error) throw error;
+
+			// successs
+			res.status(200);
+			res.send({});
+		});
+	});
 });
 
 router.get('/logout(.html)?$', function(req, res, next) {
@@ -463,7 +507,7 @@ router.post('/comment$', function(req, res, next) {
 	res.send("");
 });
 
-router.post('/like$' function(req, res, next) {
+router.post('/like$', function(req, res, next) {
 	res.send(200);
 	res.send("");
 });

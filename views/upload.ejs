@@ -52,41 +52,42 @@
 						<input type="text" list="suggestions" placeholder="Search..."/>
 
 						<datalist id="suggestions">
-							<option value="wow"></option>
 						</datalist>
 					</div>
 
-					<a class="main" href="/login.html"><span class="centered-text">Login</span></a>
-					<a class="main" href="/signup.html"><span class="centered-text">Sign Up</span></a>
+					<% if (!isAuthenticated) { %>
+					<a class="main" href="/login"><span class="centered-text">Login</span></a>
+					<a class="main" href="/signup"><span class="centered-text">Sign Up</span></a>
 
-					<!-- <div class="dropdown settings">
-						<a class="main">DamSenViet</a>
+					<% } else { %>
+
+					<div class="dropdown settings">
+						<a class="main"><%=username %></a>
 						<ul>
 							<li><a class="user-icon">Profile</a></li>
 							<li><a class="gear-icon">Settings</a></li>
 						</ul>
-					</div> -->
-
+					</div>
+					<% } %>
 
 					<div class="dropdown categories">
 						<a class="main desktop">Categories</a>
 						<ul class="desktop">
-							<li><a href="test">cats</a></li>
-							<li><a>dogs</a></li>
-							<li><a>thing</a></li>
-							<li><a>wow</a></li>
+							<% for (let i = 0; i < categories.length; ++i) { %>
+								<li><a href="<%= '/category/'+categories[i].unmodifiedName %>"><%= categories[i].name %></a></li>
+							<% } %>
 						</ul>
 
 						<div class="select-wrapper mobile">
 							<select>
-							<option disabled selected hidden>Categories</option>
-								<option value="1">cats</option>
-								<option value="2">dogs</option>
-								<option value="3">humans</option>
-								<option value="4">robots</option>
+								<option disabled selected hidden>Categories</option>
+								<% for (let i = 0; i < categories.length; ++i) { %>
+									<option value="<%= '/category/'+categories[i].unmodifiedName %>"><%= categories[i].name %></option>
+								<% } %>
 							</select>
 						</div>
 					</div>
+
 
 				</div>
 			</nav>
@@ -232,7 +233,7 @@
 						// on success validate all fields
 						// on error set error message, invalidate invalid fields
 					$.ajax({
-						url: '/TEMPORARY',
+						url: '/category/<%= unmodifiedCategoryName %>/upload',
 						type: 'POST',
 						data: JSON.stringify({
 							title: title.value,
@@ -261,7 +262,8 @@
 
 							// setTimeout for animations
 							// do redirect to photo
-							console.log('success');
+
+							// console.log('success');
 						},
 						// status is always fail here, error is the typical
 						// status code's error message
