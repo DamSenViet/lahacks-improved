@@ -106,7 +106,7 @@ router.get('/cards$', function(req, res, next) {
 
 });
 
-router.get('/login(.html)?$', function(req, res, next) {
+router.get('/login$', function(req, res, next) {
 	// prevent logging in once logged in (flow control)
 	if (req.session.isAuthenticated) {
 		res.redirect((req.session.lastPage)? req.session.lastPage: "/");
@@ -183,7 +183,7 @@ router.post('/login$', verifyCaptcha, function(req, res, next) {
 	});
 });
 
-router.get('/signup(.html)?$', function(req, res, next) {
+router.get('/signup$', function(req, res, next) {
 	// prevent signing up once logged in (flow control)
 	if (req.session.isAuthenticated) {
 		res.redirect((req.session.lastPage)? req.session.lastPage: "/");
@@ -269,7 +269,7 @@ router.post('/signup$', verifyCaptcha, function(req, res, next) {
 	});
 });
 
-router.get('/create(.html)?$', function(req, res, next) {
+router.get('/create$', function(req, res, next) {
 	// prevent anonymous users from creating categories (flow control)
 	if (!req.session.isAuthenticated) {
 		req.session.lastPage = '/create'
@@ -342,7 +342,7 @@ router.post('/create$', verifyCaptcha, function(req, res, next) {
 	});
 });
 
-router.get('/category/[a-z_]+(.html)?$', verifyCategory, function(req, res, next) {
+router.get('/category/[a-z_]+$', verifyCategory, function(req, res, next) {
 	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
 	let categoryName = res.locals.categoryName;
 	let connection = res.locals.connection;
@@ -403,7 +403,7 @@ router.get('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next){
 		]);
 });
 
-router.get('/category/[a-z_]+/upload(.html)?$', verifyCategory, function(req, res, next) {
+router.get('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next) {
 	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
 	let categoryName = res.locals.categoryName;
 	let connection = res.locals.connection;
@@ -487,7 +487,7 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 	});
 });
 
-router.get('/logout(.html)?$', function(req, res, next) {
+router.get('/logout$', function(req, res, next) {
 	let lastPage = (req.session.lastPage)? req.session.lastPage : "/";
 	req.session.destroy(function(error) {
 		res.redirect(lastPage);
@@ -495,7 +495,7 @@ router.get('/logout(.html)?$', function(req, res, next) {
 });
 
 // get list of categories?
-router.get('/profile/[a-z0-9_](.html)?$', function(req, res, next) {
+router.get('/profile/[a-z0-9_]+$', function(req, res, next) {
 	let connection = mysql.createConnection(mysqlConfig);
 	let sql = "";
 	connection.query(sql, function(error, results, fields) {
