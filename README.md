@@ -9,15 +9,15 @@ Instagram + Reddit Web Application
 # Features
 * cross-browser compatibility °˖✧◝(⁰▿⁰)◜✧˖°
 * responsive design, great for your phone (ღゝ◡╹)ノ♡)
-* (IMPROVEMENT IN PROGRESS) upload photos
+* upload photos
 * MySQL database
 * SQL injection prevention
 * (PLANNED) compression of photos (server and client)
-* (IMPROVEMENT IN PROGRESS) like/vote on photos
+* like photos
 * account system + session tracking
 * (IMPROVEMENT IN PROGRESS) view all your uploaded photos
 	* lazy loading implementation
-* (IMPROVEMENT IN PROGRESS) view category of photos by other users
+* view category of photos by other users
 * create your own categories
 * signup/login input validation (server and client)
 * reCaptcha validation (server and client)

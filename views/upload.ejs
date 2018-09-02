@@ -153,16 +153,10 @@
 			window.getComputedStyle(document.documentElement,null).getPropertyValue("font-size")
 		);
 
-		const form = document.querySelector('form');
-		const title = document.querySelector('form .title');
-		const description = document.querySelector('form .description');
-
-
 		/* PREVENT TOO MUCH DESCRIPTION */
 		/* ALSO AUTO-EXPAND TEXTAREA */
-
 		// resize when user desides to delete characters
-		description.onkeyup = function() {
+		$('.description').on('keyup', function(event) {
 			// smoothly keep old size
 			let old = this.style.minHeight;
 
@@ -178,25 +172,22 @@
 				this.style.minHeight = (this.scrollHeight + 40) + "px";
 				document.querySelector('.character-count').style.right = "10px";
 			}
-		}
+		});
 
-		description.onkeydown = function() {
-			if (this.value.length > this.maxLength) {
-				this.value = this.value.substr(0, this.maxLength);
-				console.log(this.maxLength);
+		$('.description').on('keydown', function(event) {
+			if ($(this).val().length > this.maxLength) {
+				$(this).val($(this).val().substr(0, $(this).prop('maxlength')));
 			}
-			//update left-over character count
-			document.querySelector('.character-count').innerHTML = this.maxLength - this.value.length;
-			this.onkeyup();
-		}
+			$('.character-count').text($(this).prop('maxlength') - $(this).val().length);
+			$(this).trigger('keyup');
+		});
 
-		// trigger; a bit after pasting (otherwise it'll have extra characters)
-		description.onpaste = function(){
+		$('.description').on('paste', function(event) {
+			// trigger; a bit after pasting (otherwise it'll have extra characters)
 			window.setTimeout(function(){
-				this.onkeydown();
+				$(this).trigger('keydown');
 			}, 100);
-		}
-
+		});
 
 
 		// have to poll b/c old version of FilePond didn't have callback
@@ -209,8 +200,8 @@
 			event.preventDefault();
 			console.log('attempted submit')
 
-			$('#submit').removeClass('JSfail');
-			$('#submit').addClass('JSonprogress');
+			$('.submit').removeClass('JSfail');
+			$('.submit').addClass('JSonprogress');
 
 			// reset encodedChecker
 			if (encodedChecker !== null) {
@@ -225,9 +216,8 @@
 				if ($('input[name="filepond"]')[0].value !== "") {
 					console.log('encoding finished');
 					// begin upload process, disable interference
-					button = document.querySelector('.submit');
-					button.disabled = true; //disable button while uploading
-					// button.querySelector('span').innerHTML = "Uploading";
+					$('.submit').prop('disabled', true); //disable button while uploading
+					$('.submit').text("Sending...");
 
 					//begin to send AJAX request
 						// on success validate all fields
@@ -236,8 +226,8 @@
 						url: '/category/<%= unmodifiedCategoryName %>/upload',
 						type: 'POST',
 						data: JSON.stringify({
-							title: title.value,
-							description: description.value,
+							title: $('#title').val(),
+							description: $('#description').val(),
 							imgData: JSON.parse($('input[name="filepond"]')[0].value)
 						}),
 						contentType: 'application/json',
@@ -255,7 +245,7 @@
 						// keep in mind status is basically useless
 						success: function(res, status, xhr) {
 							// always know what's coming back
-							$('#submit').addClass('JSsuccess');
+							$('.submit').addClass('JSsuccess');
 							$('label .error-message').text('');
 							$('.title, .description, .file').removeClass('JSinvalid');
 							$('.title, .description, .file').addClass('JSsuccess');
@@ -269,7 +259,7 @@
 						// status code's error message
 						error: function(xhr, status, error) {
 							// handle based on status
-							$('#submit').addClass('JSfail');
+							$('.submit').addClass('JSfail');
 							if (xhr.status === 400 && xhr.responseJSON) {
 								console.log(xhr.responseJSON);
 
@@ -285,14 +275,14 @@
 								}
 							} else {
 								window.alert('¯\\\_(ツ)_/¯\nStatus Code: ' + xhr.status + '\n'
-								+ 'Error: ' + error);
+								+ 'Error: ' + xhr.responseText);
 							}
 						},
 						complete: function(xhr, status) {
 							$('.upload-progress').css('width', '0%');
-							$('#submit').removeClass('JSonprogress');
-							// button.querySelector('span').innerHTML = "Upload";
-							button.disabled = false; // re-enable button
+							$('.submit').removeClass('JSonprogress');
+							$('.submit').text("Upload"); // reset button text
+							$('.submit').prop('disabled', false); // re-enable button
 						}
 					});
 
@@ -301,8 +291,8 @@
 				}
 			}, 300);
 		});
-		form.onsubmit = function(event) {
-		};
+
+
 		</script>
 		<script src="/scripts/main.js"></script>
 	</body>

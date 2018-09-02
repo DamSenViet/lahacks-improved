@@ -30,7 +30,8 @@ create table posts (
 create table postLikes (
 	username varchar(20) not null,
 	postID int not null,
-	likeState bit not null,
+	-- if like exists, this entry exists; if it doesn't then it doesn't
+	-- was planning on using likeState for dislike function
 	at datetime not null default CURRENT_TIMESTAMP,
 	primary key (username, postID),
 	foreign key (username) references users(username),

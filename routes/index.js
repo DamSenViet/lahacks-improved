@@ -86,7 +86,7 @@ var getCategories = function(connection, callback) {
 	});
 };
 
-router.get('(/$)|(/index.html$)', function(req, res, next) {
+router.get('(/$)', function(req, res, next) {
 	req.session.lastPage = "/";
 	let connection = mysql.createConnection(mysqlConfig);
 
@@ -361,46 +361,50 @@ router.get('/category/[a-z_]+$', verifyCategory, function(req, res, next) {
 	});
 });
 
-router.get('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next){
+
+router.post('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next){
 	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
 	let categoryName = res.locals.categoryName;
 	let connection = res.locals.connection;
 
-	res.status(200);
-	res.send([
-		{
-			postId: "1",
-			postTitle: "Wallpapers",
-			imageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP",
-			liked: true,
-			author: "whoop",
-			description: "some description"
-		},
-		{
-			postId: "2",
-			postTitle: "Wallpapers",
-			imageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP",
-			liked: true,
-			author: "whoop",
-			description: "some description"
-		},
-		{
-			postId: "3",
-			postTitle: "Wallpapers",
-			imageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP",
-			liked: true,
-			author: "whoop",
-			description: "some description"
-		},
-		{
-			postId: "4",
-			postTitle: "Wallpapers",
-			imageLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUfw2-C8A1-mU9DFA_yHTVf9bYy2ZYX7twQsjAhTPqmmi-pUP",
-			liked: true,
-			author: "whoop",
-			description: "some description"
+	// post structure = postId, postTitle, imageLink, liked, author, description
+	let cardsOffset = req.body.cardsOffset;
+	if (typeof(cardsOffset) !== "number") {
+		res.status(400);
+		res.send("cardsOffset must be a number");
+		return;
+	}
+
+
+	// need to get all top results then left join that on
+	// need to select where on category
+	let sql = "select postId, title, description, username,"
+	+ " exists(select * from postLikes where postLikes.username = "+mysql.escape(req.session.user)+")"
+	+ " as liked from posts where category = "+mysql.escape(categoryName)+" order by at desc";
+	(cardsOffset === 0)? sql += " limit 30" : sql+= " limit 10";
+	sql += " offset " + cardsOffset;
+	// table columns looks like this
+	// | postId | title | description | username | category | liked (by user) |
+	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+
+		// get necessary information on the card
+		let cards = [];
+		for (let i = 0; i < results.length; ++i) {
+			let card = {};
+			card.postId = results[0].postId;
+			card.postTitle = results[0].title;
+			card.imageLink = "/pictures/"+unmodifiedCategoryName+"/"+results[0].postId;
+			card.description = results[0].description;
+			card.author = results[0].username;
+			card.liked = (results[0].liked === 0)? false: true;
+			cards.push(card);
 		}
-		]);
+
+		res.status(200);
+		res.send(cards);
+		return;
+	});
 });
 
 router.get('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next) {
@@ -438,11 +442,6 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 		res.send("Log in you goof.");
 		return;
 	};
-
-	console.log(req.body.title);
-  console.log(req.body.description);
-	// console.log(req.body.imgData);
-	// imgdata has id, name, type, size, data
 
 	let title = req.body.title;
 	let description = req.body.description;
@@ -483,6 +482,7 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 			// successs
 			res.status(200);
 			res.send({});
+			return;
 		});
 	});
 });
@@ -497,6 +497,9 @@ router.get('/logout$', function(req, res, next) {
 // get list of categories?
 router.get('/profile/[a-z0-9_]+$', function(req, res, next) {
 	let connection = mysql.createConnection(mysqlConfig);
+
+
+
 	let sql = "";
 	connection.query(sql, function(error, results, fields) {
 	});
@@ -508,8 +511,46 @@ router.post('/comment$', function(req, res, next) {
 });
 
 router.post('/like$', function(req, res, next) {
-	res.send(200);
-	res.send("");
+	if (!req.session.isAuthenticated) {
+		res.status(400);
+		res.send("Log in you goof.");
+		return;
+	}
+
+	let postId = req.body.postId;
+	let liked = req.body.liked;
+
+	console.log(postId);
+	console.log(liked);
+
+	if (typeof(postId) !== "number") {
+		res.status(400);
+		res.send("postId needs to be a number");
+		return;
+	}
+
+	let connection = mysql.createConnection(mysqlConfig);
+	// make sure that both do not throw errors
+	let sql;
+	if (liked) {
+		// insert
+		sql = "insert into postLikes values ("+mysql.escape(req.session.user)+","+postId+", default)";
+	} else {
+		// delete
+		sql = "delete from postLikes where username="+mysql.escape(req.session.user)+" and postId=" + postId;
+	}
+	connection.query(sql, function(error, results, fields) {
+		if (error) {
+			// ignore attmpted duplicate entry but block the insert
+			if (error.code !== "ER_DUP_ENTRY") {
+				throw error;
+			}
+		};
+
+		res.status(200);
+		res.send("");
+		return;
+	});
 });
 
 module.exports = router;

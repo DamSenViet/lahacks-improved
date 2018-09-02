@@ -260,8 +260,6 @@
 			$('textarea.reply').on('keydown', textAreaCommentKeys);
 		};
 
-
-
 		// prevent event bubbling + ensure smooth animation
 		function disableLike(event) {
 			event.stopImmediatePropagation();
@@ -281,6 +279,11 @@
 			} else if ($(this).siblings('.like-input').prop('checked') === false) {
 				resetTime = 305
 			}
+			// built with async in mind
+			// this function will work with like request; during like request, the like-input is disabled
+			// even if like-button is pressed, it won't trigger the change since the input is disabled
+			// once request is finished, then like-input will be able to affect like-button again while allowing
+			// animation to completely finish
 			let likebutton = this; // outside reference, this context lost in setTimeout
 			setTimeout(function(event) {
 				$(likebutton).unbind();
@@ -297,12 +300,15 @@
 				event.stopImmediatePropagation();
 			});
 			$('.like-input').on('change', function(event) {
+				// need outside refernece inside ajax
+				let likeInput = this;
+				$(likeInput).prop('disabled', true);
 				$.ajax({
 					url: "/like",
 					type: "POST",
 					data: JSON.stringify({
-						postId: $(this).data('post-id'),
-						liked: $(this).prop('checked'),
+						postId: $(likeInput).data('post-id'),
+						liked: $(likeInput).prop('checked'),
 					}),
 					contentType: "application/json",
 					dataType: "text",
@@ -310,34 +316,37 @@
 						// do nothing
 					},
 					error: function(xhr, status, error) {
-						window.alert("like for postId" + $(this).data('postId') + "failed");
+						window.alert("like for postId " + $(likeInput).data('postId') + " failed");
+						console.log(xhr.responseText)
+						console.log(error);
+					},
+					complete: function(xhr, status) {
+						$(likeInput).prop('disabled', false);
 					}
 				});
 			});
 		};
 
-		var cardsOffSet = 0;
+		var cardsOffset = 0;
 		// postId (string) -> commentOffSet
-		var commentsOffSet = {};
+		var commentsOffset = {};
 		function addCards() {
-			// disable trigger
+			// disable trigger while it's workin
 
 
 			// gets cards, not comments
 			$.ajax({
 				url: "/category/<%= unmodifiedCategoryName %>/cards",
-				type: "GET",
-				data: JSON.stringify({
-					Offset: cardsOffSet,
-				}),
+				type: "POST",
+				data: JSON.stringify({cardsOffset: cardsOffset}),
 				contentType: "application/json",
-				dataType: "json",
+				dataType: 'json',
 				success: function(res, status, xhr) {
 					// success response structure
 					// [{postId, postTitle, imageLink, liked, author, description}]
 
 					let cards = xhr.responseJSON;
-					cardsOffSet += cards.length;
+					cardsOffset += cards.length;
 
 					for (let i = 0; i < cards.length; ++i) {
 						let postId = cards[i].postId;
@@ -347,7 +356,7 @@
 						let author = cards[i].author;
 						let description = cards[i].description;
 
-						commentsOffSet[postId] = 0;
+						commentsOffset[postId] = 0;
 
 						let card = [
 							"<div class='card sliding-in' style='transition: opacity 0.3s ease-out, transform 0.4s ease-out, pointer-events 0s linear 0.4s;' data-post-id='"+postId+"'>",
@@ -421,6 +430,7 @@
 				}
 			});
 		}
+
 		// for prototype
 		stopCardTransitionBubble();
 		attachFocusToCards();
@@ -428,9 +438,6 @@
 		attachTextAreaCommentKeys();
 		attachLike();
 		attachDisableLike();
-
-
-		// bind addCards to a scroll trigger
 
 
 	</script>
