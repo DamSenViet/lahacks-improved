@@ -19,7 +19,6 @@
 		<script type="text/javascript" src="/scripts/filepond-plugin-file-encode.js"></script>
 		<script type="text/javascript" src="/scripts/filepond-plugin-file-validate-type.js"></script>
 
-
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/styles/main.css" />
 		<link rel="stylesheet" type="text/css" href="/styles/content.css" />
@@ -103,7 +102,7 @@
 			<div class="form">
 				<form class="uploadForm">
 
-					<h2 class="submit-category">Submit to <span>Cats</span></h2>
+					<h2 class="submit-category">Submit to <span class="category-name"><%= categoryName %></span></h2>
 
 					<label for="title"><span>Post Title</span><span class="error-message"></span></label>
 					<input id="title" class="title" type="text" name="title" placeholder="" autocomplete="off" required/>
@@ -119,7 +118,7 @@
 					<input id="file" class="filepond file" type="file" accept="image/*" required/>
 
 					<div class="submit-container">
-						<button id="submit" class="submit" type="submit"><div class="upload-progress"></div><span>Upload</span></button>
+						<button id="submit" class="submit" type="submit"><div class="upload-progress"></div><span class="submit-text">Upload</span></button>
 					</div>
 				</form>
 			</div>
@@ -217,7 +216,7 @@
 					console.log('encoding finished');
 					// begin upload process, disable interference
 					$('.submit').prop('disabled', true); //disable button while uploading
-					$('.submit').text("Sending...");
+					$('.submit-text').text("Sending...");
 
 					//begin to send AJAX request
 						// on success validate all fields
@@ -281,7 +280,7 @@
 						complete: function(xhr, status) {
 							$('.upload-progress').css('width', '0%');
 							$('.submit').removeClass('JSonprogress');
-							$('.submit').text("Upload"); // reset button text
+							$('.submit-text').text("Upload"); // reset button text
 							$('.submit').prop('disabled', false); // re-enable button
 						}
 					});

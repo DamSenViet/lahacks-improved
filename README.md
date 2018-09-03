@@ -12,7 +12,7 @@ Instagram + Reddit Web Application
 * upload photos
 * MySQL database
 * SQL injection prevention
-* (PLANNED) compression of photos (server and client)
+* compression of photos (server)
 * like photos
 * account system + session tracking
 * (IMPROVEMENT IN PROGRESS) view all your uploaded photos

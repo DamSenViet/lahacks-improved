@@ -327,12 +327,13 @@
 			});
 		};
 
+
 		var cardsOffset = 0;
 		// postId (string) -> commentOffSet
-		var commentsOffset = {};
 		function addCards() {
+			console.log('retrieving cards...')
 			// disable trigger while it's workin
-
+			$('main').unbind();
 
 			// gets cards, not comments
 			$.ajax({
@@ -342,24 +343,32 @@
 				contentType: "application/json",
 				dataType: 'json',
 				success: function(res, status, xhr) {
+
 					// success response structure
 					// [{postId, postTitle, imageLink, liked, author, description}]
 
-					let cards = xhr.responseJSON;
-					cardsOffset += cards.length;
+					let cardsData = xhr.responseJSON;
+					console.log(cardsData);
 
-					for (let i = 0; i < cards.length; ++i) {
-						let postId = cards[i].postId;
-						let postTitle = cards[i].postTitle;
-						let imageLink = cards[i].imageLink;
-						let liked = cards[i].liked;
-						let author = cards[i].author;
-						let description = cards[i].description;
+					// preloading images causes performance issues
+					// let cards = [];
+					// let imageLinks = [];
+					cardsOffset += cardsData.length;
+
+					for (let i = 0; i < cardsData.length; ++i) {
+						let postId = cardsData[i].postId;
+						let postTitle = cardsData[i].postTitle;
+						let imageLink = cardsData[i].imageLink;
+						let liked = cardsData[i].liked;
+						let author = cardsData[i].author;
+						let description = cardsData[i].description;
+
+						// imageLinks.push(imageLink);
 
 						commentsOffset[postId] = 0;
 
 						let card = [
-							"<div class='card sliding-in' style='transition: opacity 0.3s ease-out, transform 0.4s ease-out, pointer-events 0s linear 0.4s;' data-post-id='"+postId+"'>",
+							"<div class='card sliding-in' style='transition: opacity 0.3s ease-out, transform 0.4s linear, pointer-events 0s linear 0.4s;' data-post-id='"+postId+"'>",
 								"<div class='image-container'>",
 									"<div class='overlay-container'>",
 										"<div class='image' style='background-image: url("+imageLink+")'>",
@@ -402,15 +411,15 @@
 						].join('\n');
 
 						let element = $(card);
-						$('main').append(element);
 
-						// animations
+						$('main').append(element);
 						window.setTimeout(function(){
 							$(element).removeClass('sliding-in');
+							// let it slide in
 							window.setTimeout(function() {
 								$(element).attr('style', '');
-							}, 300);
-						}, 100 * i);
+							}, 410);
+						}, 200 * i);
 					}
 
 					// support animation and functionality on every card
@@ -426,7 +435,7 @@
 				},
 				complete: function(xhr, status) {
 					// reenable function on scroll, reenable trigger
-
+					$('main').on('scroll', addCardsOnScroll);
 				}
 			});
 		}
@@ -440,6 +449,17 @@
 		attachDisableLike();
 
 
+		function addCardsOnScroll (event) {
+			// 10 to fix up errors
+			if ($(this).scrollTop() + $(this).height() + 10 > $(this).prop('scrollHeight')) {
+				addCards();
+			}
+		}
+		$('main').on('scroll', addCardsOnScroll);
+		$('main').trigger('scroll');
+
+
+		var commentsOffset = {};
 	</script>
 	<script src="/scripts/main.js"></script>
 </body>

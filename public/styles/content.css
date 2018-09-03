@@ -1,6 +1,5 @@
 main.index, main.category {
 	/* remove white space between blocks */
-	padding-top: 30px;
 	text-align: center;
 }
 
@@ -21,6 +20,15 @@ main.index, main.category {
 	margin-bottom: 50px;
 	font-size: 1rem;
 	transform: translateY(0px);
+
+	/* select only the first .card inside parent trick */
+	/* https://stackoverflow.com/questions/2717480/css-selector-for-first-element-with-class */
+	/* can't use :nth-child since .card will not always be the first child */
+	margin-top: 30px;
+}
+
+.card ~ .card {
+	margin-top: 0px;
 }
 
 .card.sliding-in {
@@ -563,6 +571,10 @@ form .submit-container {
 
 .submit-container button:active {
 	transform: translateY(15px);
+}
+
+.category-name {
+	text-transform: capitalize;
 }
 
 /* specific styles for upload */

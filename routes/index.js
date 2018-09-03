@@ -1,9 +1,15 @@
 var express = require('express');
 var router = express.Router();
+// file system
 var fs = require('fs');
+// http request (server side)
 var request = require('request');
+// mysql driver
 var mysql = require('mysql');
+// password encryption
 var bcrypt = require('bcrypt');
+// image compression
+var sharp = require('sharp');
 
 // NOTE: ATTEMPTING ASYNC IMPLEMENTATION
 
@@ -380,24 +386,25 @@ router.post('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next)
 	// need to select where on category
 	let sql = "select postId, title, description, username,"
 	+ " exists(select * from postLikes where postLikes.username = "+mysql.escape(req.session.user)+")"
-	+ " as liked from posts where category = "+mysql.escape(categoryName)+" order by at desc";
-	(cardsOffset === 0)? sql += " limit 30" : sql+= " limit 10";
+	+ " as liked from posts where category = "+mysql.escape(categoryName)+" order by at desc limit 10";
 	sql += " offset " + cardsOffset;
 	// table columns looks like this
 	// | postId | title | description | username | category | liked (by user) |
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
+		// console.log(results);
+
 
 		// get necessary information on the card
 		let cards = [];
 		for (let i = 0; i < results.length; ++i) {
 			let card = {};
-			card.postId = results[0].postId;
-			card.postTitle = results[0].title;
-			card.imageLink = "/pictures/"+unmodifiedCategoryName+"/"+results[0].postId;
-			card.description = results[0].description;
-			card.author = results[0].username;
-			card.liked = (results[0].liked === 0)? false: true;
+			card.postId = results[i].postId;
+			card.postTitle = results[i].title;
+			card.imageLink = "/pictures/"+unmodifiedCategoryName+"/"+results[i].postId;
+			card.description = results[i].description;
+			card.author = results[i].username;
+			card.liked = (results[i].liked === 0)? false: true;
 			cards.push(card);
 		}
 
@@ -446,6 +453,8 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 	let title = req.body.title;
 	let description = req.body.description;
 	let imgData = req.body.imgData;
+	// console.log(imgData);
+	// imgData {id, name, type, size, metadata, data (64base string)}
 
 	let errors = {};
 
@@ -476,9 +485,12 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 	+ " default)";
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
-		fs.writeFile(("./public/pictures/"+unmodifiedCategoryName+"/"+results.insertId), imgData.data, 'base64', function(error) {
-			if (error) throw error;
 
+		// need to perform compression here
+		let imgBuffer = Buffer.from(imgData.data, 'base64');
+		sharp(imgBuffer)
+		.resize(700, null)
+		.toFile(("./public/pictures/"+unmodifiedCategoryName+"/"+results.insertId), function(error, info) {
 			// successs
 			res.status(200);
 			res.send({});
@@ -497,7 +509,6 @@ router.get('/logout$', function(req, res, next) {
 // get list of categories?
 router.get('/profile/[a-z0-9_]+$', function(req, res, next) {
 	let connection = mysql.createConnection(mysqlConfig);
-
 
 
 	let sql = "";
