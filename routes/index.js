@@ -367,7 +367,6 @@ router.get('/category/[a-z_]+$', verifyCategory, function(req, res, next) {
 	});
 });
 
-
 router.post('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next){
 	let unmodifiedCategoryName = res.locals.unmodifiedCategoryName;
 	let categoryName = res.locals.categoryName;
@@ -375,25 +374,23 @@ router.post('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next)
 
 	// post structure = postId, postTitle, imageLink, liked, author, description
 	let cardsOffset = req.body.cardsOffset;
-	if (typeof(cardsOffset) !== "number") {
+	if (typeof(cardsOffset) !== "string") {
 		res.status(400);
-		res.send("cardsOffset must be a number");
+		res.send("cardsOffset must be a datetime formatted string");
 		return;
 	}
 
 
 	// need to get all top results then left join that on
 	// need to select where on category
-	let sql = "select postId, title, description, username,"
+	let sql = "select postId, title, description, username, at,"
 	+ " exists(select * from postLikes where postLikes.username = "+mysql.escape(req.session.user)+")"
-	+ " as liked from posts where category = "+mysql.escape(categoryName)+" order by at desc limit 10";
-	sql += " offset " + cardsOffset;
+	+ " as liked from posts where category = "+mysql.escape(categoryName)+ " and at < "+mysql.escape(cardsOffset)
+	+ " order by at desc limit 10";
 	// table columns looks like this
-	// | postId | title | description | username | category | liked (by user) |
+	// | postId | title | description | username | category | at | liked (by user) |
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
-		// console.log(results);
-
 
 		// get necessary information on the card
 		let cards = [];
@@ -408,8 +405,16 @@ router.post('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next)
 			cards.push(card);
 		}
 
+		let newCardsOffset;
+		if (results.length !== 0) {
+			newCardsOffset = results[results.length - 1].at;
+		}
+
 		res.status(200);
-		res.send(cards);
+		res.send({
+			cards: cards,
+			newCardsOffset: newCardsOffset
+		});
 		return;
 	});
 });
@@ -478,18 +483,18 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 		return;
 	}
 
-
+	let dateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
 	// perform insert first, if success save file
 	let sql = "insert into posts values ("
 	+ "null,"+mysql.escape(title)+","+mysql.escape(description)+","+mysql.escape(req.session.user)+","+mysql.escape(categoryName)+","
-	+ " default)";
+	+ mysql.escape(dateTime)+")";
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
 
 		// need to perform compression here
 		let imgBuffer = Buffer.from(imgData.data, 'base64');
 		sharp(imgBuffer)
-		.resize(700, null)
+		.resize(1000, null)
 		.toFile(("./public/pictures/"+unmodifiedCategoryName+"/"+results.insertId), function(error, info) {
 			// successs
 			res.status(200);
@@ -510,15 +515,57 @@ router.get('/logout$', function(req, res, next) {
 router.get('/profile/[a-z0-9_]+$', function(req, res, next) {
 	let connection = mysql.createConnection(mysqlConfig);
 
-
 	let sql = "";
 	connection.query(sql, function(error, results, fields) {
 	});
 });
 
+router.get('/outer_comment$', function(req, res, next) {
+	// let parentCommentId = req.query.parentCommentId; // might be null
+	// if (parentCommentId !== undefined && typeof(parentCommentId) !== "number" && typeof(parentCommentId) !== "undefined") {
+	// 	res.status(400);
+	// 	res.send("parentCommentId must be a number or ommitted");
+	// 	return;
+	// }
+});
+
 router.post('/comment$', function(req, res, next) {
-	res.send(200);
-	res.send("");
+	if (!req.session.isAuthenticated) {
+		res.status(400);
+		res.send("Log in you goof.");
+		return;
+	}
+
+	let comment = req.body.comment;
+	let postId = req.body.postId;
+	if (typeof(postId) !== "number") {
+		res.status(400);
+		res.send("postId must be a number");
+		return;
+	}
+	let parentCommentId = req.body.parentCommentId; // might be null
+	if (parentCommentId !== undefined && typeof(parentCommentId) !== "number" && typeof(parentCommentId) !== "undefined") {
+		res.status(400);
+		res.send("parentCommentId must be a number or ommitted");
+		return;
+	}
+
+
+	let dateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+	let connection = mysql.createConnection(mysqlConfig);
+	let sql = "insert into comments values (null,"+ ((parentCommentId)? parentCommentId : 'null') +","
+	+ mysql.escape(req.session.user)+","+postId+","+mysql.escape(comment)+","+mysql.escape(dateTime)+")";
+	connection.query(sql, function(error, results, fields) {
+		if (error) {
+			console.log(error);
+			console.log(results);
+			throw error;
+		};
+
+		res.status(200);
+		res.send("" + results.insertId);
+		return;
+	});
 });
 
 router.post('/like$', function(req, res, next) {
@@ -531,8 +578,8 @@ router.post('/like$', function(req, res, next) {
 	let postId = req.body.postId;
 	let liked = req.body.liked;
 
-	console.log(postId);
-	console.log(liked);
+	// console.log(postId);
+	// console.log(liked);
 
 	if (typeof(postId) !== "number") {
 		res.status(400);

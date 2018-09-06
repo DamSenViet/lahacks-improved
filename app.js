@@ -58,7 +58,8 @@ mysqlConfig = {
 	host: mysqlHost,
 	user: mysqlUser,
 	password: mysqlPassword,
-	database: 'lahacks'
+	database: 'lahacks',
+	dateStrings: true
 }
 
 

@@ -12,8 +12,8 @@ Instagram + Reddit Web Application
 * upload photos
 * MySQL database
 * SQL injection prevention
-* compression of photos (server)
 * like photos
+* compression of photos (server-side)
 * account system + session tracking
 * (IMPROVEMENT IN PROGRESS) view all your uploaded photos
 	* lazy loading implementation
@@ -21,12 +21,11 @@ Instagram + Reddit Web Application
 * create your own categories
 * signup/login input validation (server and client)
 * reCaptcha validation (server and client)
-* (PLANNED) live-updating votes
 
 
 ## Stack
 * Front End
-	* [FilePond](https://pqina.nl/filepond/)
+	* [FilePond](https://pqina.nl/filepond/) (file interface)
 	* reCaptcha 2.0
 	* EJS templates
 * Back End
@@ -34,6 +33,8 @@ Instagram + Reddit Web Application
 	* reCaptcha 2.0
 	* MySQL Database
 	* Express Session
+	* [bcrypt](https://github.com/kelektiv/node.bcrypt.js) (password encryption)
+	* [sharp](https://github.com/lovell/sharp) (image compression)
 
 
 # Installing the Project

@@ -23,7 +23,7 @@ main.index, main.category {
 
 	/* select only the first .card inside parent trick */
 	/* https://stackoverflow.com/questions/2717480/css-selector-for-first-element-with-class */
-	/* can't use :nth-child since  */
+	/* can't use :nth-child since .card will not always be the first child */
 	margin-top: 30px;
 }
 
@@ -192,6 +192,11 @@ main.index, main.category {
 	transform: translateY(0px);
 }
 
+.card .comment-thread > .comment ~ .comment {
+	margin-left: 40px;
+	margin-top: 10px;
+}
+
 .card .comment.hidden {
 	opacity: 0;
 	transform: translateY(30px);
@@ -225,11 +230,41 @@ main.index, main.category {
 
 .card .view-more-comments {
 	margin-top: 10px;
-	display: inline-block;
-	cursor: pointer;
-	text-decoration: underline;
-	color: #A2A8B1;
+	user-select: none;
 }
+
+.card .view-more-comments-button {
+	cursor: pointer;
+	/* color: rgba(76, 87, 102, .87); */
+	/* color: #A2A8B1; */
+}
+
+.card .view-more-comments-button:hover {
+	text-decoration: underline;
+}
+
+.card .view-replies {
+	user-select: none;
+	margin-left: 10px;
+	margin-top: 10px;
+	color: rgba(76, 87, 102, .87);
+}
+
+.card .view-replies:before {
+	font-style: normal;
+	font-family: FontAwesome;
+	content: '\f061';
+}
+
+.card .view-replies-button {
+	margin-left: 10px;
+}
+
+.card .view-replies-button:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 
 /* STYLES FOR CARD FOCUS */
 header {
@@ -360,6 +395,16 @@ textarea:focus {
 
 .card .reply::-webkit-scrollbar {
 	display: none;
+}
+
+.card .reply:disabled {
+	background-color: #EDF0F7;
+}
+
+.card .comment-thread .reply {
+	width: calc(100% - 40px);
+	margin-left: 40px;
+	display: block;
 }
 
 .close-out {
@@ -571,6 +616,10 @@ form .submit-container {
 
 .submit-container button:active {
 	transform: translateY(15px);
+}
+
+.category-name {
+	text-transform: capitalize;
 }
 
 /* specific styles for upload */

@@ -20,7 +20,7 @@ create table posts (
 	description varchar(140),
 	username varchar(20) not null,
 	category varchar(30) not null,
-	at datetime not null default CURRENT_TIMESTAMP,
+	at datetime,
 
 	primary key (postID),
 	foreign key (username) references users(username),
@@ -46,12 +46,10 @@ create table comments (
 -- need trigger to prevent insert if commentID = parentID
 	parentID int default null,
 
--- need to create trigger, on add, check if item has parent, if it does +=1 to depth
-
 	username varchar(20) not null,
 	postID int,
 	content varchar(1000) not null,
-	at datetime not null default CURRENT_TIMESTAMP,
+	at datetime not null,
 	primary key (commentID),
 	foreign key (parentID) references comments(commentID),
 	foreign key (username) references users(username),

@@ -70,7 +70,6 @@
 					</div>
 				</div>
 
-
 			</div>
 		</nav>
 	</header>
@@ -88,6 +87,11 @@
 	</main>
 
 	<script>
+
+		<% if (isAuthenticated) { %>
+			var username = "<%= username%>";
+		<% } %>
+
 		function whichTransitionEvent() {
 			var el = document.createElement('fakeelement');
 			var transitions = {
@@ -112,6 +116,47 @@
 				window.location.href = '/category/<%= unmodifiedCategoryName %>/upload';
 			}, 200);
 		});
+
+
+		// use this to keep track of what's been loaded
+		// postId -> [outerCommentsOffset, innerCommentsOffset -> {commentId -> offset}]
+		var commentsOffset = {
+
+		};
+		function loadOuterComments(event) {
+			let button = this;
+			$.ajax({
+				url: "/comment",
+				type: "GET",
+				data: {
+					postId: "",
+					outerCommentsOffset: ""
+				},
+				success: function(res, xhr, status) {
+					// update offset
+					// return comment count
+
+				},
+				error: function(xhr, status, error) {
+
+				},
+				complete: function(xhr, status) {
+
+				}
+			});
+		}
+		function loadInnerComments(event) {
+			let button = this;
+			$.ajax({
+
+			});
+		}
+
+		function attachLoadComments() {
+			$('.view-comments').on('click', loadOuterComments);
+			$('.view-replies').on('click', loadInnerComments);
+		}
+
 
 
 		function animate(card) {
@@ -242,17 +287,55 @@
 			$('textarea.reply').on('input', textAreaAutoAdjust);
 		};
 
+
 		function textAreaCommentKeys(event) {
 			// ctrl + enter -> newline
-			if (event.ctrlKey && event.keyCode ==13) {
+			if (event.ctrlKey && event.keyCode == 13) {
 				event.preventDefault();
-				this.value += "\n";
+				$(this).val($(this).val()+"\n");
 				$(this).trigger('input');
 			}
+
 			// enter -> send comment
 			else if (event.keyCode == 13) {
 				event.preventDefault();
-				// send out comment POST request
+				// keep reference
+				let commentInput = this;
+				$(commentInput).prop('disabled', true);
+				$.ajax({
+					url: "/comment",
+					type: "POST",
+					data: JSON.stringify({
+						comment: $(commentInput).val().trim(),
+						postId: $(commentInput).data('post-id'),
+						parentCommentId: $(commentInput).parent().data('comment-id')
+					}),
+					contentType: "application/json",
+					dataType: "text",
+					success: function(res, status, xhr) {
+						// NOTE: could use additional animation here (expand white-space, slide in comment)
+						let comment = [
+							"<div class='comment' data-comment-id='"+xhr.responseText+"'>",
+								"<div class='comment-author'>",
+									"<a class='username' href='/profile/"+username+"'>"+username+"</a>",
+								"</div>",
+								"<p class='comment-text'>",
+									$(commentInput).val().trim(),
+								"</p>",
+							"</div>"
+						].join('\n');
+						$(comment).insertBefore(commentInput);
+						// reset value of input
+						$(commentInput).val("");
+					},
+					error: function(xhr, status, error) {
+						console.log("comment for postId " + $(commentInput).data('postId') + " failed");
+						console.log(xhr.responseText);
+					},
+					complete: function(xhr, status) {
+						$(commentInput).prop('disabled', false);
+					}
+				});
 			}
 		};
 
@@ -316,9 +399,11 @@
 						// do nothing
 					},
 					error: function(xhr, status, error) {
-						window.alert("like for postId " + $(likeInput).data('postId') + " failed");
-						console.log(xhr.responseText)
-						console.log(error);
+						console.log("like for postId " + $(likeInput).data('postId') + " failed\n"
+						+ xhr.responseText + "\n"
+						+ error);
+						// return like state back to how it was before being clicked
+						$(likeInput).prop('checked', ($(likeInput).prop('checked'))? false: true);
 					},
 					complete: function(xhr, status) {
 						$(likeInput).prop('disabled', false);
@@ -328,7 +413,7 @@
 		};
 
 
-		var cardsOffset = 0;
+		var cardsOffset = new Date().toISOString().slice(0, 19).replace('T', ' ');
 		// postId (string) -> commentOffSet
 		function addCards() {
 			console.log('retrieving cards...')
@@ -344,16 +429,14 @@
 				dataType: 'json',
 				success: function(res, status, xhr) {
 
-					// success response structure
+					// success response structure (cards)
 					// [{postId, postTitle, imageLink, liked, author, description}]
 
-					let cardsData = xhr.responseJSON;
-					console.log(cardsData);
-
-					// preloading images causes performance issues
-					// let cards = [];
-					// let imageLinks = [];
-					cardsOffset += cardsData.length;
+					let cardsData = xhr.responseJSON.cards;
+					if (xhr.responseJSON.newCardsOffset) {
+						cardsOffset = xhr.responseJSON.newCardsOffset;
+						console.log(cardsData);
+					}
 
 					for (let i = 0; i < cardsData.length; ++i) {
 						let postId = cardsData[i].postId;
@@ -363,9 +446,8 @@
 						let author = cardsData[i].author;
 						let description = cardsData[i].description;
 
-						// imageLinks.push(imageLink);
-
-						commentsOffset[postId] = 0;
+						// setup
+						commentsOffset[postId] = {outerCommentsOffset: cardsOffset, innerCommentsOffset: {}};
 
 						let card = [
 							"<div class='card sliding-in' style='transition: opacity 0.3s ease-out, transform 0.4s linear, pointer-events 0s linear 0.4s;' data-post-id='"+postId+"'>",
@@ -396,9 +478,12 @@
 											"</div>",
 
 											"<div class='comments'>",
+
+												// first animate will trigger addition of comments
 												"<div>",
-													"<span class='view-more-comments'>View more comments...</span>",
+													"<span class='view-comments'>View more comments...</span>",
 												"</div>",
+
 												<% if (isAuthenticated) { %>
 												// disable commenting for non-authenticated users
 												"<textarea class='reply post-reply' placeholder='Write a comment...' rows='1' data-post-id='"+postId+"'></textarea>",
@@ -429,6 +514,7 @@
 					attachTextAreaCommentKeys();
 					attachLike();
 					attachDisableLike();
+					attachLoadComments();
 				},
 				error: function(xhr, status, error) {
 					console.log(xhr.responseText);
@@ -447,19 +533,16 @@
 		attachTextAreaCommentKeys();
 		attachLike();
 		attachDisableLike();
-
+		attachLoadComments();
 
 		function addCardsOnScroll (event) {
-			// 10 to fix up errors
+			// 10px to fix up errors
 			if ($(this).scrollTop() + $(this).height() + 10 > $(this).prop('scrollHeight')) {
 				addCards();
 			}
 		}
 		$('main').on('scroll', addCardsOnScroll);
 		$('main').trigger('scroll');
-
-
-		var commentsOffset = {};
 	</script>
 	<script src="/scripts/main.js"></script>
 </body>
