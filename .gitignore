@@ -2,3 +2,4 @@ node_modules
 views_copy
 reference
 mysqlCredentials.json
+!.gitkeep
