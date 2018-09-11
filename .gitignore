@@ -1,6 +1,5 @@
 node_modules
 views_copy
 reference
-mysqlCredentials.json
 public/pictures/*
 !public/pictures/!.gitkeep

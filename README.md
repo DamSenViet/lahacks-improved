@@ -45,17 +45,28 @@ You'll want to git clone and then change into the project directory. In any dire
 npm install
 ```
 
-This will install all the required dependencies. We still need to start up the MySQL database where the exchanges will be happening.
+Now you'll need to start up MySQL.
+
 ```
 mysqld
 ```
-Keep the MySQL server up while the web application is running.
 
+
+Inside `mysqlCredentials.json` be sure to fill out the template:
+```
+{
+	"host": "yourHost", // default is localhost
+	"user": "yourUser",
+	"password": "yourPassword"
+}
+```
+
+
+Now you can start the application!
 ```
 npm start
 ```
 This will start the server on [port 8080](127.0.0.1:8080).
-
 
 # Using the Test Folder Prototype
 
