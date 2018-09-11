@@ -1,5 +1,4 @@
-# POST LAHacks
-Instagram + Reddit Web Application
+# Imgur/Reddit Application
 
 <p float="left" align="center">
 <img src="./screenshots/landing desktop.png" height="300" width="512"/>
@@ -40,7 +39,10 @@ Instagram + Reddit Web Application
 
 # Installing the Project
 
+**Note: You'll need Node v10+ before starting. The image compression library dependency requires this.**
+
 You'll want to git clone and then change into the project directory. In any directory inside the project, call this command on the command line:
+
 ```
 npm install
 ```
