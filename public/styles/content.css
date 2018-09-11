@@ -114,7 +114,6 @@ main.index, main.category {
 	display: inline-block;
 	user-select: none;
 	vertical-align: middle;
-	/* background-color: red; */
 	border: none;
 
 	background-image: url(/icons/like-backward.png);
@@ -223,7 +222,7 @@ main.index, main.category {
 }
 
 .card .view-comments {
-	margin-top: 10px;
+	margin-top: 40px;
 	user-select: none;
 }
 
@@ -259,6 +258,18 @@ main.index, main.category {
 	cursor: pointer;
 }
 
+.comment-reply-button {
+	user-select: none;
+	margin-top: 8px;
+	display: block;
+	color: rgba(76, 87, 102, .87);
+	font-size: 0.8rem;
+	cursor: pointer;
+}
+
+.comment-reply-button:hover {
+	text-decoration: underline;
+}
 
 /* STYLES FOR CARD FOCUS */
 header {

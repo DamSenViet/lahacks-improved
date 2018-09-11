@@ -49,9 +49,16 @@ var verifyCaptcha = function(req, res, next) {
 	});
 };
 
+
+
 // MIDDLEWARE FUNCTION
 var verifyCategory = function(req, res, next) {
-	let unmodifiedCategoryName =  req.url.split("/")[2];
+
+	// to support history states
+	let urlRemovedQuery = req.url.split("?")[0];
+
+
+	let unmodifiedCategoryName =  urlRemovedQuery.split("/")[2];
 	let categoryName = unmodifiedCategoryName.replace(/_/g, " ");
 	let connection = mysql.createConnection(mysqlConfig);
 
@@ -338,8 +345,7 @@ router.post('/create$', verifyCaptcha, function(req, res, next) {
 			connection.end();
 
 			fs.mkdir("./public/pictures/" + categoryName.replace(/ /g, "_"), function(error) {
-				if (error) throw error;
-
+				if (error && error.code !== "EEXIST") throw error;
 				res.status(200);
 				res.send({newCategoryPage: "/category/" + categoryName.replace(/ /g, "_")});
 				return;
@@ -520,13 +526,88 @@ router.get('/profile/[a-z0-9_]+$', function(req, res, next) {
 	});
 });
 
-router.get('/outer_comment$', function(req, res, next) {
-	// let parentCommentId = req.query.parentCommentId; // might be null
-	// if (parentCommentId !== undefined && typeof(parentCommentId) !== "number" && typeof(parentCommentId) !== "undefined") {
-	// 	res.status(400);
-	// 	res.send("parentCommentId must be a number or ommitted");
-	// 	return;
-	// }
+router.get('/outer_comments$', function(req, res, next) {
+	let postId = req.query.postId;
+	let outerCommentsOffset = req.query.outerCommentsOffset;
+
+	if (isNaN(postId)) {
+		res.status(400);
+		res.send("postId must be a number");
+		return;
+	}
+
+	let connection = mysql.createConnection(mysqlConfig);
+	let sql = "select *,"
+	+ " (select count(*) from comments as c2 where c2.parentID = c1.commentID) as replies"
+	+ " from comments as c1 where c1.parentID is null and at < " + mysql.escape(outerCommentsOffset)
+	+ " order by at desc limit 10";
+	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+		// console.log(results);
+
+		let comments = [];
+		for (let i = 0; i < results.length; ++i) {
+			let comment = {};
+			comment.commentId = results[i].commentID;
+			comment.author = results[i].username;
+			comment.content = results[i].content;
+			comment.replies = results[i].replies;
+			comments.push(comment);
+		}
+		let newOuterCommentsOffset;
+		if (results.length !== 0) {
+			newOuterCommentsOffset = results[results.length - 1].at;
+		}
+
+		res.status(200);
+		res.send({
+			comments: comments,
+			newOuterCommentsOffset: newOuterCommentsOffset
+		});
+		return;
+	});
+});
+
+router.get('/inner_comments$', function(req, res, next) {
+	let commentId = req.query.commentId;
+	let innerCommentsOffset = req.query.innerCommentsOffset;
+
+	if (isNaN(commentId)) {
+		res.status(400);
+		res.send("commentId must be a number");
+		return;
+	}
+
+
+	let connection = mysql.createConnection(mysqlConfig);
+	sql = "select * from comments where parentID = "+commentId+" and at < " + mysql.escape(innerCommentsOffset)
+	+ "order by at desc limit 10";
+	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+		// console.log(results);
+
+		let comments = [];
+
+		for (let i = 0; i < results.length; ++i) {
+			let comment = {};
+			comment.commentId = results[i].commentID;
+			comment.author = results[i].username;
+			comment.content = results[i].content;
+			comments.push(comment);
+		}
+
+		let newInnerCommentsOffset;
+		if (results.length !== 0) {
+			newInnerCommentsOffset = results[results.length - 1].at;
+		}
+
+		res.status(200);
+		res.send({
+			comments: comments,
+			newInnerCommentsOffset: newInnerCommentsOffset
+		});
+		return;
+	});
 });
 
 router.post('/comment$', function(req, res, next) {

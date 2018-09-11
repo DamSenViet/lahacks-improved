@@ -18,8 +18,6 @@
 	font-weight: bold;
 }
 
-
-
 * {
 	box-sizing: border-box;
 }
@@ -285,20 +283,20 @@ nav .menu-items select:focus {
 }
 
 nav > .menu-items .dropdown.settings a.main {
-	text-transform: none;
+	text-transform: uppercase;
 }
 
-.gear-icon:after, .user-icon:after {
+.logout-icon:after, .user-icon:after {
 	transition: all 1s;
 	display: inline-block;
 	font-family: FontAwesome;
-	content: '\f013';
+	content: '';
 	margin-left: 10px;
 	color: gray;
 	vertical-align: middle;
 }
 
-.gear-icon:after {content:'\f013';}
+.logout-icon:after {content:'\f08b';}
 .user-icon:after {content:'\f007'}
 
 
@@ -466,6 +464,11 @@ html body .desktop {
 		cursor: pointer;
 	}
 
+	.dropdown.categories .desktop a {
+		line-height: 1.5;
+		padding: 10px;
+	}
+
 	.dropdown.categories {
 		float: left;
 	}
@@ -539,7 +542,11 @@ html body .desktop {
 		max-height: 10rem;
 	}
 
-	.gear-icon:after, .user-icon:after {
+	.logout-icon, .user-icon {
+		width: 10rem;
+	}
+
+	.logout-icon:after, .user-icon:after {
 		float: right;
 	}
 }

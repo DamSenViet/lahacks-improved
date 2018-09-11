@@ -114,7 +114,6 @@ main.index, main.category {
 	display: inline-block;
 	user-select: none;
 	vertical-align: middle;
-	/* background-color: red; */
 	border: none;
 
 	background-image: url(/icons/like-backward.png);
@@ -189,17 +188,11 @@ main.index, main.category {
 	transition: all 0.15s linear, opacity 0.10s linear;
 	opacity: 1;
 	margin-top: 20px;
-	transform: translateY(0px);
 }
 
 .card .comment-thread > .comment ~ .comment {
 	margin-left: 40px;
 	margin-top: 10px;
-}
-
-.card .comment.hidden {
-	opacity: 0;
-	transform: translateY(30px);
 }
 
 .comment-author * {
@@ -228,18 +221,18 @@ main.index, main.category {
 	margin-top: 10px;
 }
 
-.card .view-more-comments {
+.card .view-comments {
 	margin-top: 10px;
 	user-select: none;
 }
 
-.card .view-more-comments-button {
+.card .view-comments-button {
 	cursor: pointer;
 	/* color: rgba(76, 87, 102, .87); */
 	/* color: #A2A8B1; */
 }
 
-.card .view-more-comments-button:hover {
+.card .view-comments-button:hover {
 	text-decoration: underline;
 }
 
@@ -265,6 +258,17 @@ main.index, main.category {
 	cursor: pointer;
 }
 
+.comment-reply-button {
+	margin-top: 8px;
+	display: block;
+	color: rgba(76, 87, 102, .87);
+	font-size: 0.8rem;
+	cursor: pointer;
+}
+
+.comment-reply-button:hover {
+	text-decoration: underline;
+}
 
 /* STYLES FOR CARD FOCUS */
 header {
@@ -391,6 +395,7 @@ textarea:focus {
 	padding: 15px 15px;
 	margin-top: 20px;
 	line-height: 1.35;
+	resize: none;
 }
 
 .card .reply::-webkit-scrollbar {

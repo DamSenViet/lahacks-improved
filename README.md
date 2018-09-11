@@ -21,6 +21,7 @@ Instagram + Reddit Web Application
 * create your own categories
 * signup/login input validation (server and client)
 * reCaptcha validation (server and client)
+* History API to manipulate page state and page navigation
 
 
 ## Stack

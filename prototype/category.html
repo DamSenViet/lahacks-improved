@@ -45,7 +45,7 @@
 					<a class="main">DamSenViet</a>
 					<ul>
 						<li><a class="user-icon">Profile</a></li>
-						<li><a class="gear-icon">Settings</a></li>
+						<li><a class="logout-icon">Logout</a></li>
 					</ul>
 				</div>
 
@@ -57,6 +57,7 @@
 						<li><a>dogs</a></li>
 						<li><a>thing</a></li>
 						<li><a>wow</a></li>
+						<li><a>Smash Bros</a></li>
 					</ul>
 
 					<div class="select-wrapper mobile">
@@ -118,6 +119,7 @@
 									<p class="comment-text">
 										Test text
 									</p>
+									<span class="comment-reply-button">Reply</span>
 								</div>
 
 								<!-- <div class="view-replies">
@@ -131,6 +133,7 @@
 									<p class="comment-text">
 										Test text
 									</p>
+									<span class="comment-reply-button">Reply</span>
 								</div>
 								<textarea class="reply post-reply" placeholder="Write a comment..." rows="1"></textarea>
 							</div>
@@ -142,6 +145,7 @@
 								<p class="comment-text">
 									Test text
 								</p>
+								<span class="comment-reply-button">Reply</span>
 							</div>
 
 							<div class="comment">
@@ -151,12 +155,12 @@
 								<p class="comment-text">
 									Great work! But don't you think the interaction of the user to close the card isn't self explanatory ? A user would generally click the card again to probably view the image or expand on the information provided
 								</p>
+								<span class="comment-reply-button">Reply</span>
+
 							</div>
 
-
-
-							<div class="view-more-comments">
-								<span class="view-more-comments-button">View more comments...</span>
+							<div class="view-comments">
+								<span class="view-comments-button">View more comments...</span>
 							</div>
 							<textarea class="reply post-reply" placeholder="Write a comment..." rows="1"></textarea>
 						</div>
@@ -623,7 +627,7 @@
 													"<span class='view-more-comments'>View more comments...</span>",
 												"</div>",
 												// disable commenting for non-authenticated users
-												"<textarea class='reply post-reply' placeholder='Write a comment...' rows='1' data-post-id='"+postId+"'></textarea>",
+												"<textarea class='reply' placeholder='Write a comment...' rows='1' data-post-id='"+postId+"'></textarea>",
 											"</div>",
 										"</div>",
 									"</div>",

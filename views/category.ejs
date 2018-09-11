@@ -47,7 +47,7 @@
 					<a class="main"><%=username %></a>
 					<ul>
 						<li><a class="user-icon">Profile</a></li>
-						<li><a class="gear-icon">Settings</a></li>
+						<li><a class="logout-icon" href="/logout">Logout</a></li>
 					</ul>
 				</div>
 				<% } %>
@@ -87,10 +87,16 @@
 	</main>
 
 	<script>
+		// using this limit to simulate bigger limits and logic
+		var sqlResultLimit = 10;
 
 		<% if (isAuthenticated) { %>
 			var username = "<%= username%>";
 		<% } %>
+
+		function currentDateTime() {
+			return new Date().toISOString().slice(0, 19).replace('T', ' ');
+		}
 
 		function whichTransitionEvent() {
 			var el = document.createElement('fakeelement');
@@ -111,52 +117,182 @@
 		var transitionEnd = whichTransitionEvent();
 
 
-		$('.floating-add').click(function() {
+
+		$('.floating-add').on('click', function() {
 			setTimeout(function() {
 				window.location.href = '/category/<%= unmodifiedCategoryName %>/upload';
 			}, 200);
 		});
 
 
-		// use this to keep track of what's been loaded
-		// postId -> [outerCommentsOffset, innerCommentsOffset -> {commentId -> offset}]
-		var commentsOffset = {
-
+		function commentReplyInputs(event) {
+			// go to comement thread an add input there
+			let commentReplyInput = $(this).parent().siblings('textarea.reply');
+			if (commentReplyInput.length !== 0) {
+				// maybe add scroll to?
+				commentReplyInput.focus();
+			} else {
+				// add input
+				let postId = $(this).parent().parent().parent().data('post-id');
+				commentReplyInput = "<textarea class='reply' placeholder='Write a comment...' rows='1' data-post-id='"+postId+"'></textarea>";
+				$(this).parent().parent().append(commentReplyInput);
+			}
+			attachTextAreaCommentKeys();
 		};
-		function loadOuterComments(event) {
-			let button = this;
-			$.ajax({
-				url: "/comment",
-				type: "GET",
-				data: {
-					postId: "",
-					outerCommentsOffset: ""
-				},
-				success: function(res, xhr, status) {
-					// update offset
-					// return comment count
 
+		function attachCommentReplyInputs() {
+			$('.comment-reply-button').off('click', commentReplyInputs);
+			$('.comment-reply-button').on('click', commentReplyInputs);
+		}
+
+
+		// use this to keep track of what's been loaded
+		// {postId -> {outerCommentsOffset -> offset, innerCommentsOffset -> {commentId -> offset}}}
+		var commentsOffset = {};
+		function loadOuterComments(event) {
+			// need to keep reference for success functions
+			let button = this;
+			let postId = $(this).parent().parent().data('post-id');
+			$.ajax({
+				url: "/outer_comments",
+				type: "GET",
+				// need to stringify on POST, but not on GET
+				data: {
+					postId: postId,
+					outerCommentsOffset: commentsOffset[postId].outerCommentsOffset
+				},
+				dataType: "json",
+				success: function(res) {
+					// comment structure
+					// [{commentId, author, content, replies}]
+
+					console.log(res);
+					let commentsData = res.comments;
+
+					for (let i = 0; i < commentsData.length; ++i) {
+						let commentId = commentsData[i].commentId;
+						let author = commentsData[i].author;
+						let content = commentsData[i].content;
+						let replies = commentsData[i].replies;
+
+						commentsOffset[postId].innerCommentsOffset[commentId] = currentDateTime();
+
+						// create comment thread conditionally
+						let commentThread = [
+							"<div class='comment-thread' data-comment-id='"+commentId+"' >",
+
+							// need to add reply button to every comment
+								"<div class='comment' data-comment-id='"+commentId+"' >",
+									"<div class='comment-author'>",
+										"<a class='username' href='/profile/"+author+"'>"+author+"</a>",
+									"</div>",
+									"<p class='comment-text'>",
+										content,
+									"</p>",
+									"<span class='comment-reply-button'>Reply</span>",
+								"</div>",
+
+								// if there's at least 1 reply, add the view-replies-button
+								(replies === 0)? "" : "<div class='view-replies'><span class='view-replies-button' >"+replies+" more replies</span></div>",
+							"</div>"
+						].join('');
+
+						// add comment thread
+						$(button).parent().before(commentThread);
+
+						// attach event handler for replies and inner comments
+					}
+
+					attachLoadComments();
+					attachCommentReplyInputs();
+
+					let newOuterCommentsOffset = res.newOuterCommentsOffset;
+					if (newOuterCommentsOffset) {
+						commentsOffset[postId].outerCommentsOffset = newOuterCommentsOffset;
+					}
+
+					if (commentsData.length < sqlResultLimit){
+						// this part only triggers when there's no comments left
+						// remove button from dom
+						$(button).parent().remove();
+					}
 				},
 				error: function(xhr, status, error) {
-
+					console.log("failed to load (outer) comments for postId " + $(button).data('post-id'));
 				},
-				complete: function(xhr, status) {
-
-				}
 			});
 		}
 		function loadInnerComments(event) {
-			let button = this;
-			$.ajax({
+			// prevent double-clicking without response from server
+			$(this).off('click', loadInnerComments);
 
+			// need to keep a reference for succes in ajax
+			let button = this;
+			let commentId = $(this).parent().parent().data('comment-id');
+			let postId = $(this).parent().parent().parent().data('post-id');
+			$.ajax({
+				url: "/inner_comments",
+				type: "GET",
+				data: {
+					commentId: commentId,
+					innerCommentsOffset: commentsOffset[postId].innerCommentsOffset[commentId]
+				},
+				dataType: "json",
+				success: function(res) {
+
+					console.log(res);
+					let commentsData = res.comments;
+					let newInnerCommentsOffset = res.newInnerCommentsOffset;
+
+					for (let i = 0; i < commentsData.length; ++i) {
+						let commentId = commentsData[i].commentId;
+						let author = commentsData[i].author;
+						let content = commentsData[i].content;
+
+						let comment = [
+							// need to add reply button to every comment
+							"<div class='comment' data-comment-id='"+commentId+"' >",
+								"<div class='comment-author'>",
+									"<a class='username' href='/profile/"+author+"'>"+author+"</a>",
+								"</div>",
+								"<p class='comment-text'>",
+									content,
+								"</p>",
+								"<span class='comment-reply-button'>Reply</span>",
+							"</div>",
+						].join('');
+
+						$(button).parent().before(comment);
+					}
+
+					attachCommentReplyInputs();
+
+					if (newInnerCommentsOffset) {
+						commentsOffset[postId].innerCommentsOffset[commentId] = newInnerCommentsOffset;
+						$(button).text("View more replies...");
+					}
+
+					if (commentsData.length < sqlResultLimit) {
+						// only triggers when there are no more comments left
+						$(button).parent().remove();
+					}
+
+				},
+				error: function(xhr, status, error) {
+					console.log("failed to load (inner) comments for commentId " + commentId);
+				},
+				complete: function(xhr, status) {
+					$(button).on('click', loadInnerComments);
+				}
 			});
 		}
 
 		function attachLoadComments() {
-			$('.view-comments').on('click', loadOuterComments);
-			$('.view-replies').on('click', loadInnerComments);
+			$('.view-comments-button').off('click', loadOuterComments);
+			$('.view-comments-button').on('click', loadOuterComments);
+			$('.view-replies-button').off('click', loadInnerComments);
+			$('.view-replies-button').on('click', loadInnerComments);
 		}
-
 
 
 		function animate(card) {
@@ -194,7 +330,7 @@
 
 			// get current position and scales
 			let invert = {
-				// position
+				// positionf
 				x: first.left - last.left,
 				y: first.top - last.top,
 				// scales
@@ -227,23 +363,45 @@
 			this.removeEventListener(transitionEnd, clearCardAnimation);
 		};
 
+
+		function resetOriginalState() {
+			let currentUrl = window.location.href;
+			let urlRemovedQuery = currentUrl.split('?')[0];
+			window.history.replaceState({}, "", urlRemovedQuery);
+		}
+
+		// pushing states will add the state to the history log when searching
+		// need to make sure it works with a link that already has a pushState query
+		resetOriginalState();
+
+		$(window).on('onpopstate', function(){
+			$('.close-out').trigger('click');
+		});
+
 		// ATTACH HANDLER WHEN NO CARDS ARE ACTIVE
 		// REMOVE HANDLER WHEN ONE CARD ACTIVE
 		function attachFocusToCards() {
-			$('.card').click(function() {
-				// remove transition applied from request
+			$('.card').off('click');
+			$('.card').on('click', function(event) {
+				// forcefully remove transition applied from request
 				$(this).attr('style', '');
 				// remove handler from all cards after clicking, continue
-				$('.card').unbind();
+				$('.card').off();
+
+				let postId = $(this).data('post-id');
+
 				try {
 					// animate the clicked card
 					animate(this);
-				} catch (err) {return null;}
+					window.history.pushState({card: postId}, "", "?postId=" + postId);
+
+				} catch (error) {return null;}
 			});
 		};
 
 
-		$('.close-out').click(function() {
+		$('.close-out').on('click', function() {
+
 			let activeCard = document.querySelector('.card.active');
 
 			// clearCardAnimation manually for high speed error correction
@@ -256,6 +414,8 @@
 				$('.card').removeClass('animate final');
 			} catch (error) {return null;}
 
+			window.history.back();
+
 			// remove final first before inducing animation
 			animate(activeCard);
 			attachFocusToCards();
@@ -264,26 +424,30 @@
 			$('.reply').blur();
 		});
 
-		$(document).keyup(function(e) {
-			if (e.keyCode == 27) {
-				$('.close-out').click();
+		$(document).on('keyup', function(event) {
+			if (event.keyCode == 27) {
+				$('.close-out').trigger('click');
 			}
 		});
 
 		// PREVENT EVENT BUBBLING FROM TRIGGERING TRANSITION END OF PARENT ('.CARD')
 		// prevents some race conditions
-		function stopCardTransitionBubble () {
-			$('.card > *').on('transitionend', function(event) {
-				event.stopImmediatePropagation();
-			});
+		function stopPropagation(event) {
+			event.stopImmediatePropagation();
+		}
+
+		function attachStopTransitionEndPropagation () {
+			$('.card > *').off(transitionEnd, stopPropagation);
+			$('.card > *').on(transitionEnd, stopPropagation);
 		};
 
 		function textAreaAutoAdjust(event) {
-			this.style.height = '';
-			this.style.height = this.scrollHeight + 'px';
+			$(this).css('height', '');
+			$(this).css('height', $(this).prop('scrollHeight') + 'px');
 		}
 
 		function attachTextAreaAutoAdjust() {
+			$('textarea.reply').off('input', textAreaAutoAdjust);
 			$('textarea.reply').on('input', textAreaAutoAdjust);
 		};
 
@@ -299,32 +463,47 @@
 			// enter -> send comment
 			else if (event.keyCode == 13) {
 				event.preventDefault();
-				// keep reference
+				// keep reference inside callback functions
 				let commentInput = this;
-				$(commentInput).prop('disabled', true);
+				let isReply = Boolean($(this).parent().data('comment-id'));
+				$(this).prop('disabled', true);
 				$.ajax({
 					url: "/comment",
 					type: "POST",
 					data: JSON.stringify({
-						comment: $(commentInput).val().trim(),
-						postId: $(commentInput).data('post-id'),
-						parentCommentId: $(commentInput).parent().data('comment-id')
+						comment: $(this).val().trim(),
+						postId: $(this).data('post-id'),
+						// might be null (reply to the post instead of a comment)
+						parentCommentId: $(this).parent().data('comment-id')
 					}),
 					contentType: "application/json",
 					dataType: "text",
-					success: function(res, status, xhr) {
+					success: function(res) {
 						// NOTE: could use additional animation here (expand white-space, slide in comment)
 						let comment = [
-							"<div class='comment' data-comment-id='"+xhr.responseText+"'>",
-								"<div class='comment-author'>",
-									"<a class='username' href='/profile/"+username+"'>"+username+"</a>",
+							(isReply)? "": "<div class='comment-thread' data-comment-id='"+res+"'>",
+								"<div class='comment' data-comment-id='"+res+"'>",
+									"<div class='comment-author'>",
+										"<a class='username' href='/profile/"+username+"'>"+username+"</a>",
+									"</div>",
+									"<p class='comment-text'>",
+										$(commentInput).val().trim(),
+									"</p>",
+									"<span class='comment-reply-button'>Reply</span>",
 								"</div>",
-								"<p class='comment-text'>",
-									$(commentInput).val().trim(),
-								"</p>",
-							"</div>"
-						].join('\n');
-						$(comment).insertBefore(commentInput);
+							(isReply)? "": "</div>"
+						].join('');
+
+						// need conditional insert
+						// does this regardless of reply or not, detects whether or not its correct
+						// if view-replies or view-comments exists, need to insertBefore them, else insertBefore commentInput
+						if ($(commentInput).siblings('.view-comments, .view-replies').length !== 0) {
+							$(commentInput).siblings('.view-comments, .view-replies').before(comment);
+						} else {
+							$(commentInput).before(comment);
+						}
+						attachCommentReplyInputs();
+
 						// reset value of input
 						$(commentInput).val("");
 					},
@@ -340,27 +519,35 @@
 		};
 
 		function attachTextAreaCommentKeys() {
+			$('textarea.reply').off('keydown', textAreaCommentKeys);
 			$('textarea.reply').on('keydown', textAreaCommentKeys);
 		};
+
+
+
+		/* ---- LIKE-BUTTON ---- */
+
+		function disableFunctionality(event) {
+			event.stopImmediatePropagation();
+			event.preventDefault();
+		}
 
 		// prevent event bubbling + ensure smooth animation
 		function disableLike(event) {
 			event.stopImmediatePropagation();
-			//disable clicking until animation has finished
-			$(this).unbind('click');
-			$(this).on('click', function(event){
-				event.stopImmediatePropagation();
-				event.preventDefault();
-			});
+			// disable clicking until animation has finished
+			$(this).off('click', disableLike);
+			$(this).off('click', disableFunctionality);
+			$(this).on('click', disableFunctionality);
 
 			// reenable like after animation completes
 			// since this is a label, the input DOESN'T change checked state until after
 			// this click trigger has finished running
 			let resetTime = 0;
 			if ($(this).siblings('.like-input').prop('checked') === true) {
-				resetTime = 205
+				resetTime = 210
 			} else if ($(this).siblings('.like-input').prop('checked') === false) {
-				resetTime = 305
+				resetTime = 310
 			}
 			// built with async in mind
 			// this function will work with like request; during like request, the like-input is disabled
@@ -369,33 +556,45 @@
 			// animation to completely finish
 			let likebutton = this; // outside reference, this context lost in setTimeout
 			setTimeout(function(event) {
-				$(likebutton).unbind();
+				// renable functionality and reattach handlers
+				$(likebutton).off('click', disableFunctionality);
+				$(likebutton).off('click', disableLike);
 				$(likebutton).on('click', disableLike);
 			}, resetTime);
 		}
 
 		function attachDisableLike() {
+			$('.like-button').off('click', disableLike);
 			$('.like-button').on('click', disableLike);
 		};
 
+
+
+
+		/* ---- LIKE-INPUT ---- */
+
+
 		function attachLike() {
+			$('.like-input').off('click');
 			$('.like-input').on('click', function(event) {
 				event.stopImmediatePropagation();
 			});
+
+			$('.like-input').off('change');
 			$('.like-input').on('change', function(event) {
 				// need outside refernece inside ajax
 				let likeInput = this;
-				$(likeInput).prop('disabled', true);
+				$(this).prop('disabled', true);
 				$.ajax({
 					url: "/like",
 					type: "POST",
 					data: JSON.stringify({
-						postId: $(likeInput).data('post-id'),
-						liked: $(likeInput).prop('checked'),
+						postId: $(this).data('post-id'),
+						liked: $(this).prop('checked'),
 					}),
 					contentType: "application/json",
 					dataType: "text",
-					success: function(res, status, xhr) {
+					success: function(res) {
 						// do nothing
 					},
 					error: function(xhr, status, error) {
@@ -413,12 +612,14 @@
 		};
 
 
-		var cardsOffset = new Date().toISOString().slice(0, 19).replace('T', ' ');
+		// need the original to start tracking comment offsets
+		// cardsOffset will keep changing
+		var cardsOffset = currentDateTime();
 		// postId (string) -> commentOffSet
 		function addCards() {
 			console.log('retrieving cards...')
 			// disable trigger while it's workin
-			$('main').unbind();
+			$('main').off('scroll', addCardsOnScroll);
 
 			// gets cards, not comments
 			$.ajax({
@@ -427,16 +628,13 @@
 				data: JSON.stringify({cardsOffset: cardsOffset}),
 				contentType: "application/json",
 				dataType: 'json',
-				success: function(res, status, xhr) {
+				success: function(res) {
 
 					// success response structure (cards)
 					// [{postId, postTitle, imageLink, liked, author, description}]
 
-					let cardsData = xhr.responseJSON.cards;
-					if (xhr.responseJSON.newCardsOffset) {
-						cardsOffset = xhr.responseJSON.newCardsOffset;
-						console.log(cardsData);
-					}
+					console.log(res);
+					let cardsData = res.cards;
 
 					for (let i = 0; i < cardsData.length; ++i) {
 						let postId = cardsData[i].postId;
@@ -447,7 +645,7 @@
 						let description = cardsData[i].description;
 
 						// setup
-						commentsOffset[postId] = {outerCommentsOffset: cardsOffset, innerCommentsOffset: {}};
+						commentsOffset[postId] = {outerCommentsOffset: currentDateTime(), innerCommentsOffset: {}};
 
 						let card = [
 							"<div class='card sliding-in' style='transition: opacity 0.3s ease-out, transform 0.4s linear, pointer-events 0s linear 0.4s;' data-post-id='"+postId+"'>",
@@ -477,26 +675,25 @@
 												description,
 											"</div>",
 
-											"<div class='comments'>",
+											"<div class='comments' data-post-id='"+postId+"'>",
 
 												// first animate will trigger addition of comments
-												"<div>",
-													"<span class='view-comments'>View more comments...</span>",
+												"<div class='view-comments'>",
+													"<span class='view-comments-button'>View more comments...</span>",
 												"</div>",
 
 												<% if (isAuthenticated) { %>
 												// disable commenting for non-authenticated users
-												"<textarea class='reply post-reply' placeholder='Write a comment...' rows='1' data-post-id='"+postId+"'></textarea>",
+												"<textarea class='reply' placeholder='Write a comment...' rows='1' data-post-id='"+postId+"'></textarea>",
 												<% } %>
 											"</div>",
 										"</div>",
 									"</div>",
 								"</div>",
 							"</div>"
-						].join('\n');
+						].join('');
 
 						let element = $(card);
-
 						$('main').append(element);
 						window.setTimeout(function(){
 							$(element).removeClass('sliding-in');
@@ -508,32 +705,30 @@
 					}
 
 					// support animation and functionality on every card
-					stopCardTransitionBubble();
-					attachFocusToCards();
+					attachStopTransitionEndPropagation();
 					attachTextAreaAutoAdjust();
 					attachTextAreaCommentKeys();
 					attachLike();
 					attachDisableLike();
 					attachLoadComments();
+					attachFocusToCards();
+
+					let newCardsOffset = res.newCardsOffset;
+					if (newCardsOffset) {
+						cardsOffset = newCardsOffset;
+						$('main').on('scroll', addCardsOnScroll);
+						$('main').trigger('scroll');
+					}
 				},
 				error: function(xhr, status, error) {
 					console.log(xhr.responseText);
-				},
-				complete: function(xhr, status) {
-					// reenable function on scroll, reenable trigger
-					$('main').on('scroll', addCardsOnScroll);
 				}
+
 			});
 		}
 
-		// for prototype
-		stopCardTransitionBubble();
-		attachFocusToCards();
-		attachTextAreaAutoAdjust();
-		attachTextAreaCommentKeys();
-		attachLike();
-		attachDisableLike();
-		attachLoadComments();
+
+
 
 		function addCardsOnScroll (event) {
 			// 10px to fix up errors

@@ -55,7 +55,7 @@
 						<a class="main"><%=username %></a>
 						<ul>
 							<li><a class="user-icon">Profile</a></li>
-							<li><a class="gear-icon">Settings</a></li>
+							<li><a class="logout-icon" href="/logout">Logout</a></li>
 						</ul>
 					</div>
 					<% } %>
@@ -130,8 +130,8 @@
 				}),
 				contentType: 'application/json',
 				dataType: 'json',
-				success: function (res, status, xhr) {
-					window.location = xhr.responseJSON['newCategoryPage'];
+				success: function (res) {
+					window.location = res.newCategoryPage;
 				},
 				error: function (xhr, status, error) {
 					$('button[type="submit"]').addClass('JSfail');
