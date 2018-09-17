@@ -624,7 +624,7 @@ form .submit-container {
 	transform: translateY(15px);
 }
 
-.category-name {
+.card .content .title {
 	text-transform: capitalize;
 }
 

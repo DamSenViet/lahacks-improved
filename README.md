@@ -68,7 +68,7 @@ Now you can start the application!
 ```
 npm start
 ```
-This will start the server on [port 8080](127.0.0.1:8080).
+This will start the server on [port 8080](http://127.0.0.1:8080) assuming your host is localhost.
 
 # Using the Test Folder Prototype
 

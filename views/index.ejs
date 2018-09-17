@@ -92,6 +92,98 @@
 					window.location.href = '/create';
 				}, 200);
 			});
+
+
+			function currentDateTime() {
+				return new Date().toISOString().slice(0, 19).replace('T', ' ');
+			}
+
+			// need the original to start tracking comment offsets
+			// cardsOffset will keep changing
+			var cardsOffset = currentDateTime();
+			// postId (string) -> commentOffSet
+			function addCards() {
+				console.log('retrieving cards...')
+				// disable trigger while it's workin
+				$('main').off('scroll', addCardsOnScroll);
+
+				// gets cards, not comments
+				$.ajax({
+					url: "/cards",
+					type: "POST",
+					data: JSON.stringify({cardsOffset: cardsOffset}),
+					contentType: "application/json",
+					dataType: 'json',
+					success: function(res) {
+						// success response structure (cards)
+						// [{postId, postTitle, imageLink, liked, author, description}]
+
+						console.log(res);
+						let cardsData = res.cards;
+
+						for (let i = 0; i < cardsData.length; ++i) {
+							let categoryTitle = cardsData[i].categoryTitle;
+							let unmodifiedCategoryName = cardsData[i].unmodifiedCategoryName;
+							let imageLink = cardsData[i].imageLink;
+
+							let card = [
+								"<div class='card sliding-in' style='transition: opacity 0.3s ease-out, transform 0.4s linear, pointer-events 0s linear 0.4s;'>",
+									"<div class='image-container'>",
+										"<a class='link-wrapper' href='"+"/category/"+ unmodifiedCategoryName + "'>",
+
+											"<div class='overlay-container'>",
+												"<div class='image' style='background-image: url("+imageLink+")'>",
+												"</div>",
+
+												"<div class='content'>",
+													"<div class='title'>",
+														categoryTitle,
+													"</div>",
+												"</div>",
+
+												"</div>",
+
+											"</a>",
+										"</div>",
+									"</div>",
+								"</div>"
+							].join('');
+
+							let element = $(card);
+							$('main').append(element);
+							window.setTimeout(function(){
+								$(element).removeClass('sliding-in');
+								// let it slide in
+								window.setTimeout(function() {
+									$(element).attr('style', '');
+								}, 410);
+							}, 200 * i);
+						}
+
+						let newCardsOffset = res.newCardsOffset;
+						if (newCardsOffset) {
+							cardsOffset = newCardsOffset;
+							$('main').on('scroll', addCardsOnScroll);
+							$('main').trigger('scroll');
+						}
+					},
+					error: function(xhr, status, error) {
+						console.log(xhr.responseText);
+					}
+
+				});
+			}
+
+
+			function addCardsOnScroll (event) {
+				// 10px to fix up errors
+				if ($(this).scrollTop() + $(this).height() + 10 > $(this).prop('scrollHeight')) {
+					addCards();
+				}
+			}
+			$('main').on('scroll', addCardsOnScroll);
+			$('main').trigger('scroll');
+
 		</script>
 
 		<script src="/scripts/main.js"></script>

@@ -112,8 +112,12 @@
 
 		$('#category-name').on('input', function(event) {
 			event.target.setCustomValidity('');
-
 		});
+
+		function currentDateTime() {
+			return new Date().toISOString().slice(0, 19).replace('T', ' ');
+		}
+
 		$('.createForm').on('submit', function(event) {
 			event.preventDefault();
 
@@ -126,7 +130,8 @@
 				type: "POST",
 				data: JSON.stringify({
 					categoryName: $('#category-name').val().trim(),
-					captchaResponse: $('#g-recaptcha-response').val()
+					captchaResponse: $('#g-recaptcha-response').val(),
+					currentDateTime: currentDateTime()
 				}),
 				contentType: 'application/json',
 				dataType: 'json',

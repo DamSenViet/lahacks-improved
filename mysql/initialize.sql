@@ -11,6 +11,7 @@ create table users (
 
 create table categories (
 	name varchar(30) not null,
+	at datetime not null,
 	primary key (name)
 );
 
@@ -20,7 +21,7 @@ create table posts (
 	description varchar(140),
 	username varchar(20) not null,
 	category varchar(30) not null,
-	at datetime,
+	at datetime not null,
 
 	primary key (postID),
 	foreign key (username) references users(username),

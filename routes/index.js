@@ -13,7 +13,6 @@ var sharp = require('sharp');
 
 // NOTE: ATTEMPTING ASYNC IMPLEMENTATION
 
-
 // http://expressjs.com/en/4x/api.html#app.use
 // express accepts chaining middleware calls in series
 // MIDDLEWARE FUNCTION
@@ -57,7 +56,6 @@ var verifyCategory = function(req, res, next) {
 	// to support history states
 	let urlRemovedQuery = req.url.split("?")[0];
 
-
 	let unmodifiedCategoryName =  urlRemovedQuery.split("/")[2];
 	let categoryName = unmodifiedCategoryName.replace(/_/g, " ");
 	let connection = mysql.createConnection(mysqlConfig);
@@ -85,7 +83,6 @@ var getCategories = function(connection, callback) {
 	let sql = "select name from categories order by name asc";
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
-		connection.end();
 
 		let categories = [];
 		for (let i = 0; i < results.length; ++i) {
@@ -115,8 +112,65 @@ router.get('(/$)', function(req, res, next) {
 	});
 });
 
-router.get('/cards$', function(req, res, next) {
+router.post('/cards$', function(req, res, next) {
+	let cardsOffset = req.body.cardsOffset;
+	if (typeof(cardsOffset) !== "string") {
+		res.status(400);
+		res.send("cardsOffset must be a datetime formatted string");
+		return;
+	}
 
+	let connection = mysql.createConnection(mysqlConfig);
+
+	// query selects the post with the highest vote count from each category
+	// if there are no posts in a category, that category is not included (b/c there would be no image)
+	let sql = "select max(likes), postID, name as category, at"
+	+ " from ("
+		+ " select count(likes) as likes, postID, category"
+		+ " from ("
+			// select postLikes.postID b/c every row included is a like for that post, will use this to count posts
+			// also helps because we right join to create null values to include posts who have 0 likes with right join
+			+ " select postLikes.postID as likes, posts.postID as postID, posts.category as category, posts.at as at"
+			+ " from postLikes right join posts on postLikes.postID = posts.postID"
+		+ ") A"
+		+ " group by postID"
+	+ ") B"
+	+ " inner join categories"
+	+ " on categories.name = category"
+	+ " where at < "+mysql.escape(cardsOffset)
+	+ " group by category"
+	+ " order by at desc"
+	+ " limit 10";
+
+	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+		connection.end();
+
+		console.log(results);
+
+		let cards = [];
+		for (let i = 0; i < results.length; ++i) {
+			let card = {};
+			card.categoryTitle = results[i].category;
+			let unmodifiedCategoryName = results[i].category.replace(/ /g, "_");
+			card.unmodifiedCategoryName = unmodifiedCategoryName;
+			let postId = results[i].postID;
+			card.imageLink = "/pictures/" + unmodifiedCategoryName + "/" + postId;
+			cards.push(card);
+		}
+
+		let newCardsOffset;
+		if (results.length > 0) {
+			newCardsOffset = results[results.length - 1].at;
+		}
+
+		res.status(200);
+		res.send({
+			cards: cards,
+			newCardsOffset: newCardsOffset
+		});
+		return;
+	});
 });
 
 router.get('/login$', function(req, res, next) {
@@ -128,6 +182,8 @@ router.get('/login$', function(req, res, next) {
 
 	let connection = mysql.createConnection(mysqlConfig);
 	getCategories(connection, function(categories) {
+		connection.end();
+
 		res.render('login', {
 			categories: categories,
 			isAuthenticated: req.session.isAuthenticated,
@@ -167,8 +223,8 @@ router.post('/login$', verifyCaptcha, function(req, res, next) {
 	let connection = mysql.createConnection(mysqlConfig);
 	let sql = "select password from users where username="+mysql.escape(username);
 	connection.query(sql, function(error, results, fields) {
-		connection.end();
 		if (error) throw error;
+		connection.end();
 
 		// user doesn't exist, output generic message to deter hackers
 		if (results.length !== 1) {
@@ -205,6 +261,7 @@ router.get('/signup$', function(req, res, next) {
 
 	let connection = mysql.createConnection(mysqlConfig);
 	getCategories(connection, function(categories) {
+		connection.end();
 		res.render('signup', {
 			categories: categories,
 			isAuthenticated: req.session.isAuthenticated,
@@ -268,8 +325,8 @@ router.post('/signup$', verifyCaptcha, function(req, res, next) {
 		bcrypt.hash(password, 10, function(error, hash) {
 			sql = "insert into users values ("+mysql.escape(username)+","+mysql.escape(hash)+")";
 			connection.query(sql, function(error, results, fields) {
-				connection.end();
 				if (error) throw error;
+				connection.end();
 				// set session
 				req.session.isAuthenticated = true;
 				req.session.user = username;
@@ -285,13 +342,14 @@ router.post('/signup$', verifyCaptcha, function(req, res, next) {
 router.get('/create$', function(req, res, next) {
 	// prevent anonymous users from creating categories (flow control)
 	if (!req.session.isAuthenticated) {
-		req.session.lastPage = '/create'
+		req.session.lastPage = '/create';
 		res.redirect('/login');
 		return;
 	};
 
 	let connection = mysql.createConnection(mysqlConfig);
 	getCategories(connection, function(categories) {
+		connection.end();
 		res.render('create', {
 			categories: categories,
 			isAuthenticated: req.session.isAuthenticated,
@@ -310,6 +368,7 @@ router.post('/create$', verifyCaptcha, function(req, res, next) {
 	};
 
 	let categoryName = req.body.categoryName.trim().toLowerCase();
+	let dateTime = req.body.currentDateTime;
 
 	// START ERROR CHECK
 	let errors = {};
@@ -328,7 +387,7 @@ router.post('/create$', verifyCaptcha, function(req, res, next) {
 	}
 
 	let connection = mysql.createConnection(mysqlConfig);
-	sql = "select name from categories where name="+mysql.escape(categoryName);
+	let sql = "select name from categories where name="+mysql.escape(categoryName);
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
 
@@ -339,7 +398,7 @@ router.post('/create$', verifyCaptcha, function(req, res, next) {
 			return;
 		}
 
-		sql = "insert into categories values ("+mysql.escape(categoryName)+")";
+		sql = "insert into categories values ("+mysql.escape(categoryName)+","+mysql.escape(dateTime)+")";
 		connection.query(sql, function(error, results, fields) {
 			if (error) throw error;
 			connection.end();
@@ -362,6 +421,7 @@ router.get('/category/[a-z_]+$', verifyCategory, function(req, res, next) {
 	req.session.lastPage = "/category/" + unmodifiedCategoryName;
 
 	getCategories(connection, function(categories) {
+		connection.end();
 		res.render('category', {
 			categories: categories,
 			unmodifiedCategoryName: unmodifiedCategoryName,
@@ -390,13 +450,14 @@ router.post('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next)
 	// need to get all top results then left join that on
 	// need to select where on category
 	let sql = "select postId, title, description, username, at,"
-	+ " exists(select * from postLikes where postLikes.username = "+mysql.escape(req.session.user)+")"
+	+ " exists(select * from postLikes where postLikes.username = "+mysql.escape(req.session.user)+" and postLikes.postID = posts.postID)"
 	+ " as liked from posts where category = "+mysql.escape(categoryName)+ " and at < "+mysql.escape(cardsOffset)
 	+ " order by at desc limit 10";
 	// table columns looks like this
 	// | postId | title | description | username | category | at | liked (by user) |
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
+		connection.end();
 
 		// get necessary information on the card
 		let cards = [];
@@ -412,7 +473,7 @@ router.post('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next)
 		}
 
 		let newCardsOffset;
-		if (results.length !== 0) {
+		if (results.length > 0) {
 			newCardsOffset = results[results.length - 1].at;
 		}
 
@@ -438,6 +499,7 @@ router.get('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next)
 	};
 
 	getCategories(connection, function(categories) {
+		connection.end();
 		res.render('upload', {
 			categories: categories,
 			unmodifiedCategoryName: unmodifiedCategoryName,
@@ -482,7 +544,6 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 		}
 	}
 
-
 	if (Object.keys(errors).length > 0) {
 		res.status(400);
 		res.send(errors);
@@ -496,6 +557,7 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 	+ mysql.escape(dateTime)+")";
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
+		connection.end();
 
 		// need to perform compression here
 		let imgBuffer = Buffer.from(imgData.data, 'base64');
@@ -543,6 +605,7 @@ router.get('/outer_comments$', function(req, res, next) {
 	+ " order by at desc limit 10";
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
+		connection.end();
 		// console.log(results);
 
 		let comments = [];
@@ -555,7 +618,7 @@ router.get('/outer_comments$', function(req, res, next) {
 			comments.push(comment);
 		}
 		let newOuterCommentsOffset;
-		if (results.length !== 0) {
+		if (results.length > 0) {
 			newOuterCommentsOffset = results[results.length - 1].at;
 		}
 
@@ -580,10 +643,11 @@ router.get('/inner_comments$', function(req, res, next) {
 
 
 	let connection = mysql.createConnection(mysqlConfig);
-	sql = "select * from comments where parentID = "+commentId+" and at < " + mysql.escape(innerCommentsOffset)
+	let sql = "select * from comments where parentID = "+commentId+" and at < " + mysql.escape(innerCommentsOffset)
 	+ "order by at desc limit 10";
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
+		connection.end();
 		// console.log(results);
 
 		let comments = [];
@@ -597,7 +661,7 @@ router.get('/inner_comments$', function(req, res, next) {
 		}
 
 		let newInnerCommentsOffset;
-		if (results.length !== 0) {
+		if (results.length > 0) {
 			newInnerCommentsOffset = results[results.length - 1].at;
 		}
 
@@ -642,6 +706,7 @@ router.post('/comment$', function(req, res, next) {
 			console.log(results);
 			throw error;
 		};
+		connection.end();
 
 		res.status(200);
 		res.send("" + results.insertId);
@@ -684,7 +749,8 @@ router.post('/like$', function(req, res, next) {
 			if (error.code !== "ER_DUP_ENTRY") {
 				throw error;
 			}
-		};
+		}
+		connection.end();
 
 		res.status(200);
 		res.send("");
