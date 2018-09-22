@@ -19,7 +19,6 @@ var isMobile = {
     }
 };
 
-
 var isLandscape = function() {
 	return window.innerWidth > window.innerHeight;
 }

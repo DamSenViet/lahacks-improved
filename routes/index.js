@@ -106,7 +106,7 @@ router.get('(/$)', function(req, res, next) {
 		res.render('index', {
 			categories: categories,
 			isAuthenticated: req.session.isAuthenticated,
-			username: req.session.user
+			username: req.session.user,
 		});
 		return;
 	});
@@ -130,7 +130,11 @@ router.post('/cards$', function(req, res, next) {
 		+ " from ("
 			// select postLikes.postID b/c every row included is a like for that post, will use this to count posts
 			// also helps because we right join to create null values to include posts who have 0 likes with right join
-			+ " select postLikes.postID as likes, posts.postID as postID, posts.category as category, posts.at as at"
+			+ " select"
+				+ " postLikes.postID as likes,"
+				+ " posts.postID as postID,"
+				+ " posts.category as category,"
+				+ " posts.at as at"
 			+ " from postLikes right join posts on postLikes.postID = posts.postID"
 		+ ") A"
 		+ " group by postID"
@@ -292,7 +296,7 @@ router.post('/signup$', verifyCaptcha, function(req, res, next) {
 		errors.username = "too long";
 	}
 
-	if (!/[a-z0-9_]/.test(username)) {
+	if (!/^[a-z0-9_]+$/.test(username)) {
 		errors.username = "special characters not allowed";
 	}
 
@@ -323,7 +327,10 @@ router.post('/signup$', verifyCaptcha, function(req, res, next) {
 		// ADD USER INSERT QUERY
 		// hash out password first
 		bcrypt.hash(password, 10, function(error, hash) {
-			sql = "insert into users values ("+mysql.escape(username)+","+mysql.escape(hash)+")";
+			sql = "insert into users values ("
+				+ mysql.escape(username) + ","
+				+ mysql.escape(hash)
+			+ ")";
 			connection.query(sql, function(error, results, fields) {
 				if (error) throw error;
 				connection.end();
@@ -379,7 +386,7 @@ router.post('/create$', verifyCaptcha, function(req, res, next) {
 		return;
 	}
 
-	if (!/^[a-z ]+$/.test(categoryName)) {
+	if (!/^[a-z0-9 ]+$/.test(categoryName)) {
 		errors['category-name'] = "must only be letters";
 		res.status(400);
 		res.send(errors);
@@ -398,7 +405,10 @@ router.post('/create$', verifyCaptcha, function(req, res, next) {
 			return;
 		}
 
-		sql = "insert into categories values ("+mysql.escape(categoryName)+","+mysql.escape(dateTime)+")";
+		sql = "insert into categories values ("
+			+ mysql.escape(categoryName)+","
+			+ mysql.escape(dateTime)
+		+ ")";
 		connection.query(sql, function(error, results, fields) {
 			if (error) throw error;
 			connection.end();
@@ -450,8 +460,15 @@ router.post('/category/[a-z_]+/cards$', verifyCategory, function(req, res, next)
 	// need to get all top results then left join that on
 	// need to select where on category
 	let sql = "select postId, title, description, username, at,"
-	+ " exists(select * from postLikes where postLikes.username = "+mysql.escape(req.session.user)+" and postLikes.postID = posts.postID)"
-	+ " as liked from posts where category = "+mysql.escape(categoryName)+ " and at < "+mysql.escape(cardsOffset)
+	+ " exists("
+		+ " select *"
+		+ " from postLikes"
+		+ " where postLikes.username = "+mysql.escape(req.session.user)
+		+ " and postLikes.postID = posts.postID"
+		+ ") as liked"
+	+ " from posts"
+	+ " where category = "+mysql.escape(categoryName)
+	+ " and at < "+mysql.escape(cardsOffset)
 	+ " order by at desc limit 10";
 	// table columns looks like this
 	// | postId | title | description | username | category | at | liked (by user) |
@@ -553,8 +570,13 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 	let dateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
 	// perform insert first, if success save file
 	let sql = "insert into posts values ("
-	+ "null,"+mysql.escape(title)+","+mysql.escape(description)+","+mysql.escape(req.session.user)+","+mysql.escape(categoryName)+","
-	+ mysql.escape(dateTime)+")";
+		+ "null,"
+		+ mysql.escape(title) + ","
+		+ mysql.escape(description) + ","
+		+ mysql.escape(req.session.user) + ","
+		+ mysql.escape(categoryName) + ","
+		+ mysql.escape(dateTime)
+	+ ")";
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
 		connection.end();
@@ -581,12 +603,113 @@ router.get('/logout$', function(req, res, next) {
 
 // get list of categories?
 router.get('/profile/[a-z0-9_]+$', function(req, res, next) {
-	let connection = mysql.createConnection(mysqlConfig);
+	let url = req.url;
+	let profileUser = req.url.split("/")[2];
+	profileUser = profileUser.toLowerCase();
 
-	let sql = "";
+	let connection = mysql.createConnection(mysqlConfig);
+	// check if user exists in database
+	let sql = "select username"
+	+ " from users"
+	+ " where username = " + mysql.escape(profileUser);
 	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+
+		/// user doesn't exist
+		if (results.length === 0) {
+			res.status(404);
+			res.send("User " + profile + " does not exist.");
+			return;
+		}
+
+		getCategories(connection, function(categories) {
+			res.status(200);
+			res.render('profile', {
+				categories: categories,
+				isAuthenticated: req.session.isAuthenticated,
+				username: req.session.user,
+				profileUser: profileUser
+			});
+			return;
+		});
 	});
 });
+
+router.post('/profile/[a-z0-9_]+/cards$', function(req, res, next) {
+	let url = req.url;
+	let profileUser = req.url.split("/")[2];
+	profileUser = profileUser.toLowerCase();
+
+	let connection = mysql.createConnection(mysqlConfig);
+	// check if user exists in database
+	let sql = "select username"
+	+ " from users"
+	+ " where username = " + mysql.escape(profileUser);
+	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+
+		if (results.length === 0) {
+			res.status(400);
+			res.send("User " + profile + " does not exist.");
+			return;
+		}
+
+		// post structure = postId, postTitle, imageLink, liked, author, description
+		let cardsOffset = req.body.cardsOffset;
+		if (typeof(cardsOffset) !== "string") {
+			res.status(400);
+			res.send("cardsOffset must be a datetime formatted string");
+			return;
+		}
+
+		// need to get all top results then left join that on
+		// need to select where on category
+		sql = "select *,"
+		+ " exists("
+			+ " select *"
+			+ " from postLikes"
+			+ " where postLikes.username = "+mysql.escape(req.session.user)
+			+ " and postLikes.postID = posts.postID"
+		+ ") as liked"
+		+ " from posts"
+		+ " where username = " + mysql.escape(profileUser)
+		+ " and at < " + mysql.escape(cardsOffset)
+		+ " order by at desc"
+		+ " limit 10";
+		connection.query(sql, function(error, results, fields) {
+			if (error) throw error;
+			connection.end();
+
+			// get necessary information on the card
+			let cards = [];
+			for (let i = 0; i < results.length; ++i) {
+				let card = {};
+				card.postId = results[i].postID;
+				card.postTitle = results[i].title;
+				let categoryName = results[i].category;
+				let unmodifiedCategoryName = categoryName.replace(/ /g, "_");
+				card.imageLink = "/pictures/"+unmodifiedCategoryName+"/"+results[i].postID;
+				card.description = results[i].description;
+				card.author = results[i].username;
+				card.liked = (results[i].liked === 0)? false: true;
+				cards.push(card);
+			}
+
+			let newCardsOffset;
+			if (results.length > 0) {
+				newCardsOffset = results[results.length - 1].at;
+			}
+
+			res.status(200);
+			res.send({
+				cards: cards,
+				newCardsOffset: newCardsOffset
+			});
+			return;
+		});
+	});
+});
+
 
 router.get('/outer_comments$', function(req, res, next) {
 	let postId = req.query.postId;
@@ -599,9 +722,15 @@ router.get('/outer_comments$', function(req, res, next) {
 	}
 
 	let connection = mysql.createConnection(mysqlConfig);
-	let sql = "select *,"
-	+ " (select count(*) from comments as c2 where c2.parentID = c1.commentID) as replies"
-	+ " from comments as c1 where c1.parentID is null and at < " + mysql.escape(outerCommentsOffset)
+	let sql = "select *, ("
+		+ " select count(*)"
+		+ " from comments as c2"
+		+ " where c2.parentID = c1.commentID"
+	+ ") as replies"
+	+ " from comments as c1"
+	+ " where c1.parentID is null"
+	+ " and postID = " + postId
+	+ " and at < " + mysql.escape(outerCommentsOffset)
 	+ " order by at desc limit 10";
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
@@ -610,6 +739,7 @@ router.get('/outer_comments$', function(req, res, next) {
 
 		let comments = [];
 		for (let i = 0; i < results.length; ++i) {
+			// console.log(results[i]);
 			let comment = {};
 			comment.commentId = results[i].commentID;
 			comment.author = results[i].username;
@@ -643,8 +773,11 @@ router.get('/inner_comments$', function(req, res, next) {
 
 
 	let connection = mysql.createConnection(mysqlConfig);
-	let sql = "select * from comments where parentID = "+commentId+" and at < " + mysql.escape(innerCommentsOffset)
-	+ "order by at desc limit 10";
+	let sql = "select *"
+	+ " from comments"
+	+ " where parentID = " + commentId
+	+ " and at < " + mysql.escape(innerCommentsOffset)
+	+ " order by at desc limit 10";
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
 		connection.end();
@@ -674,6 +807,7 @@ router.get('/inner_comments$', function(req, res, next) {
 	});
 });
 
+
 router.post('/comment$', function(req, res, next) {
 	if (!req.session.isAuthenticated) {
 		res.status(400);
@@ -689,7 +823,11 @@ router.post('/comment$', function(req, res, next) {
 		return;
 	}
 	let parentCommentId = req.body.parentCommentId; // might be null
-	if (parentCommentId !== undefined && typeof(parentCommentId) !== "number" && typeof(parentCommentId) !== "undefined") {
+	if (
+			parentCommentId !== undefined
+			&& typeof(parentCommentId) !== "number"
+			&& typeof(parentCommentId) !== "undefined"
+		) {
 		res.status(400);
 		res.send("parentCommentId must be a number or ommitted");
 		return;
@@ -738,10 +876,15 @@ router.post('/like$', function(req, res, next) {
 	let sql;
 	if (liked) {
 		// insert
-		sql = "insert into postLikes values ("+mysql.escape(req.session.user)+","+postId+", default)";
+		sql = "insert into postLikes"
+		+ " values ("+mysql.escape(req.session.user)+","+postId+", default)";
+
 	} else {
 		// delete
-		sql = "delete from postLikes where username="+mysql.escape(req.session.user)+" and postId=" + postId;
+		sql = "delete"
+		+ " from postLikes"
+		+ " where username="+mysql.escape(req.session.user)
+		+ " and postId=" + postId;
 	}
 	connection.query(sql, function(error, results, fields) {
 		if (error) {

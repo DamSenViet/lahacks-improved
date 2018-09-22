@@ -5,7 +5,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<title><%= categoryName %></title>
+	<title>Profile</title>
 
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="/styles/main.css" />
@@ -74,14 +74,12 @@
 	</header>
 
 	<main class="category">
-		<div class="floating-add">
-			<img src="/icons/camera.svg" class="icon" />
-		</div>
-
 		<div class="close-out">
 			<div class="bar"></div>
 			<div class="bar"></div>
 		</div>
+
+
 
 	</main>
 
@@ -114,14 +112,6 @@
 			return transitions['transition'];
 		}
 		var transitionEnd = whichTransitionEvent();
-
-
-
-		$('.floating-add').on('click', function() {
-			setTimeout(function() {
-				window.location.href = '/category/<%= unmodifiedCategoryName %>/upload';
-			}, 200);
-		});
 
 
 		function commentReplyInputs(event) {
@@ -409,7 +399,7 @@
 			let activeCard = document.querySelector('.card.active');
 
 			// clearCardAnimation manually for high speed error correction
-			// when close out is activated too fast, before clearCardAnimation activates
+			// when close out is activated too fast, before clearing animation activates
 			// from transitionEnd, animate will stay there forever b/c it's never
 			// cleared, even in consecutive calls, therefore need to manually clear transitionEnd
 			try {
@@ -418,6 +408,8 @@
 				$('.card').removeClass('animate final');
 			} catch (error) {return null;}
 
+			// history API
+			// address bar should revert before beginning animation
 			window.history.back();
 
 			// remove final first before inducing animation
@@ -528,7 +520,6 @@
 		};
 
 
-
 		/* ---- LIKE-BUTTON ---- */
 
 		function disableFunctionality(event) {
@@ -624,7 +615,7 @@
 
 			// gets cards, not comments
 			$.ajax({
-				url: "/category/<%= unmodifiedCategoryName %>/cards",
+				url: "/profile/<%= profileUser %>/cards",
 				type: "POST",
 				data: JSON.stringify({cardsOffset: cardsOffset}),
 				contentType: "application/json",
