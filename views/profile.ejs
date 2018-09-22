@@ -19,7 +19,7 @@
 		<nav>
 			<input class="trigger" type="checkbox" id="hamburger" />
 			<a class="github" href="https://github.com/DamSenViet/LAHacks-Improved"><img src="/icons/github.svg"/></a>
-			<a class="logo" href="/">Browse</a>
+			<a class="logo" href="/">Profile</a>
 			<label class="right hamburger center-parent mobile" for="hamburger">
 					<div class="center">
 						<div class="top bar"></div>
@@ -45,7 +45,7 @@
 				<div class="dropdown settings">
 					<a class="main"><%=username %></a>
 					<ul>
-						<li><a class="user-icon">Profile</a></li>
+						<li><a class="user-icon" href="/profile/<%= username%>">Profile</a></li>
 						<li><a class="logout-icon" href="/logout">Logout</a></li>
 					</ul>
 				</div>
@@ -368,9 +368,9 @@
 		// need to make sure it works with a link that already has a pushState query
 		resetOriginalState();
 
-		$(window).on('onpopstate', function(){
-			$('.close-out').trigger('click');
-		});
+		window.onpopstate = function() {
+			closeOutClick(null, true);
+		}
 
 		// ATTACH HANDLER WHEN NO CARDS ARE ACTIVE
 		// REMOVE HANDLER WHEN ONE CARD ACTIVE
@@ -394,12 +394,11 @@
 		};
 
 
-		$('.close-out').on('click', function() {
-
+		function closeOutClick(event, isWindowOnPopState) {
 			let activeCard = document.querySelector('.card.active');
 
 			// clearCardAnimation manually for high speed error correction
-			// when close out is activated too fast, before clearing animation activates
+			// when close out is activated too fast, before clearCardAnimation activates
 			// from transitionEnd, animate will stay there forever b/c it's never
 			// cleared, even in consecutive calls, therefore need to manually clear transitionEnd
 			try {
@@ -408,9 +407,10 @@
 				$('.card').removeClass('animate final');
 			} catch (error) {return null;}
 
-			// history API
-			// address bar should revert before beginning animation
-			window.history.back();
+			// replace it
+			if (!isWindowOnPopState) {
+				window.history.back();
+			}
 
 			// remove final first before inducing animation
 			animate(activeCard);
@@ -418,7 +418,8 @@
 
 			// remove focus from inputs inside the card
 			$('.reply').blur();
-		});
+		}
+		$('.close-out').on('click', closeOutClick);
 
 		$(document).on('keyup', function(event) {
 			if (event.keyCode == 27) {

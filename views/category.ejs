@@ -45,7 +45,7 @@
 				<div class="dropdown settings">
 					<a class="main"><%=username %></a>
 					<ul>
-						<li><a class="user-icon">Profile</a></li>
+						<li><a class="user-icon" href="/profile/<%= username%>">Profile</a></li>
 						<li><a class="logout-icon" href="/logout">Logout</a></li>
 					</ul>
 				</div>
@@ -378,9 +378,15 @@
 		// need to make sure it works with a link that already has a pushState query
 		resetOriginalState();
 
-		$(window).on('onpopstate', function(){
-			$('.close-out').trigger('click');
-		});
+		// jquery doesn't yet support onpopstate for event handling
+		// $(window).on('onpopstate', function(){
+		// 	closeOutClick(null, true);
+		// });
+
+		window.onpopstate = function(event) {
+			closeOutClick(null, true);
+		}
+
 
 		// ATTACH HANDLER WHEN NO CARDS ARE ACTIVE
 		// REMOVE HANDLER WHEN ONE CARD ACTIVE
@@ -404,8 +410,7 @@
 		};
 
 
-		$('.close-out').on('click', function() {
-
+		function closeOutClick(event, isWindowOnPopState) {
 			let activeCard = document.querySelector('.card.active');
 
 			// clearCardAnimation manually for high speed error correction
@@ -418,7 +423,10 @@
 				$('.card').removeClass('animate final');
 			} catch (error) {return null;}
 
-			window.history.back();
+			// replace it
+			if (!isWindowOnPopState) {
+				window.history.back();
+			}
 
 			// remove final first before inducing animation
 			animate(activeCard);
@@ -426,7 +434,8 @@
 
 			// remove focus from inputs inside the card
 			$('.reply').blur();
-		});
+		}
+		$('.close-out').on('click', closeOutClick);
 
 		$(document).on('keyup', function(event) {
 			if (event.keyCode == 27) {
@@ -526,7 +535,6 @@
 			$('textarea.reply').off('keydown', textAreaCommentKeys);
 			$('textarea.reply').on('keydown', textAreaCommentKeys);
 		};
-
 
 
 		/* ---- LIKE-BUTTON ---- */
