@@ -5,7 +5,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<title><%= categoryName %></title>
+	<title>Search Results</title>
 
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="/styles/main.css" />
@@ -19,7 +19,7 @@
 		<nav>
 			<input class="trigger" type="checkbox" id="hamburger" />
 			<a class="github" href="https://github.com/DamSenViet/LAHacks-Improved"><img src="/icons/github.svg"/></a>
-			<a class="logo" href="/">Browse</a>
+			<a class="logo" href="/">Search</a>
 			<label class="right hamburger center-parent mobile" for="hamburger">
 					<div class="center">
 						<div class="top bar"></div>
@@ -30,7 +30,7 @@
 
 			<div class="menu-items">
 				<div class="search">
-					<input type="text" list="suggestions" placeholder="Search..." />
+					<input type="text" list="suggestions" placeholder="Search..." value="<%= searchQuery %>" />
 
 					<datalist id="suggestions">
 					</datalist>
@@ -74,9 +74,6 @@
 	</header>
 
 	<main class="category">
-		<div class="floating-add">
-			<img src="/icons/camera.svg" class="icon" />
-		</div>
 
 		<div class="close-out">
 			<div class="bar"></div>
@@ -114,15 +111,6 @@
 			return transitions['transition'];
 		}
 		var transitionEnd = whichTransitionEvent();
-
-
-
-		$('.floating-add').on('click', function() {
-			setTimeout(function() {
-				window.location.href = '/category/<%= unmodifiedCategoryName %>/upload';
-			}, 200);
-		});
-
 
 		function commentReplyInputs(event) {
 			// go to comement thread an add input there
@@ -375,7 +363,7 @@
 		function resetOriginalState() {
 			let currentUrl = window.location.href;
 			let urlRemovedQuery = currentUrl.split('?')[0];
-			window.history.replaceState({}, "", urlRemovedQuery);
+			window.history.replaceState({}, "", urlRemovedQuery + "?searchQuery=<%= searchQuery %>");
 		}
 
 		// pushing states will add the state to the history log when searching
@@ -407,8 +395,7 @@
 				try {
 					// animate the clicked card
 					animate(this);
-					window.history.pushState({card: postId}, "", "?postId=" + postId);
-
+					window.history.pushState({card: postId}, "", "?searchQuery=<%= searchQuery%>&postId=" + postId);
 				} catch (error) {return null;}
 			});
 		};
@@ -626,18 +613,22 @@
 
 		// need the original to start tracking comment offsets
 		// cardsOffset will keep changing
-		var cardsOffset = currentDateTime();
+		// cardsOffset will be 0 for search page b/c can't find a good way to lazy load it in
+		var cardsOffset = 0;
 		// postId (string) -> commentOffSet
 		function addCards() {
 			console.log('retrieving cards...')
-			// disable trigger while it's workin
+			// disable trigger while it's working
 			$('main').off('scroll', addCardsOnScroll);
 
 			// gets cards, not comments
 			$.ajax({
-				url: "/category/<%= unmodifiedCategoryName %>/cards",
+				url: "/search/cards",
 				type: "POST",
-				data: JSON.stringify({cardsOffset: cardsOffset}),
+				data: JSON.stringify({
+					cardsOffset: cardsOffset,
+					searchQuery: "<%= searchQuery %>"
+				}),
 				contentType: "application/json",
 				dataType: 'json',
 				success: function(res) {
@@ -725,9 +716,8 @@
 					attachLoadComments();
 					attachFocusToCards();
 
-					let newCardsOffset = res.newCardsOffset;
-					if (newCardsOffset) {
-						cardsOffset = newCardsOffset;
+					cardsOffset += res.cards.length;
+					if (res.cards.length >= sqlResultLimit) {
 						$('main').on('scroll', addCardsOnScroll);
 						$('main').trigger('scroll');
 					}
@@ -735,7 +725,6 @@
 				error: function(xhr, status, error) {
 					console.log(xhr.responseText);
 				}
-
 			});
 		}
 

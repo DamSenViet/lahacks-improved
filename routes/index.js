@@ -101,6 +101,7 @@ router.get('(/$)', function(req, res, next) {
 	let connection = mysql.createConnection(mysqlConfig);
 
 	getCategories(connection, function(categories) {
+		connection.end();
 		// NOTE: can use variables in outer scope
 		// e.g. don't need to pass in req, res, next
 		res.render('index', {
@@ -623,6 +624,7 @@ router.get('/profile/[a-z0-9_]+$', function(req, res, next) {
 		}
 
 		getCategories(connection, function(categories) {
+			connection.end();
 			res.status(200);
 			// profile template is a copy of category modified to fit profile
 			res.render('profile', {
@@ -903,57 +905,92 @@ router.post('/like$', function(req, res, next) {
 });
 
 router.post('/autocomplete$', function(req, res, next) {
+});
+
+router.get('/search', function(req, res, next) {
+	let searchQuery = req.query.searchQuery.trim().toLowerCase();
+	let connection = mysql.createConnection(mysqlConfig);
+	getCategories(connection, function(categories) {
+		connection.end();
+
+	 	res.status(200);
+	 	res.render('search', {
+			categories: categories,
+			isAuthenticated: req.session.isAuthenticated,
+			username: req.session.user,
+			searchQuery: searchQuery
+		});
+		return;
+	});
+});
+
+router.post('/search/cards$', function(req, res, next) {
+	let cardsOffset = req.body.cardsOffset;
+	if (isNaN(cardsOffset)) {
+		res.status(400);
+		res.send("cardsOffset must be a number");
+		return;
+	}
+
 	let searchQuery = req.body.searchQuery.trim().toLowerCase();
 	let queryParts = searchQuery.split(" "); // array
-	let connection = mysql.createConnection(mysqlConfig);
-	let sql = "select postID, title"
-	+ " from posts "
-	+ " where match(posts.title, posts.description) against ('";
+	let matchConditions = "";
 	for (let i = 0; i < queryParts.length; ++i) {
 		// all search results must have all parts to the query
 
 		// indexing doesn't occur on any WORDS less than 4 letters, need
 		// can't require a word less than 4 letters
+		// can change this in sql settings
 		if (queryParts[i].length >= 4) {
-			sql += "+ " + queryParts[i];
+			matchConditions += "+" + queryParts[i];
 		} else {
-			sql += queryParts[i];
+			matchConditions += queryParts[i];
 		}
 
 		// if not the last one, add a space
 		if (i !== queryParts.length - 1) {
-			sql += " ";
+			matchConditions += " ";
 		}
 	}
-	sql += "' in boolean mode)"
-	+ " limit 10";
+
+	let connection = mysql.createConnection(mysqlConfig);
+	let sql = "select *,"
+	+ " exists("
+		+ " select *"
+		+ " from postLikes"
+		+ " where postLikes.username = " + mysql.escape(req.session.user)
+		+ " and postLikes.postID = posts.postID"
+	+ ") as liked"
+	+ " from posts "
+	+ " where match (posts.title, posts.description)"
+		+ " against (" + mysql.escape(matchConditions) + " in boolean mode)"
+	+ " limit 10"
+	+ " offset " + cardsOffset;
 	console.log(sql);
 	connection.query(sql, function(error, results, fields) {
 		if (error) throw error;
 		connection.end();
 		// console.log(results);
 
-		let searchResults = [];
+		let cards = [];
 		for (let i = 0; i < results.length; ++i) {
-			let searchResult = {};
-			searchResult.postId = results[i].postID;
-			searchResult.title = results[i].title;
-			searchResults.push(searchResult);
+			let card = {};
+			card.postId = results[i].postID;
+			card.postTitle = results[i].title;
+			let categoryName = results[i].category;
+			let unmodifiedCategoryName = categoryName.replace(/ /g, "_");
+			card.imageLink = "/pictures/"+unmodifiedCategoryName+"/"+results[i].postID;
+			card.description = results[i].description;
+			card.author = results[i].username;
+			card.liked = (results[i].liked === 0)? false: true;
+			cards.push(card);
 		}
 		res.status(200);
 		res.send({
-			searchResults: searchResults
+			cards : cards
 		});
 		return;
 	});
-});
-
-router.get('/search', function(req, res, next) {
-
-});
-
-router.get('/post/[0-9]+$', function(req, res, next) {
-
 });
 
 module.exports = router;
