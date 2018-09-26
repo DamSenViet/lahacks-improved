@@ -73,10 +73,10 @@ var verifyCategory = function(req, res, next) {
 			res.send("Category '"+categoryName+"' does not exist.");
 			return;
 		}
-
 		next();
 	});
 };
+
 
 // get list of categories using existing connection
 var getCategories = function(connection, callback) {
@@ -150,7 +150,7 @@ router.post('/cards$', function(req, res, next) {
 		if (error) throw error;
 		connection.end();
 
-		console.log(results);
+		// console.log(results);
 
 		let cards = [];
 		for (let i = 0; i < results.length; ++i) {
@@ -624,6 +624,7 @@ router.get('/profile/[a-z0-9_]+$', function(req, res, next) {
 
 		getCategories(connection, function(categories) {
 			res.status(200);
+			// profile template is a copy of category modified to fit profile
 			res.render('profile', {
 				categories: categories,
 				isAuthenticated: req.session.isAuthenticated,
@@ -899,6 +900,60 @@ router.post('/like$', function(req, res, next) {
 		res.send("");
 		return;
 	});
+});
+
+router.post('/autocomplete$', function(req, res, next) {
+	let searchQuery = req.body.searchQuery.trim().toLowerCase();
+	let queryParts = searchQuery.split(" "); // array
+	let connection = mysql.createConnection(mysqlConfig);
+	let sql = "select postID, title"
+	+ " from posts "
+	+ " where match(posts.title, posts.description) against ('";
+	for (let i = 0; i < queryParts.length; ++i) {
+		// all search results must have all parts to the query
+
+		// indexing doesn't occur on any WORDS less than 4 letters, need
+		// can't require a word less than 4 letters
+		if (queryParts[i].length >= 4) {
+			sql += "+ " + queryParts[i];
+		} else {
+			sql += queryParts[i];
+		}
+
+		// if not the last one, add a space
+		if (i !== queryParts.length - 1) {
+			sql += " ";
+		}
+	}
+	sql += "' in boolean mode)"
+	+ " limit 10";
+	console.log(sql);
+	connection.query(sql, function(error, results, fields) {
+		if (error) throw error;
+		connection.end();
+		// console.log(results);
+
+		let searchResults = [];
+		for (let i = 0; i < results.length; ++i) {
+			let searchResult = {};
+			searchResult.postId = results[i].postID;
+			searchResult.title = results[i].title;
+			searchResults.push(searchResult);
+		}
+		res.status(200);
+		res.send({
+			searchResults: searchResults
+		});
+		return;
+	});
+});
+
+router.get('/search', function(req, res, next) {
+
+});
+
+router.get('/post/[0-9]+$', function(req, res, next) {
+
 });
 
 module.exports = router;

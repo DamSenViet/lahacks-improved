@@ -25,7 +25,10 @@ create table posts (
 
 	primary key (postID),
 	foreign key (username) references users(username),
-	foreign key (category) references categories(name)
+	foreign key (category) references categories(name),
+
+	-- this is an index, need to make one for every SET of columns you need the index on
+	FULLTEXT (title, description)
 );
 
 create table postLikes (

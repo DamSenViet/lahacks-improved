@@ -135,6 +135,10 @@
 				let postId = $(this).parent().parent().parent().data('post-id');
 				commentReplyInput = "<textarea class='reply' placeholder='Write a comment...' rows='1' data-post-id='"+postId+"'></textarea>";
 				$(this).parent().parent().append(commentReplyInput);
+
+				// gotta refind it, use after/before next time to keep reference of it
+				commentReplyInput = $(this).parent().siblings('textarea.reply');
+				$(commentReplyInput).focus();
 			}
 			attachTextAreaCommentKeys();
 		};

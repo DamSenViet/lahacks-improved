@@ -19,12 +19,15 @@
 * view category of photos by other users
 * create your own categories
 * signup/login input validation (server and client)
+* comment on posts
+* reply to commments
 * reCaptcha validation (server and client)
 * History API to manipulate page state and page navigation
 
 
 ## Stack
 * Front End
+	* jQuery
 	* [FilePond](https://pqina.nl/filepond/) (file interface)
 	* reCaptcha 2.0
 	* EJS templates
@@ -32,7 +35,8 @@
 	* Node.js and custom API
 	* reCaptcha 2.0
 	* MySQL Database
-	* Express Session
+	* [mysqljs](https://github.com/mysqljs/mysql)
+	* [expressjs session](https://github.com/expressjs/session)
 	* [bcrypt](https://github.com/kelektiv/node.bcrypt.js) (password encryption)
 	* [sharp](https://github.com/lovell/sharp) (image compression)
 
