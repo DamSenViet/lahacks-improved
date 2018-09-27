@@ -1,9 +1,15 @@
 # Imgur/Reddit Application
 
 <p float="left" align="center">
-	<img src="./screenshots/landing desktop.png" height="300" width="512"/>
+	<img src="./screenshots/desktop demo.gif" height="300"/>
 	<img src="./screenshots/mobile demo.gif" height="300" />
 </p>
+
+
+[Desktop View Demo](https://youtu.be/_a-jHiP1omo)
+
+[Mobile View Demo Video](https://youtu.be/UAslSN53XpY)
+
 
 # Features
 * cross-browser compatibility °˖✧◝(⁰▿⁰)◜✧˖°
