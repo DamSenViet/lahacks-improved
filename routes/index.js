@@ -104,6 +104,9 @@ router.get('(/$)', function(req, res, next) {
 		connection.end();
 		// NOTE: can use variables in outer scope
 		// e.g. don't need to pass in req, res, next
+
+		// do not let chrome cache pages that get cards
+		res.setHeader('Cache-Control', 'no-cache, no-store'); // Added no-store
 		res.render('index', {
 			categories: categories,
 			isAuthenticated: req.session.isAuthenticated,
@@ -433,6 +436,7 @@ router.get('/category/[a-z_]+$', verifyCategory, function(req, res, next) {
 
 	getCategories(connection, function(categories) {
 		connection.end();
+		res.setHeader('Cache-Control', 'no-cache, no-store'); // Added no-store
 		res.render('category', {
 			categories: categories,
 			unmodifiedCategoryName: unmodifiedCategoryName,
@@ -548,7 +552,7 @@ router.post('/category/[a-z_]+/upload$', verifyCategory, function(req, res, next
 	// imgData {id, name, type, size, metadata, data (64base string)}
 
 	let errors = {};
-
+	
 	if (!title) {
 		errors.title = "missing";
 	} else if (title.length > 100) {
@@ -627,6 +631,7 @@ router.get('/profile/[a-z0-9_]+$', function(req, res, next) {
 			connection.end();
 			res.status(200);
 			// profile template is a copy of category modified to fit profile
+			res.setHeader('Cache-Control', 'no-cache, no-store'); // Added no-store
 			res.render('profile', {
 				categories: categories,
 				isAuthenticated: req.session.isAuthenticated,
@@ -904,8 +909,6 @@ router.post('/like$', function(req, res, next) {
 	});
 });
 
-router.post('/autocomplete$', function(req, res, next) {
-});
 
 router.get('/search', function(req, res, next) {
 	let searchQuery = req.query.searchQuery.trim().toLowerCase();
@@ -914,6 +917,7 @@ router.get('/search', function(req, res, next) {
 		connection.end();
 
 	 	res.status(200);
+		res.setHeader('Cache-Control', 'no-cache, no-store'); // Added no-store
 	 	res.render('search', {
 			categories: categories,
 			isAuthenticated: req.session.isAuthenticated,

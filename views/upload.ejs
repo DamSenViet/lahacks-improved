@@ -249,9 +249,10 @@
 
 							// setTimeout for animations
 							// do redirect to photo
-
-							window.location.href = "<%= '/category/'+unmodifiedCategoryName %>";
 							console.log('success');
+							window.setTimeout(function() {
+								window.location.href = "<%= '/category/'+unmodifiedCategoryName %>";
+							}, 500);
 						},
 						// status is always fail here, error is the typical
 						// status code's error message
