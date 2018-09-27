@@ -78,7 +78,10 @@ Now you can start the application!
 ```
 npm start
 ```
+**Note: The 'npm start' command also resets the database 'lahacks' used in this project. If you'd like to change this, please fix it in `package.json`**
+
 This will start the server on [port 8080](http://127.0.0.1:8080) assuming your host is localhost.
+
 
 # Using the Test Folder Prototype
 
