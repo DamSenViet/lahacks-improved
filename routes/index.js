@@ -19,11 +19,11 @@ var sharp = require('sharp');
 var verifyCaptcha = function(req, res, next) {
 	// check for recaptcha first
 	let captchaResponse = req.body.captchaResponse;
-	// if (!captchaResponse) {
-	// 	res.status(403);
-	// 	res.send("Please verify reCaptcha before submitting.");
-	// 	return;
-	// }
+	if (!captchaResponse) {
+		res.status(403);
+		res.send("Please verify reCaptcha before submitting.");
+		return;
+	}
 
 	// verify captcha token on google's servers
 	let captchaSecret = "6LcOdlEUAAAAAN1LqTRe3CpXdRX5JdwAEgfwCKZI";
@@ -38,11 +38,11 @@ var verifyCaptcha = function(req, res, next) {
 		// send error message if not correct
 
 
-		// if (!JSON.parse(body).success) {
-		// 	res.status(403);
-		// 	res.send("reCaptcha was invalid, try again.");
-		// 	return;
-		// }
+		if (!JSON.parse(body).success) {
+			res.status(403);
+			res.send("reCaptcha was invalid, try again.");
+			return;
+		}
 		// verified reCaptcha
 		next();
 	});
