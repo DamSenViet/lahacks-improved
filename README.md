@@ -1,8 +1,8 @@
 # Imgur/Reddit Application
 
 <p float="left" align="center">
-<img src="./screenshots/landing desktop.png" height="300" width="512"/>
-	<img src="./screenshots/landing.png" height="300" />
+	<img src="./screenshots/landing desktop.png" height="300" width="512"/>
+	<img src="./screenshots/mobile demo.gif" height="300" />
 </p>
 
 # Features
