@@ -6,9 +6,9 @@
 </p>
 
 
-[Desktop View Demo Video](https://youtu.be/_a-jHiP1omo)
+[Desktop Demo Video](https://youtu.be/_a-jHiP1omo)
 
-[Mobile View Demo Video Video](https://youtu.be/UAslSN53XpY)
+[Mobile Demo Video](https://youtu.be/UAslSN53XpY)
 
 
 # Features
