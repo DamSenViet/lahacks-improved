@@ -3,3 +3,5 @@ views_copy
 reference
 public/pictures/*
 !public/pictures/!.gitkeep
+.DS_STORE
+mysqlCredentials.json
