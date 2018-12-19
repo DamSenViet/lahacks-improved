@@ -14,6 +14,7 @@ An Imgur/Reddit style application built like a mobile application.
 * [Features](#features)
 * [Stack](#stack)
 * [Installation](#installation)
+* [Available Scripts](#availalable-scripts)
 * [Fixing MySQL Errors](#fixing-mysql-errors)
 * [Using The Test Folder Prototype](#using-the-test-folder-prototype)
 
@@ -79,14 +80,14 @@ Inside `mysqlCredentials.json` be sure to fill out the template:
 }
 ```
 
+## Available Scripts
 
-Now you can start the application!
-```
-npm start
-```
+### `npm start`
+
+Runs the application on [port 3000](http://127.0.0.1:3000) assuming your host is localhost.
+
 **Note: The 'npm start' command also resets the database 'lahacks' used in this project. If you'd like to change this, please fix it in `package.json`**
 
-This will start the server on [port 8080](http://127.0.0.1:8080) assuming your host is localhost.
 
 ## Fixing MySQL Errors
 
