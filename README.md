@@ -1,53 +1,52 @@
-# Imgur/Reddit Application
+# LA Hacks (Improved)
+A Imgur/Reddit Style Application
 
 <p float="left" align="center">
 	<img src="./screenshots/desktop demo.gif" height="300"/>
 	<img src="./screenshots/mobile demo.gif" height="300" />
 </p>
 
-
 [Desktop Demo Video](https://youtu.be/_a-jHiP1omo)
 
 [Mobile Demo Video](https://youtu.be/UAslSN53XpY)
 
 
-# Features
+## Features
 * cross-browser compatibility °˖✧◝(⁰▿⁰)◜✧˖°
 * responsive design, great for your phone (ღゝ◡╹)ノ♡)
+* lazy-loading posts
 * upload photos
-* MySQL database
-* SQL injection prevention
 * like photos
 * compression of photos (server-side)
 * account system + session tracking
-* (IMPROVEMENT IN PROGRESS) view all your uploaded photos
-	* lazy loading implementation
+* view all your uploaded photos
 * view category of photos by other users
 * create your own categories
-* signup/login input validation (server and client)
 * comment on posts
 * reply to commments
+* signup/login input validation (server and client)
 * reCaptcha validation (server and client)
 * History API to manipulate page state and page navigation
+* SQL injection prevention
 
 
 ## Stack
 * Front End
 	* jQuery
-	* [FilePond](https://pqina.nl/filepond/) (file interface)
+	* [FilePond](https://pqina.nl/filepond/) (file uploading interface)
 	* reCaptcha 2.0
 	* EJS templates
 * Back End
 	* Node.js and custom API
 	* reCaptcha 2.0
 	* MySQL Database
-	* [mysqljs](https://github.com/mysqljs/mysql)
-	* [expressjs session](https://github.com/expressjs/session)
+	* [mysqljs](https://github.com/mysqljs/mysql) (mysql driver)
+	* [expressjs session](https://github.com/expressjs/session) (managing user session and authentication)
 	* [bcrypt](https://github.com/kelektiv/node.bcrypt.js) (password encryption)
 	* [sharp](https://github.com/lovell/sharp) (image compression)
 
 
-# Installing the Project
+## Installing the Project
 
 **Note: You'll need Node v10+ before starting. The image compression library dependency requires this.**
 
@@ -65,7 +64,7 @@ mysqld
 
 
 Inside `mysqlCredentials.json` be sure to fill out the template:
-```
+```json
 {
 	"host": "yourHost", // default is localhost
 	"user": "yourUser",
@@ -82,19 +81,43 @@ npm start
 
 This will start the server on [port 8080](http://127.0.0.1:8080) assuming your host is localhost.
 
+## Fixing MySQL Errors
 
-# Using the Test Folder Prototype
+Newer installations of MySQL come with a `ONLY_FULL_GROUP_BY` setting for sql_mode that the restrict certain queries (that the author did not consider at the time of writing the application). To see if you have this setting, run the following in the MySQL console:
+
+```sql
+SELECT @@sql_mode;
+```
+
+If you have the setting, we'll need to remove it while we run this application. Run the following commands in the MySQL console:
+
+```sql
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
+SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+```
+
+If you would like to restore the setting after using the application, run the following commands in the MySQL console:
+
+```sql
+SET GLOBAL sql_mode=(SELECT CONCAT(@@sql_mode,'ONLY_FULL_GROUP_BY'));
+
+SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode,'ONLY_FULL_GROUP_BY'));
+```
+
+
+## Using the Test Folder Prototype
 
 You may choose to use Python's simple HTTP server or you may use npm's live-server. As long as the server is able to set the root directory to be the 'prototype' directory, it should be fine.
 
-## Python
+### Python
 If you have python (v3.6+) you may make the following call inside the prototype directory:
 ```
 python -m http.server
 ```
 Then, just go to the port inside your web browser.
 
-## Live-Server
+### Live-Server
 Otherwise, you'll need to install [npm live-server](https://www.npmjs.com/package/live-server) globally first. I didn't include this in my modules since I have this globally installed for specific testing and everyone's tools are different.
 
 Go into the prototype folder directory and then call:
