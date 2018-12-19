@@ -1,5 +1,5 @@
 # LA Hacks (Improved)
-A Imgur/Reddit Style Application
+An Imgur/Reddit style application built like a mobile application.
 
 <p float="left" align="center">
 	<img src="./screenshots/desktop demo.gif" height="300"/>
@@ -9,6 +9,13 @@ A Imgur/Reddit Style Application
 [Desktop Demo Video](https://youtu.be/_a-jHiP1omo)
 
 [Mobile Demo Video](https://youtu.be/UAslSN53XpY)
+
+## Table of Contents
+* [Features](#features)
+* [Stack](#stack)
+* [Installation](#installation)
+* [Fixing MySQL Errors](#fixing-mysql-errors)
+* [Using The Test Folder Prototype](#using-the-test-folder-prototype)
 
 
 ## Features
@@ -46,7 +53,7 @@ A Imgur/Reddit Style Application
 	* [sharp](https://github.com/lovell/sharp) (image compression)
 
 
-## Installing the Project
+## Installation
 
 **Note: You'll need Node v10+ before starting. The image compression library dependency requires this.**
 
@@ -64,7 +71,7 @@ mysqld
 
 
 Inside `mysqlCredentials.json` be sure to fill out the template:
-```json
+```
 {
 	"host": "yourHost", // default is localhost
 	"user": "yourUser",
