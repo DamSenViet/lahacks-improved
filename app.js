@@ -4,10 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var indexRouter = require('./routes/index');
-
+var routers = require('./routes');
 var session = require('express-session');
-
 
 var app = express();
 
@@ -29,7 +27,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: 'random secret', saveUninitialized: false, resave: false}));
 
 
-app.use('/', indexRouter);
+routers.forEach((route) => {
+  app.use(route.prefix, route.router)
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
