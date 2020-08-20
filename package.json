@@ -6,7 +6,7 @@
     "start": "mysql -u root -p < ./mysql/initialize.sql && node ./bin/www"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
